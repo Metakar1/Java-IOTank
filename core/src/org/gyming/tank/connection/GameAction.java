@@ -26,4 +26,8 @@ public class GameAction {
     public double getDirection() {
         return direction;
     }
+
+    public double getValue() {
+        return value;
+    }
 }

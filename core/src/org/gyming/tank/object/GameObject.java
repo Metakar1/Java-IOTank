@@ -1,9 +1,12 @@
 package org.gyming.tank.object;
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import org.gyming.tank.client.ActionGroup;
+import org.gyming.tank.client.ColorPool;
 import org.gyming.tank.connection.GameAction;
 import org.gyming.tank.connection.GameFrame;
 
@@ -15,18 +18,22 @@ abstract public class GameObject extends Actor {
     protected int hp;
     protected ActionGroup actionGroup;
     protected Texture texture;
+    protected static ColorPool colorPool = new ColorPool();
 
-    public GameObject(double speed, double direction, double posX, double posY, int hp, ActionGroup actionGroup) {
+    public GameObject(double speed, double direction, double posX, double posY, int hp, ActionGroup actionGroup, Stage stage) {
         this.speed = speed;
         this.direction = direction;
         this.posX = posX;
         this.posY = posY;
         this.hp = hp;
         this.actionGroup = actionGroup;
-//        texture = createTexture();
+        texture = createTexture();
 //        region = createRegion();
         setSize(this.texture.getWidth(), this.texture.getHeight());
     }
+
+    protected abstract Texture createTexture();
+    protected abstract void fire(GameAction action, double posX, double posY);
 
     @Override
     public void act(float delta) {
@@ -35,16 +42,24 @@ abstract public class GameObject extends Actor {
         GameFrame actions = actionGroup.modify.get(identifier);
         if(actions!=null) {
             for(GameAction i:actions.frameList) {
-                if(i.getType().equals("ChangeDirection")) {
+                if(i.getType().equals("Move")) {
                     direction = i.getDirection();
+                    speed = i.getValue();
                 } else if(i.getType().equals("Fire")) {
-                    fire(i);
+                    fire(i,posX,posY);
                 }
             }
         }
     }
 
-    abstract public void fire(GameAction actions);
+    public Texture drawCircle(int r,Color color) {
+        Pixmap pixmap = new Pixmap(r*2,r*2,Pixmap.Format.RGBA8888);
+        pixmap.setColor(color);
+        pixmap.fillCircle(r,r,r);
+        Texture texture = new Texture(pixmap);
+        return texture;
+
+    }
 
 //    abstract public Texture createTexture();
 
