@@ -16,7 +16,7 @@ public class TankGame extends Game {
     GameOverScreen gameOverScreen;
     private String userName, roomName;
 
-    PlayerObject mainPlayer;
+    public int PlayerId;
 
     public static int test1 = 0, test2 = 0;
     private static String serverAddress = "127.0.0.1";

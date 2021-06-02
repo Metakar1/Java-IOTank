@@ -36,67 +36,29 @@ public class MainScreen extends ScreenAdapter {
             double direction = Math.atan2(x, y);
             Gson gson = new Gson();
             if (x != 0 || y != 0)
-                game.queue.put(gson.toJson(new GameAction("Move", direction, game.mainPlayer.getPlayerID(), "", game.mainPlayer.getSpeed()), GameAction.class));
+                game.queue.put(gson.toJson(new GameAction("Move", direction, game.PlayerId, "", 1), GameAction.class));
 
             if (Gdx.input.isTouched())
-                game.queue.put(gson.toJson(new GameAction("Fire", direction, game.mainPlayer.getPlayerID(), "", 0), GameAction.class));
+                game.queue.put(gson.toJson(new GameAction("Fire", direction, game.PlayerId, "", 0), GameAction.class));
         }
         catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
 
-    private void Update() {
-        while (!game.download.isEmpty()) {
-            GameFrame now = game.download.peek();
-            for (GameAction it : now.frameList) {
-                if (it.getType().equals("Move")) {
-                    int id = it.getObjectID();
-                    double direction, speed;
-                    direction = it.getDirection();
-                    speed = it.getValue();
-                    PlayerObject temp = idmap.get(id);
-                    temp.setPosX(temp.getPosX() + speed * Math.tan(direction));
-                    temp.setPosY(temp.getPosY() + speed * Math.sqrt(1 - Math.tan(direction) * Math.tan(direction)));
-                }
-                else if (it.getType().equals("Fire")) {
-                    int id = it.getObjectID();
-                    PlayerObject temp = idmap.get(id);
-                    temp.fire(it, temp.getPosX(), temp.getPosY());
-                }
-                else if (it.getType().equals("NewPlayer")) {
-                    NewPlayer(it.getObjectID(), it.getProperty());
-                }
-                else {
-                    System.out.println("Error " + it.getType());
-                }
-            }
-            game.download.poll();
-        }
-    }
-
-    private void NewPlayer(int playerID, String playerName) {
-        double x, y;
-        x = y = 0; // random x,y
-
-        PlayerObject temp = new PlayerObject(PlayerObject.playerSpeed, 0, x, y, PlayerObject.playerHP, playerID, playerName, game.actionGroup, stage);
-        stage.addActor(temp);
-        if (playerName.equals(game.getUserName()))
-            game.mainPlayer = temp;
-        idmap.put(playerID, temp);
-    }
-
     @Override
     public void show() {
+        game.PlayerId = game.getUserName().hashCode();
         Gson gson = new Gson();
         try {
             game.queue.put(gson.toJson(new GameAction("NewPlayer", 0, game.getUserName().hashCode(), game.getUserName(), 0)));
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
+            e.printStackTrace();
         }
 
         Gdx.input.setInputProcessor(stage);
         try {
-
             Thread downloader = new Thread(new ClientDownloader(game, game.S2C));
             Thread listener = new Thread(new ClientListener(game, game.C2S, game.queue));
             downloader.start();
@@ -112,7 +74,6 @@ public class MainScreen extends ScreenAdapter {
     @Override
     public void render(float delta) {
         ListenKey();
-        Update();
         stage.draw();
     }
 
