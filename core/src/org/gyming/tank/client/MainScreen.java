@@ -32,7 +32,7 @@ public class MainScreen extends ScreenAdapter {
         if (Gdx.input.isKeyPressed(Input.Keys.D))
             x += 1;
         if (Gdx.input.isKeyPressed(Input.Keys.A))
-            x += 1;
+            x -= 1;
 
         try {
             double direction = Math.atan2(x, y);
@@ -53,7 +53,7 @@ public class MainScreen extends ScreenAdapter {
         game.PlayerId = game.getUserName().hashCode();
         Gson gson = new Gson();
         try {
-            game.queue.put(gson.toJson(new GameAction("NewPlayer", 0, game.getUserName().hashCode(), game.getUserName(), 0)));
+            game.queue.put(gson.toJson(new GameAction("NewPlayer", 0, 0, game.getUserName(), 0)));
         }
         catch (Exception e) {
             e.printStackTrace();
