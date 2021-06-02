@@ -9,6 +9,9 @@ public class TankGame extends Game {
 
     @Override
     public void create () {
+        startScreen = new StartScreen(this);
+        mainScreen = new MainScreen(this);
+        gameOverScreen = new GameOverScreen(this);
     }
 
     @Override
