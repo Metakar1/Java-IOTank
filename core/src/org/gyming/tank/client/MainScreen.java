@@ -87,6 +87,12 @@ public class MainScreen extends ScreenAdapter {
 
     @Override
     public void show() {
+        Gson gson = new Gson();
+        try {
+            game.queue.put(gson.toJson(new GameAction("NewPlayer", 0, 0, "", 0)));
+        }
+        catch (Exception e) {}
+
         Gdx.input.setInputProcessor(stage);
     }
 
