@@ -4,11 +4,15 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.google.gson.Gson;
 import org.gyming.tank.connection.GameAction;
 import org.gyming.tank.connection.GameFrame;
+import org.gyming.tank.object.GameObject;
 import org.gyming.tank.object.PlayerObject;
 
 import java.util.HashMap;
@@ -22,6 +26,7 @@ public class MainScreen extends ScreenAdapter {
         this.stage = new Stage();
         this.game = game;
         stage.addActor(new PlayerObject(0,0,50,50,0,0,"f", game.actionGroup, stage));
+//        Texture texture = GameObject.drawCircle(10, Color.W);
     }
 
     private void ListenKey() {
@@ -77,11 +82,12 @@ public class MainScreen extends ScreenAdapter {
     @Override
     public void render(float delta) {
 //        System.out.println("ASASASASASSA");
-        ScreenUtils.clear(1, 1, 1, 0);
+        ScreenUtils.clear(0, 0, 0, 0);
         ListenKey();
         stage.act(delta);
         stage.draw();
-        System.out.println(stage.getActors().size);
+//        Actor actor = stage.getActors().get(1);
+
     }
 
     @Override

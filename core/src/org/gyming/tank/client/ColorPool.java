@@ -17,6 +17,7 @@ public class ColorPool {
         userColorPool.add(new Color(0, 178, 225, 1));
         userColorPool.add(new Color(241, 78, 84, 1));
         userColorPool.add(new Color(0, 225, 110, 1));
+        userCnt = 0;
     }
 
     public Color getUserColor(Integer userId) {

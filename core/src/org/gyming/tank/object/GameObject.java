@@ -45,14 +45,16 @@ abstract public class GameObject extends Actor {
         GameFrame actions = actionGroup.modify.get(identifier);
         if(actions!=null) {
             for(GameAction i:actions.frameList) {
-                System.out.println(i.getType());
+//                System.out.println(i.getType());
+//                System.out.println(i.getObjectID());
                 if(i.getType().equals("Move")) {
                     direction = i.getDirection();
                     speed = i.getValue();
                 } else if(i.getType().equals("Fire")) {
                     fire(i,posX,posY);
                 } else if(i.getType().equals("NewPlayer")) {
-                    PlayerObject player = new PlayerObject(PlayerObject.playerSpeed,0,i.getDirection(),i.getValue(),PlayerObject.playerHP,i.getObjectID(),i.getProperty(),actionGroup,stage);
+                    System.out.println();
+                    PlayerObject player = new PlayerObject(PlayerObject.playerSpeed,0,i.getDirection(),i.getValue(),PlayerObject.playerHP,i.getProperty().hashCode(),i.getProperty(),actionGroup,stage);
                     stage.addActor(player);
                 }
             }
@@ -62,16 +64,16 @@ abstract public class GameObject extends Actor {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
+//        System.out.println(t);
         batch.draw(texture,(float) posX,(float) posY);
     }
 
-    public Texture drawCircle(int r,Color color) {
+    static public Texture drawCircle(int r,Color color) {
         Pixmap pixmap = new Pixmap(r*2,r*2,Pixmap.Format.RGBA8888);
         pixmap.setColor(color);
         pixmap.fillCircle(r,r,r);
         Texture texture = new Texture(pixmap);
         return texture;
-
     }
 
 //    abstract public Texture createTexture();

@@ -62,12 +62,12 @@ public class TankGame extends Game {
 
     @Override
     public void create () {
+        actionGroup = new ActionGroup();
         startScreen = new StartScreen(this);
         mainScreen = new MainScreen(this);
         gameOverScreen = new GameOverScreen(this);
         download = new LinkedBlockingQueue<>();
         queue = new LinkedBlockingQueue<>();
-        actionGroup = new ActionGroup();
         setScreen(startScreen);
     }
 

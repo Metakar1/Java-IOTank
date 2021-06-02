@@ -38,6 +38,8 @@ public class PlayerObject extends GameObject {
 
     @Override
     protected Texture createTexture() {
+//        System.out.println(colorPool.getUserColor(playerID));
+//        System.out.println("***");
         return drawCircle(playerSize,colorPool.getUserColor(playerID));
     }
 
