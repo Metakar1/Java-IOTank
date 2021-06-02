@@ -3,6 +3,7 @@ package org.gyming.tank.object;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import org.gyming.tank.client.ActionGroup;
@@ -55,6 +56,11 @@ abstract public class GameObject extends Actor {
                 }
             }
         }
+    }
+
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        batch.draw(texture,(float) posX,(float) posY);
     }
 
     public Texture drawCircle(int r,Color color) {
