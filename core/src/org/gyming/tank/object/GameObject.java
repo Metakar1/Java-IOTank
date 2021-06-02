@@ -14,7 +14,6 @@ abstract public class GameObject extends Actor {
     protected double posX, posY;
     protected int hp;
     protected ActionGroup actionGroup;
-    protected TextureRegion region;
     protected Texture texture;
 
     public GameObject(double speed, double direction, double posX, double posY, int hp, ActionGroup actionGroup) {
@@ -26,7 +25,7 @@ abstract public class GameObject extends Actor {
         this.actionGroup = actionGroup;
 //        texture = createTexture();
 //        region = createRegion();
-        setSize(this.region.getRegionWidth(), this.region.getRegionHeight());
+        setSize(this.texture.getWidth(), this.texture.getHeight());
     }
 
     @Override
