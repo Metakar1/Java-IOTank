@@ -2,15 +2,15 @@ package org.gyming.tank.client;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
-
-import java.awt.*;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 
 public class StartScreen implements Screen {
-    Game game;
+    TankGame game;
     TextField userField, roomField;
     Label userLabel, roomLabel;
 
-    public StartScreen(Game game) {
+    public StartScreen(TankGame game) {
         this.game = game;
 
     }
