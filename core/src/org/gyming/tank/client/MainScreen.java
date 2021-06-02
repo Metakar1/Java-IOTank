@@ -24,7 +24,6 @@ public class MainScreen extends ScreenAdapter {
 
     private void ListenKey() {
         int x = 0, y = 0;
-
         if (Gdx.input.isKeyPressed(Input.Keys.W))
             y += 1;
         if (Gdx.input.isKeyPressed(Input.Keys.S))
@@ -73,6 +72,7 @@ public class MainScreen extends ScreenAdapter {
                     System.out.println("Error " + it.getType());
                 }
             }
+            game.download.poll();
         }
     }
 
@@ -95,6 +95,7 @@ public class MainScreen extends ScreenAdapter {
     public void render(float delta) {
         ListenKey();
         Update();
+        stage.draw();
     }
 
     @Override
