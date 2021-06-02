@@ -67,6 +67,7 @@ public class TankGame extends Game {
         gameOverScreen = new GameOverScreen(this);
         download = new LinkedBlockingQueue<>();
         queue = new LinkedBlockingQueue<>();
+        actionGroup = new ActionGroup();
         setScreen(startScreen);
     }
 
