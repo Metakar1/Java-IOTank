@@ -11,6 +11,7 @@ public class ColorPool {
     int userCnt;
 
     public ColorPool() {
+        user = new HashMap<>();
         userColorPool = new ArrayList<>();
         userColorPool.add(new Color(191, 127, 145, 1));
         userColorPool.add(new Color(0, 178, 225, 1));
