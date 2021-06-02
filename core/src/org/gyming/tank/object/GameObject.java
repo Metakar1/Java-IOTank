@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import org.gyming.tank.client.ActionGroup;
 import org.gyming.tank.connection.GameAction;
+import org.gyming.tank.connection.GameFrame;
 
 abstract public class GameObject extends Actor {
     protected int identifier;
@@ -28,9 +29,17 @@ abstract public class GameObject extends Actor {
         setSize(this.region.getRegionWidth(), this.region.getRegionHeight());
     }
 
-    abstract public void act(float delta) ;
+    @Override
+    public void act(float delta) {
+        posX+=speed*Math.sin(direction);
+        posY+=speed*Math.cos(direction);
+        GameFrame actions = actionGroup.modify.get(identifier);
+        if(actions!=null) {
+            reactAction(actions);
+        }
+    }
 
-    abstract public void reactAction(GameAction action);
+    abstract public void reactAction(GameFrame actions);
 
     abstract public Texture createTexture();
 

@@ -2,6 +2,7 @@ package org.gyming.tank.object;
 
 import org.gyming.tank.client.ActionGroup;
 import org.gyming.tank.connection.GameAction;
+import org.gyming.tank.connection.GameFrame;
 
 public class BulletObject extends GameObject {
     private int playerID;
@@ -19,13 +20,9 @@ public class BulletObject extends GameObject {
         this.playerID = playerID;
     }
 
-    @Override
-    public void act(float delta) {
-
-    }
 
     @Override
-    public void reactAction(GameAction action) {
+    public void reactAction(GameFrame actions) {
 
     }
 }
