@@ -14,4 +14,8 @@ public class GameAction {
         this.property = property;
         this.value = value;
     }
+
+    public int getObjectID() {
+        return objectID;
+    }
 }

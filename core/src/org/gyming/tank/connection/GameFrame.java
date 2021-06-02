@@ -14,6 +14,5 @@ public class GameFrame {
 
     public void add(GameAction gameAction) {
         frameList.add(gameAction);
-        id++;
     }
 }

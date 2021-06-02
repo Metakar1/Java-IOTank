@@ -6,7 +6,10 @@ import org.gyming.tank.connection.GameAction;
 import org.gyming.tank.connection.GameFrame;
 import org.gyming.tank.connection.MsgIO;
 
+import java.awt.*;
 import java.net.Socket;
+import java.util.HashMap;
+import java.util.TreeSet;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class Client {
@@ -19,6 +22,7 @@ public class Client {
     MsgIO S2C, C2S;
     LinkedBlockingQueue<GameFrame> download;
     LinkedBlockingQueue<String> queue;
+    ActionGroup actionGroup;
 
     public Client() {
         download = new LinkedBlockingQueue<>();
