@@ -1,31 +1,18 @@
 package org.gyming.tank.client;
 
-import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 
-public class ClientGUI extends ApplicationAdapter {
-    SpriteBatch batch;
-    Texture img;
-
-    @Override
-    public void create () {
-        batch = new SpriteBatch();
-        img = new Texture("badlogic.jpg");
-    }
+public class ClientGUI extends Game {
+    private StartScreen startScreen;
+    private MainScreen mainScreen;
+    private GameOverScreen gameOverScreen;
 
     @Override
-    public void render () {
-        ScreenUtils.clear(1, 0, 0, 1);
-        batch.begin();
-        batch.draw(img, 0, 0);
-        batch.end();
-    }
-
-    @Override
-    public void dispose () {
-        batch.dispose();
-        img.dispose();
+    public void create() {
+        Gdx.graphics.setContinuousRendering(false);
+        startScreen = new StartScreen(this);
+        mainScreen = new MainScreen(this);
+        gameOverScreen = new GameOverScreen(this);
     }
 }
