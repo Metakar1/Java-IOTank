@@ -36,13 +36,6 @@ public class TankGame extends Game {
             Gson gson = new Gson();
             C2S.send(gson.toJson(new ConnectMsg("join", name, room)));
             System.out.println("GYMing is so awful!!!!");
-
-            Thread downloader = new Thread(new ClientDownloader(this, S2C));
-            Thread painter = new Thread(new ClientPainter(this));
-            Thread listener = new Thread(new ClientListener(this, C2S, queue));
-            downloader.start();
-            painter.start();
-            listener.start();
         }
         catch (Exception e) {
             e.printStackTrace();
