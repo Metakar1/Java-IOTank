@@ -8,6 +8,7 @@ import org.gyming.tank.connection.GameAction;
 public class PlayerObject extends GameObject {
     public static int playerSize = 10;
     public static int playerSpeed = 5;
+    public static int playerHP = 100;
     private int playerID;
     private String playerName;
     private Stage stage;
