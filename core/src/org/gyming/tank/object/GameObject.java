@@ -50,7 +50,7 @@ abstract public class GameObject extends Actor {
                 } else if(i.getType().equals("Fire")) {
                     fire(i,posX,posY);
                 } else if(i.getType().equals("NewPlayer")) {
-                    PlayerObject player = new PlayerObject(0,0,i.getDirection(),i.getValue(),PlayerObject.playerSpeed,i.getObjectID(),i.getProperty(),actionGroup,stage);
+                    PlayerObject player = new PlayerObject(PlayerObject.playerSpeed,0,i.getDirection(),i.getValue(),PlayerObject.playerHP,i.getObjectID(),i.getProperty(),actionGroup,stage);
                     stage.addActor(player);
                 }
             }
