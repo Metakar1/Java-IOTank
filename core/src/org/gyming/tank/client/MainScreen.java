@@ -78,6 +78,7 @@ public class MainScreen extends ScreenAdapter {
     private void NewPlayer(int playerID, String playerName) {
         double x, y;
         x = y = 0; // random x,y
+
         PlayerObject temp = new PlayerObject(PlayerObject.playerSpeed, 0, x, y, PlayerObject.playerHP, playerID, playerName, game.actionGroup, stage);
         stage.addActor(temp);
         if (playerName.equals(game.getUserName()))
@@ -89,11 +90,23 @@ public class MainScreen extends ScreenAdapter {
     public void show() {
         Gson gson = new Gson();
         try {
-            game.queue.put(gson.toJson(new GameAction("NewPlayer", 0, 0, "", 0)));
+            game.queue.put(gson.toJson(new GameAction("NewPlayer", 0, game.getUserName().hashCode(), game.getUserName(), 0)));
+        } catch (Exception e) {
         }
-        catch (Exception e) {}
 
         Gdx.input.setInputProcessor(stage);
+        try {
+
+            Thread downloader = new Thread(new ClientDownloader(game, game.S2C));
+            Thread listener = new Thread(new ClientListener(game, game.C2S, game.queue));
+            downloader.start();
+            listener.start();
+            Thread.sleep(1000);
+        }
+        catch (InterruptedException e)
+        {
+            e.printStackTrace();
+        }
     }
 
     @Override
