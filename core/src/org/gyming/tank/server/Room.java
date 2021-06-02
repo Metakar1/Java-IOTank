@@ -42,6 +42,7 @@ public class Room implements Runnable {
         roomID = _roomID;
         clients = new LinkedBlockingQueue<>();
         curFrame = new ArrayList<>();
+        totFrame = new ArrayList<>();
     }
 
     @Override
