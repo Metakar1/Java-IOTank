@@ -1,10 +1,12 @@
 package org.gyming.tank.client;
 
-import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.ScreenAdapter;
 
-public class GameOverScreen implements Screen {
+public class GameOverScreen extends ScreenAdapter {
+    final private TankGame game;
+
     public GameOverScreen(TankGame game) {
-
+        this.game = game;
     }
 
     @Override

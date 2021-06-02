@@ -1,41 +1,52 @@
 package org.gyming.tank.client;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.ScreenUtils;
 
-public class StartScreen implements Screen {
-    TankGame game;
-    BitmapFont font;
-    Skin skin;
-    TextField userField, roomField;
-    TextButton confirmButton;
-    Stage startStage;
+public class StartScreen extends ScreenAdapter {
+    private final TankGame game;
+    private final BitmapFont font;
+    private final Skin skin;
+    private final TextField userField, roomField;
+    private final Stage startStage;
 
-    public StartScreen(TankGame game) {
+    public StartScreen(final TankGame game) {
         this.game = game;
 
         font = new BitmapFont();
-//        skin = new Skin();
         skin = new Skin(Gdx.files.internal("uiskin.json"));
+
         userField = new TextField("", skin);
         roomField = new TextField("", skin);
-        userField.setMessageText("Please input your username.");
-        roomField.setMessageText("Please input the room number you want to join.");
-        confirmButton = new TextButton("OK", skin);
+        userField.setMessageText("Input your username.");
+        roomField.setMessageText("Input the room number.");
+        TextButton confirmButton = new TextButton("OK", skin);
         confirmButton.addListener(new ClickListener() {
             @Override
             public void clicked (InputEvent event, float x, float y) {
-
+                game.setUserName(userField.getText());
+                game.setRoomName(roomField.getText());
+                game.buildConnection();
+//                System.out.println(game.getUserName());
+//                System.out.println(game.getRoomName());
+                game.setScreen(game.mainScreen);
             }
         });
+
+        userField.setSize(300, userField.getPrefHeight());
+        roomField.setSize(300, roomField.getPrefHeight());
+        userField.setPosition((Gdx.graphics.getWidth() - userField.getWidth()) / 2, Gdx.graphics.getHeight() / 2 + 50);
+        roomField.setPosition((Gdx.graphics.getWidth() - roomField.getWidth()) / 2, Gdx.graphics.getHeight() / 2);
+        confirmButton.setPosition((Gdx.graphics.getWidth() - confirmButton.getWidth()) / 2, Gdx.graphics.getHeight() / 2 - 50);
+
         startStage = new Stage();
         startStage.addActor(userField);
         startStage.addActor(roomField);
@@ -49,27 +60,9 @@ public class StartScreen implements Screen {
 
     @Override
     public void render(float delta) {
-
-    }
-
-    @Override
-    public void resize(int width, int height) {
-
-    }
-
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void hide() {
-
+        ScreenUtils.clear(skin.getColor("gray"));
+        startStage.act();
+        startStage.draw();
     }
 
     @Override

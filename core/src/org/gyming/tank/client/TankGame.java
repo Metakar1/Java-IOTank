@@ -3,7 +3,6 @@ package org.gyming.tank.client;
 import com.badlogic.gdx.Game;
 import com.google.gson.Gson;
 import org.gyming.tank.connection.ConnectMsg;
-import org.gyming.tank.connection.GameAction;
 import org.gyming.tank.connection.GameFrame;
 import org.gyming.tank.connection.MsgIO;
 import org.gyming.tank.object.PlayerObject;
@@ -15,32 +14,46 @@ public class TankGame extends Game {
     StartScreen startScreen;
     MainScreen mainScreen;
     GameOverScreen gameOverScreen;
+    private String userName, roomName;
 
-    PlayerObject mainplayer;
+    PlayerObject mainPlayer;
 
     public static int test1 = 0, test2 = 0;
     private static String serverAddress = "192.168.123.74";
     private static int port = 7650;
     public int nowFrame, lastFireFrame;
-    String name;
-    String room;
     MsgIO S2C, C2S;
     LinkedBlockingQueue<GameFrame> download;
     LinkedBlockingQueue<String> queue;
     ActionGroup actionGroup;
 
-    public void BuildConnection() {
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getRoomName() {
+        return roomName;
+    }
+
+    public void setRoomName(String roomName) {
+        this.roomName = roomName;
+    }
+
+    public void buildConnection() {
         nowFrame = 0;
         lastFireFrame = 0;
         try {
             C2S = new MsgIO(new Socket(serverAddress, port));
             S2C = new MsgIO(new Socket(serverAddress, port));
-            S2C.send(name);
-            C2S.send(name);
+            S2C.send(userName);
+            C2S.send(userName);
             Gson gson = new Gson();
-            C2S.send(gson.toJson(new ConnectMsg("join", name, room)));
+            C2S.send(gson.toJson(new ConnectMsg("join", userName, roomName)));
             System.out.println("GYMing is so awful!!!!");
-
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -59,6 +72,7 @@ public class TankGame extends Game {
 
     @Override
     public void render () {
+        super.render();
     }
 
     @Override
