@@ -19,6 +19,7 @@ abstract public class GameObject extends Actor {
     protected ActionGroup actionGroup;
     protected Texture texture;
     protected static ColorPool colorPool = new ColorPool();
+    protected Stage stage;
 
     public GameObject(double speed, double direction, double posX, double posY, int hp, ActionGroup actionGroup, Stage stage) {
         this.speed = speed;
@@ -28,6 +29,7 @@ abstract public class GameObject extends Actor {
         this.hp = hp;
         this.actionGroup = actionGroup;
         texture = createTexture();
+        this.stage = stage;
 //        region = createRegion();
         setSize(this.texture.getWidth(), this.texture.getHeight());
     }
@@ -47,6 +49,9 @@ abstract public class GameObject extends Actor {
                     speed = i.getValue();
                 } else if(i.getType().equals("Fire")) {
                     fire(i,posX,posY);
+                } else if(i.getType().equals("NewPlayer")) {
+                    PlayerObject player = new PlayerObject(0,0,i.getDirection(),i.getValue(),PlayerObject.playerSpeed,i.getObjectID(),i.getProperty(),actionGroup,stage);
+                    stage.addActor(player);
                 }
             }
         }

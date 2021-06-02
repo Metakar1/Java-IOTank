@@ -17,6 +17,6 @@ public class SupplyObject extends GameObject {
 
     @Override
     protected void fire(GameAction action, double posX, double posY) {
-
+        return;
     }
 }

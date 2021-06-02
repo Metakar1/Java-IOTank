@@ -30,4 +30,8 @@ public class GameAction {
     public double getValue() {
         return value;
     }
+
+    public String getProperty() {
+        return property;
+    }
 }
