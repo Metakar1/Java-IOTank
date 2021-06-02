@@ -13,10 +13,10 @@ public class ColorPool {
     public ColorPool() {
         user = new HashMap<>();
         userColorPool = new ArrayList<>();
-        userColorPool.add(new Color(191, 127, 145, 1));
-        userColorPool.add(new Color(0, 178, 225, 1));
-        userColorPool.add(new Color(241, 78, 84, 1));
-        userColorPool.add(new Color(0, 225, 110, 1));
+        userColorPool.add(new Color((float) (191.0/255.0), (float)(127.0/255.0), (float)(145.0/255.0), 1));
+        userColorPool.add(new Color((float)(0/255.0), (float)(178/255.0), (float)(225/255.0), 1));
+        userColorPool.add(new Color((float)(241/255.0), (float)(78/255.0), (float)(84/255.0), 1));
+        userColorPool.add(new Color(0, (float)(225/255.0), (float)(110/255.0), 1));
         userCnt = 0;
     }
 
