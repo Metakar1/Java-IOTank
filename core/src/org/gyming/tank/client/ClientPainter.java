@@ -4,23 +4,23 @@ import org.gyming.tank.connection.GameAction;
 import org.gyming.tank.connection.GameFrame;
 
 public class ClientPainter implements Runnable {
-    Client client;
+    TankGame game;
 
-    public ClientPainter(Client client_) {
-        client = client_;
+    public ClientPainter(TankGame game_) {
+        game = game_;
     }
 
     void Paint(GameFrame g) {
         for (GameAction data : g.frameList) {
-            Client.test2++;
+            TankGame.test2++;
         }
     }
 
     public void run() {
         while (true) {
-            if (!client.download.isEmpty()) {
-                Paint(client.download.peek());
-                client.download.poll();
+            if (!game.download.isEmpty()) {
+                Paint(game.download.peek());
+                game.download.poll();
             }
         }
     }

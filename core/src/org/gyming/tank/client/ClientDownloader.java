@@ -6,11 +6,11 @@ import org.gyming.tank.connection.GameFrame;
 import org.gyming.tank.connection.MsgIO;
 
 public class ClientDownloader implements Runnable {
-    Client client;
+    TankGame game;
     MsgIO S2C;
 
-    public ClientDownloader(Client client_, MsgIO S2C_) {
-        client = client_;
+    public ClientDownloader(TankGame game_, MsgIO S2C_) {
+        game = game_;
         S2C = S2C_;
     }
 
@@ -21,14 +21,14 @@ public class ClientDownloader implements Runnable {
                 Gson gson = new Gson();
                 g = gson.fromJson(S2C.receive(), GameFrame.class);
                 for(GameAction i:g.frameList) {
-                    if(client.actionGroup.modify.get(i.getObjectID())==null) client.actionGroup.modify.put(i.getObjectID(),new GameFrame(0));
-                    GameFrame cur = client.actionGroup.modify.get(i.getObjectID());
+                    if(game.actionGroup.modify.get(i.getObjectID())==null) game.actionGroup.modify.put(i.getObjectID(),new GameFrame(0));
+                    GameFrame cur = game.actionGroup.modify.get(i.getObjectID());
                     cur.add(i);
                 }
                 if (g.frameList.size() != 0) {
-                    System.out.print(Client.test1);
+                    System.out.print(TankGame.test1);
                     System.out.print("        ");
-                    System.out.println(Client.test2);
+                    System.out.println(TankGame.test2);
                 }
             }
             catch (Exception e) {

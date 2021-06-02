@@ -36,7 +36,6 @@ public class StartScreen implements Screen {
 
             }
         });
-
         startStage = new Stage();
         startStage.addActor(userField);
         startStage.addActor(roomField);
