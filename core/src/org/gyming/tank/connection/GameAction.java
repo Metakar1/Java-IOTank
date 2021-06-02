@@ -18,4 +18,12 @@ public class GameAction {
     public int getObjectID() {
         return objectID;
     }
+
+    public String getType() {
+        return type;
+    }
+
+    public double getDirection() {
+        return direction;
+    }
 }

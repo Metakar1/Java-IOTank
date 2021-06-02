@@ -22,7 +22,7 @@ public class BulletObject extends GameObject {
 
 
     @Override
-    public void reactAction(GameFrame actions) {
+    public void fire(GameAction actions) {
 
     }
 }

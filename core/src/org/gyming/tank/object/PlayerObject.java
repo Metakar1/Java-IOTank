@@ -1,11 +1,14 @@
 package org.gyming.tank.object;
 
+import org.gyming.tank.client.ActionGroup;
+import org.gyming.tank.connection.GameAction;
+
 public class PlayerObject extends GameObject {
     private int playerID;
     private String playerName;
 
-    public PlayerObject(double speed, double direction, double posX, double posY, int hp, int playerID, String playerName) {
-        super(speed, direction, posX, posY, hp);
+    public PlayerObject(double speed, double direction, double posX, double posY, int hp, int playerID, String playerName, ActionGroup actionGroup) {
+        super(speed, direction, posX, posY, hp, actionGroup);
         this.playerID = playerID;
         this.playerName = playerName;
     }
@@ -24,5 +27,10 @@ public class PlayerObject extends GameObject {
 
     public final void setPlayerName(String playerName) {
         this.playerName = playerName;
+    }
+
+    @Override
+    public void fire(GameAction actions) {
+
     }
 }

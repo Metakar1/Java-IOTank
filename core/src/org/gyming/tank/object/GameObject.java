@@ -24,8 +24,8 @@ abstract public class GameObject extends Actor {
         this.posY = posY;
         this.hp = hp;
         this.actionGroup = actionGroup;
-        texture = createTexture();
-        region = createRegion();
+//        texture = createTexture();
+//        region = createRegion();
         setSize(this.region.getRegionWidth(), this.region.getRegionHeight());
     }
 
@@ -35,15 +35,21 @@ abstract public class GameObject extends Actor {
         posY+=speed*Math.cos(direction);
         GameFrame actions = actionGroup.modify.get(identifier);
         if(actions!=null) {
-            reactAction(actions);
+            for(GameAction i:actions.frameList) {
+                if(i.getType().equals("ChangeDirection")) {
+                    direction = i.getDirection();
+                } else if(i.getType().equals("Fire")) {
+                    fire(i);
+                }
+            }
         }
     }
 
-    abstract public void reactAction(GameFrame actions);
+    abstract public void fire(GameAction actions);
 
-    abstract public Texture createTexture();
+//    abstract public Texture createTexture();
 
-    abstract public TextureRegion createRegion();
+//    abstract public TextureRegion createRegion();
 
     public final double getPosX() {
         return posX;
