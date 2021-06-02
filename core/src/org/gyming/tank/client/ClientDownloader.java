@@ -25,6 +25,7 @@ public class ClientDownloader implements Runnable {
                         game.actionGroup.modify.put(i.getObjectID(), new GameFrame(0));
                     GameFrame cur = game.actionGroup.modify.get(i.getObjectID());
                     cur.add(i);
+                    TankGame.test2++;
                 }
                 if (g.frameList.size() != 0) {
                     System.out.print(TankGame.test1);
