@@ -51,6 +51,7 @@ public class StartScreen extends ScreenAdapter {
 //                System.out.println(game.getUserName());
 //                System.out.println(game.getRoomName());
                 game.setScreen(game.mainScreen);
+                System.out.println(1);
             }
         });
 

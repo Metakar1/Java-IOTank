@@ -21,6 +21,7 @@ public class MainScreen extends ScreenAdapter {
     public MainScreen(TankGame game) {
         this.stage = new Stage();
         this.game = game;
+        stage.addActor(new PlayerObject(0,0,50,50,0,0,"f", game.actionGroup, stage));
     }
 
     private void ListenKey() {
@@ -78,7 +79,9 @@ public class MainScreen extends ScreenAdapter {
 //        System.out.println("ASASASASASSA");
         ScreenUtils.clear(1, 1, 1, 0);
         ListenKey();
+        stage.act(delta);
         stage.draw();
+        System.out.println(stage.getActors().size);
     }
 
     @Override

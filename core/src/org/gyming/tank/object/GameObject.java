@@ -45,6 +45,7 @@ abstract public class GameObject extends Actor {
         GameFrame actions = actionGroup.modify.get(identifier);
         if(actions!=null) {
             for(GameAction i:actions.frameList) {
+                System.out.println(i.getType());
                 if(i.getType().equals("Move")) {
                     direction = i.getDirection();
                     speed = i.getValue();
