@@ -55,6 +55,7 @@ abstract public class GameObject extends Actor {
                     stage.addActor(player);
                 }
             }
+            actions.frameList.clear();
         }
     }
 
