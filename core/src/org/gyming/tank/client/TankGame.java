@@ -3,8 +3,10 @@ package org.gyming.tank.client;
 import com.badlogic.gdx.Game;
 import com.google.gson.Gson;
 import org.gyming.tank.connection.ConnectMsg;
+import org.gyming.tank.connection.GameAction;
 import org.gyming.tank.connection.GameFrame;
 import org.gyming.tank.connection.MsgIO;
+import org.gyming.tank.object.PlayerObject;
 
 import java.net.Socket;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -13,6 +15,8 @@ public class TankGame extends Game {
     StartScreen startScreen;
     MainScreen mainScreen;
     GameOverScreen gameOverScreen;
+
+    PlayerObject mainplayer;
 
     public static int test1 = 0, test2 = 0;
     private static String serverAddress = "192.168.123.74";
@@ -36,6 +40,7 @@ public class TankGame extends Game {
             Gson gson = new Gson();
             C2S.send(gson.toJson(new ConnectMsg("join", name, room)));
             System.out.println("GYMing is so awful!!!!");
+
         }
         catch (Exception e) {
             e.printStackTrace();
