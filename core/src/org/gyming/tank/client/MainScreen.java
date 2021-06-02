@@ -2,8 +2,10 @@ package org.gyming.tank.client;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.ScreenUtils;
 import com.google.gson.Gson;
 import org.gyming.tank.connection.GameAction;
 import org.gyming.tank.connection.GameFrame;
@@ -73,6 +75,8 @@ public class MainScreen extends ScreenAdapter {
 
     @Override
     public void render(float delta) {
+//        System.out.println("ASASASASASSA");
+        ScreenUtils.clear(1, 1, 1, 0);
         ListenKey();
         stage.draw();
     }
