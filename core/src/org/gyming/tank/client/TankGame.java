@@ -12,6 +12,7 @@ public class TankGame extends Game {
         startScreen = new StartScreen(this);
         mainScreen = new MainScreen(this);
         gameOverScreen = new GameOverScreen(this);
+        setScreen(startScreen);
     }
 
     @Override

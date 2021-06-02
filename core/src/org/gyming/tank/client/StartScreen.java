@@ -23,8 +23,8 @@ public class StartScreen implements Screen {
         this.game = game;
 
         font = new BitmapFont();
-        skin = new Skin();
-
+//        skin = new Skin();
+        skin = new Skin(Gdx.files.internal("uiskin.json"));
         userField = new TextField("", skin);
         roomField = new TextField("", skin);
         userField.setMessageText("Please input your username.");
