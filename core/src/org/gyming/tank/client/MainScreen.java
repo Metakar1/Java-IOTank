@@ -20,7 +20,6 @@ import java.util.HashMap;
 public class MainScreen extends ScreenAdapter {
     TankGame game;
     Stage stage;
-    HashMap<Integer, PlayerObject> idmap;
 
     public MainScreen(TankGame game) {
         this.stage = new Stage();
