@@ -19,6 +19,7 @@ import org.gyming.tank.object.SupplyObject;
 
 public class MainScreen extends ScreenAdapter {
     static int fireGap = 0;
+    static int boarder = 800;
     TankGame game;
     Stage stage;
 
@@ -26,7 +27,7 @@ public class MainScreen extends ScreenAdapter {
         this.stage = new Stage();
         this.game = game;
         stage.addActor(new PlayerObject(0, 0, 50, 50, PlayerObject.playerHP, 0, "f", game, stage));
-        stage.addActor(makeBackGround(3840, 2160, 320, 20));
+        stage.addActor(makeBackGround(3840, 2160, boarder, 20));
     }
 
     public Image makeBackGround(int width, int height, int delta, int lineDelta) {
@@ -38,10 +39,10 @@ public class MainScreen extends ScreenAdapter {
         pixmap.setColor(backColor);
         pixmap.fillRectangle(0, 0, newWidth, newHeight);
         pixmap.setColor(boardColor);
-        pixmap.fillRectangle(0, 0, delta, newHeight);
         pixmap.fillRectangle(0, 0, newWidth, delta);
+        pixmap.fillRectangle(0, 0, delta, newHeight);
         pixmap.fillRectangle(newWidth - delta, 0, delta, newHeight);
-        pixmap.fillRectangle(0, newWidth - delta, newWidth, delta);
+        pixmap.fillRectangle(0, newHeight - delta, newWidth, delta);
         pixmap.setColor(lineColor);
         for (int i = 0; i <= newWidth; i += lineDelta) {
             pixmap.fillRectangle(i, 0, 1, newHeight);
@@ -157,7 +158,7 @@ public class MainScreen extends ScreenAdapter {
             float direction = MathUtils.atan2(x, y);
             Gson gson = new Gson();
             if (x != 0 || y != 0) {
-                game.queue.put(gson.toJson(new GameAction("Move", direction, game.playerID, "", 1), GameAction.class));
+                game.queue.put(gson.toJson(new GameAction("Move", direction, game.playerID, "", 4), GameAction.class));
             }
             if (Gdx.input.isTouched())
                 if (fireGap >= PlayerObject.playerFireGap) {
@@ -180,7 +181,7 @@ public class MainScreen extends ScreenAdapter {
         game.playerID = game.getUserName().hashCode();
         Gson gson = new Gson();
         try {
-            game.queue.put(gson.toJson(new GameAction("NewPlayer", 0, 0, game.getUserName(), 0)));
+            game.queue.put(gson.toJson(new GameAction("NewPlayer", boarder, 0, game.getUserName(), boarder)));
         }
         catch (Exception e) {
             e.printStackTrace();

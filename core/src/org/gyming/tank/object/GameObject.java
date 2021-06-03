@@ -24,6 +24,7 @@ abstract public class GameObject extends Actor {
     protected TankGame game;
     protected Texture texture;
     protected Stage stage;
+    protected static float acceleration = 5.0f/30;
 
     public GameObject(float speed, float direction, float posX, float posY, int hp, TankGame game, Stage stage) {
         this.speed = speed;
@@ -60,7 +61,7 @@ abstract public class GameObject extends Actor {
 
         area.set(posX, posY, texture.getWidth(), texture.getHeight());
 
-        recoverSpeed();
+        int flag = 1;
         GameFrame actions = game.actionGroup.modify.get(identifier);
         game.actionGroup.modify.put(identifier,new GameFrame(0));
         if (actions != null) {
@@ -69,8 +70,13 @@ abstract public class GameObject extends Actor {
 //                System.out.println(identifier);
                 switch (i.getType()) {
                     case "Move":
+                        flag = 0;
                         direction = i.getDirection();
-                        speed = i.getValue();
+                        if(i.getValue()>speed) {
+                            speed = Math.min(speed+acceleration,i.getValue());
+                        } else {
+                            speed = Math.max(speed-acceleration, i.getValue());
+                        }
                         break;
                     case "Fire":
                         fire(i, posX, posY);
@@ -82,6 +88,7 @@ abstract public class GameObject extends Actor {
                         break;
                 }
             }
+            if(flag==1) recoverSpeed();
             actions.frameList.clear();
         }
         if ((this instanceof PlayerObject) && (this.identifier == game.playerID))

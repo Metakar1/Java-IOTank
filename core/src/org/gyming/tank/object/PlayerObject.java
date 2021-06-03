@@ -10,6 +10,7 @@ public class PlayerObject extends GameObject {
     public static int playerSpeed = 25;
     public static int playerHP = 100;
     public static int playerFireGap = 60;
+
     private int playerID;
     private String playerName;
     private Stage stage;
@@ -54,7 +55,11 @@ public class PlayerObject extends GameObject {
 
     @Override
     protected void recoverSpeed() {
-        speed = 0;
+        if(speed>0) {
+            speed = Math.max(speed-acceleration,0);
+        } else {
+            speed = Math.min(speed+acceleration,0);
+        }
     }
 
     public void die()
