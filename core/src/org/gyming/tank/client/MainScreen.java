@@ -31,7 +31,7 @@ public class MainScreen extends ScreenAdapter {
 
     private void ListenKey() {
         int x = 0, y = 0;
-        FireGap+=1;
+        FireGap+=10;
 
         if (Gdx.input.isKeyPressed(Input.Keys.W))
             y += 1;

@@ -7,7 +7,7 @@ import org.gyming.tank.connection.GameAction;
 
 public class BulletObject extends GameObject {
     static int bulletSize = 10;
-    public static int bulletSpeed = 1;
+    public static int bulletSpeed = 10;
     public static int bulletHP = 10;
     private int playerID;
 
@@ -32,6 +32,11 @@ public class BulletObject extends GameObject {
 
     @Override
     public void fire(GameAction action, double posX, double posY) {
+
+    }
+
+    @Override
+    protected void recoverSpeed() {
 
     }
 }

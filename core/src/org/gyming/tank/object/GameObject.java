@@ -37,10 +37,13 @@ abstract public class GameObject extends Actor {
 
     protected abstract Texture createTexture();
     protected abstract void fire(GameAction action, double posX, double posY);
+    protected abstract void recoverSpeed();
 
     @Override
     public void act(float delta) {
-
+        posX+=speed*Math.sin(direction);
+        posY+=speed*Math.cos(direction);
+        recoverSpeed();
         GameFrame actions = actionGroup.modify.get(identifier);
         if(actions!=null) {
             for(GameAction i:actions.frameList) {
@@ -49,8 +52,6 @@ abstract public class GameObject extends Actor {
                 if(i.getType().equals("Move")) {
                     direction = i.getDirection();
                     speed = i.getValue();
-                    posX+=speed*Math.sin(direction);
-                    posY+=speed*Math.cos(direction);
                 } else if(i.getType().equals("Fire")) {
                     fire(i,posX,posY);
                 } else if(i.getType().equals("NewPlayer")) {

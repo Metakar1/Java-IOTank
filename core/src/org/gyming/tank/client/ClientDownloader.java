@@ -16,6 +16,7 @@ public class ClientDownloader implements Runnable {
 
     public void run() {
         GameFrame g;
+
         while (true) {
             try {
                 Gson gson = new Gson();

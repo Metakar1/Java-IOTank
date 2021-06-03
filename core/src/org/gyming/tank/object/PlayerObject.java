@@ -50,4 +50,9 @@ public class PlayerObject extends GameObject {
         BulletObject bullet = new BulletObject(BulletObject.bulletSpeed,action.getDirection(),posX, posY, BulletObject.bulletHP,playerID,actionGroup,stage);
         stage.addActor(bullet);
     }
+
+    @Override
+    protected void recoverSpeed() {
+        speed = 0;
+    }
 }

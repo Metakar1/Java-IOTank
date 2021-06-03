@@ -19,4 +19,9 @@ public class SupplyObject extends GameObject {
     protected void fire(GameAction action, double posX, double posY) {
         return;
     }
+
+    @Override
+    protected void recoverSpeed() {
+
+    }
 }
