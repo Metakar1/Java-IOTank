@@ -19,7 +19,7 @@ public class TankGame extends Game {
     public int PlayerId;
 
     public static int test1 = 0, test2 = 0;
-    private static String serverAddress = "127.0.0.1";
+    private static String serverAddress = "10.44.0.188";
     private static int port = 7650;
     public int nowFrame, lastFireFrame;
     MsgIO S2C, C2S;
