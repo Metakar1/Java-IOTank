@@ -62,6 +62,7 @@ abstract public class GameObject extends Actor {
 
         recoverSpeed();
         GameFrame actions = game.actionGroup.modify.get(identifier);
+        game.actionGroup.modify.put(identifier,new GameFrame(0));
         if (actions != null) {
             for (GameAction i : actions.frameList) {
 //                System.out.println(i.getType());
