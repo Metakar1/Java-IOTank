@@ -5,8 +5,11 @@ import com.google.gson.Gson;
 import org.gyming.tank.connection.ConnectMsg;
 import org.gyming.tank.connection.GameFrame;
 import org.gyming.tank.connection.MsgIO;
+import org.gyming.tank.object.GameObject;
 
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class TankGame extends Game {
@@ -23,6 +26,8 @@ public class TankGame extends Game {
     private String userName, roomName;
     private String serverAddress;
     private int port;
+    public LinkedBlockingQueue<GameObject> ToBeDeleted;
+
 
     public String getServerAddress() {
         return serverAddress;
@@ -81,6 +86,7 @@ public class TankGame extends Game {
         gameOverScreen = new GameOverScreen(this);
         download = new LinkedBlockingQueue<>();
         queue = new LinkedBlockingQueue<>();
+        ToBeDeleted = new LinkedBlockingQueue<GameObject>();
         setScreen(startScreen);
     }
 

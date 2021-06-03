@@ -16,6 +16,7 @@ import org.gyming.tank.connection.GameAction;
 import org.gyming.tank.object.BulletObject;
 import org.gyming.tank.object.GameObject;
 import org.gyming.tank.object.PlayerObject;
+import org.gyming.tank.object.SupplyObject;
 
 public class MainScreen extends ScreenAdapter {
     static int fireGap = 0;
@@ -54,26 +55,99 @@ public class MainScreen extends ScreenAdapter {
         return image;
 
 
+        stage.addActor(new PlayerObject(0, 0, 50, 50, PlayerObject.playerHP, 0, "f", game, stage));
     }
 
     public void CheckCollision()
     {
+        while(!game.ToBeDeleted.isEmpty())
+        {
+            game.ToBeDeleted.peek().die();
+            game.ToBeDeleted.poll();
+        }
         if(stage.getActors().isEmpty())
             return;
         for(int i=0; i < stage.getActors().size; i++)
         {
             GameObject A = (GameObject) stage.getActors().items[i];
-            if(A.getHp()==0)
+            if(A.getHp()<=0)
                 continue;
             for (int j=i+1; j < stage.getActors().size; j++)
             {
                 GameObject B = (GameObject) stage.getActors().items[j];
-
-                if(B.getHp()==0)
+                if(B.getHp()<=0)
                     continue;
+
+                if(!(A instanceof SupplyObject) &&!(B instanceof SupplyObject))
+                    if(A.getPlayerID() == B.getPlayerID())
+                        continue;
+
                 if(A.area.overlaps(B.area))
                 {
                     if(A instanceof BulletObject) {
+                        A.setHp(0);
+                        if(B instanceof BulletObject)
+                            B.setHp(0);
+                        else if(B instanceof PlayerObject || B instanceof SupplyObject)
+                        {
+                            B.setHp(B.getHp()-10);
+                            System.out.println("FUCK");
+                            if(B.getHp()<0) {
+                                //add EXP to A.player
+                            }
+                        }
+                    }
+                    else if(A instanceof PlayerObject){
+                        A.setSpeed(-1);
+                        if(B instanceof BulletObject)
+                        {
+//                            System.out.println("FUCK");
+                            A.setHp(A.getHp()-10);
+                            B.setHp(0);
+                            if(A.getHp()<0) {
+                                // Add EXP to B.player
+                            }
+                        }
+                        else if(B instanceof PlayerObject || B instanceof SupplyObject)
+                        {
+                            A.setHp(A.getHp()-5);
+                            B.setHp(B.getHp()-5);
+                            if(A.getHp()<0)
+                            {
+                                if(B instanceof PlayerObject) {
+                                    // add EXP to B.playerid
+                                }
+                            }
+                            if(B.getHp()<0)
+                            {
+                                // add EXP to A.playerid
+                            }
+                        }
+
+                    }
+                    else if(A instanceof SupplyObject)
+                    {
+                        A.setSpeed(-1);
+                        if(B instanceof BulletObject)
+                        {
+                            A.setHp(A.getHp()-10);
+                            B.setHp(0);
+                            if(A.getHp()<0)
+                            {
+                                // Add EXP to B.player
+                            }
+                        }
+                        else if(B instanceof PlayerObject || B instanceof SupplyObject)
+                        {
+                            A.setHp(A.getHp()-5);
+                            B.setHp(B.getHp()-5);
+                            if(A.getHp()<0)
+                            {
+                                if(B instanceof PlayerObject) {
+                                    // add EXP to B.playerid
+                                }
+                            }
+                        }
                     }
 
                     break;
@@ -146,7 +220,7 @@ public class MainScreen extends ScreenAdapter {
         ScreenUtils.clear(0, 0, 0, 0);
         ListenKey();
         stage.act(delta);
-//        CheckCollision();
+        CheckCollision();
         stage.draw();
     }
 

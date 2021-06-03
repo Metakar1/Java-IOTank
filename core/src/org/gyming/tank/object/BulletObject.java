@@ -38,4 +38,10 @@ public class BulletObject extends GameObject {
     protected void recoverSpeed() {
 
     }
+
+    public void die()
+    {
+        stage.getRoot().removeActor(this);
+    }
+
 }

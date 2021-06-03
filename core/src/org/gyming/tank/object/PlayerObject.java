@@ -56,4 +56,9 @@ public class PlayerObject extends GameObject {
     protected void recoverSpeed() {
         speed = 0;
     }
+
+    public void die()
+    {
+        stage.getRoot().removeActor(this);
+    }
 }

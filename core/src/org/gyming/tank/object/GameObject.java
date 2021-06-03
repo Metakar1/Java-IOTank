@@ -86,6 +86,14 @@ abstract public class GameObject extends Actor {
         }
         if ((this instanceof PlayerObject) && (this.identifier == game.playerID))
             stage.getCamera().position.set(posX, posY, 0);
+        try {
+            if(getHp()<=0)
+                game.ToBeDeleted.put(this);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -145,4 +153,7 @@ abstract public class GameObject extends Actor {
     public void setIdentifier(int identifier) {
         this.identifier = identifier;
     }
+
+    public abstract void die();
+    public abstract int getPlayerID();
 }
