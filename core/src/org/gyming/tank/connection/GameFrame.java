@@ -2,6 +2,7 @@ package org.gyming.tank.connection;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 
 public class GameFrame {
     public int id;
@@ -9,7 +10,7 @@ public class GameFrame {
 
     public GameFrame(int _id) {
         id = _id;
-        frameList = new ArrayList<>();
+        frameList = new Vector<>();
     }
 
     public void add(GameAction gameAction) {
