@@ -19,8 +19,6 @@ public class MainScreen extends ScreenAdapter {
         this.stage = new Stage();
         this.game = game;
         stage.addActor(new PlayerObject(0, 0, 50, 50, 0, 0, "f", game, stage));
-//        Texture texture = GameObject.drawCircle(10, Color.W);
-//        System.out.println(game.PlayerId);
     }
 
     private void ListenKey() {
@@ -84,14 +82,10 @@ public class MainScreen extends ScreenAdapter {
 
     @Override
     public void render(float delta) {
-//        System.out.println("ASASASASASSA");
         ScreenUtils.clear(0, 0, 0, 0);
         ListenKey();
-
         stage.act(delta);
         stage.draw();
-//        GameObject actor = (GameObject) stage.getActors().get(1);
-//        System.out.println(actor.);
     }
 
     @Override
