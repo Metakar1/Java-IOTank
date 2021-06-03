@@ -18,6 +18,7 @@ public class PlayerObject extends GameObject {
         this.playerID = playerID;
         this.playerName = playerName;
         this.stage = stage;
+        this.identifier = playerID;
     }
 
     public final int getPlayerID() {

@@ -46,14 +46,14 @@ abstract public class GameObject extends Actor {
         if(actions!=null) {
             for(GameAction i:actions.frameList) {
 //                System.out.println(i.getType());
-//                System.out.println(i.getObjectID());
+//                System.out.println(identifier);
                 if(i.getType().equals("Move")) {
                     direction = i.getDirection();
                     speed = i.getValue();
                 } else if(i.getType().equals("Fire")) {
                     fire(i,posX,posY);
                 } else if(i.getType().equals("NewPlayer")) {
-                    System.out.println();
+//                    System.out.println();
                     PlayerObject player = new PlayerObject(0,0,i.getDirection(),i.getValue(),PlayerObject.playerHP,i.getProperty().hashCode(),i.getProperty(),actionGroup,stage);
                     stage.addActor(player);
                 }

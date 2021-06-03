@@ -27,6 +27,7 @@ public class MainScreen extends ScreenAdapter {
         this.game = game;
         stage.addActor(new PlayerObject(0,0,50,50,0,0,"f", game.actionGroup, stage));
 //        Texture texture = GameObject.drawCircle(10, Color.W);
+//        System.out.println(game.PlayerId);
     }
 
     private void ListenKey() {
@@ -44,7 +45,9 @@ public class MainScreen extends ScreenAdapter {
             double direction = Math.atan2(x, y);
             Gson gson = new Gson();
             if (x != 0 || y != 0)
+            {
                 game.queue.put(gson.toJson(new GameAction("Move", direction, game.PlayerId, "", 1), GameAction.class));
+            }
 
             if (Gdx.input.isTouched())
                 game.queue.put(gson.toJson(new GameAction("Fire", direction, game.PlayerId, "", 0), GameAction.class));
@@ -86,8 +89,8 @@ public class MainScreen extends ScreenAdapter {
         ListenKey();
         stage.act(delta);
         stage.draw();
-//        Actor actor = stage.getActors().get(1);
-
+//        GameObject actor = (GameObject) stage.getActors().get(1);
+//        System.out.println(actor.);
     }
 
     @Override
