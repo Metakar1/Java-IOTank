@@ -46,11 +46,11 @@ public class MainScreen extends ScreenAdapter {
             double direction = Math.atan2(x, y);
             Gson gson = new Gson();
             if (x != 0 || y != 0) {
-                game.queue.put(gson.toJson(new GameAction("Move", direction, game.PlayerId, "", 1), GameAction.class));
+                game.queue.put(gson.toJson(new GameAction("Move", direction, game.playerId, "", 1), GameAction.class));
             }
             if (Gdx.input.isTouched())
                 if (FireGap >= PlayerObject.playerFireGap) {
-                    game.queue.put(gson.toJson(new GameAction("Fire", direction, game.PlayerId, "", 0), GameAction.class));
+                    game.queue.put(gson.toJson(new GameAction("Fire", direction, game.playerId, "", 0), GameAction.class));
                     FireGap = 0;
                 }
         }
@@ -61,7 +61,7 @@ public class MainScreen extends ScreenAdapter {
 
     @Override
     public void show() {
-        game.PlayerId = game.getUserName().hashCode();
+        game.playerId = game.getUserName().hashCode();
         Gson gson = new Gson();
         try {
             game.queue.put(gson.toJson(new GameAction("NewPlayer", 0, 0, game.getUserName(), 0)));
