@@ -20,7 +20,7 @@ import java.util.HashMap;
 public class MainScreen extends ScreenAdapter {
     TankGame game;
     Stage stage;
-
+    static int FireGap = 0;
     public MainScreen(TankGame game) {
         this.stage = new Stage();
         this.game = game;
@@ -31,6 +31,8 @@ public class MainScreen extends ScreenAdapter {
 
     private void ListenKey() {
         int x = 0, y = 0;
+        FireGap+=1;
+
         if (Gdx.input.isKeyPressed(Input.Keys.W))
             y += 1;
         if (Gdx.input.isKeyPressed(Input.Keys.S))
@@ -43,13 +45,14 @@ public class MainScreen extends ScreenAdapter {
         try {
             double direction = Math.atan2(x, y);
             Gson gson = new Gson();
-            if (x != 0 || y != 0)
-            {
+            if (x != 0 || y != 0) {
                 game.queue.put(gson.toJson(new GameAction("Move", direction, game.PlayerId, "", 1), GameAction.class));
             }
-
             if (Gdx.input.isTouched())
-                game.queue.put(gson.toJson(new GameAction("Fire", direction, game.PlayerId, "", 0), GameAction.class));
+                if (FireGap >= PlayerObject.playerFireGap) {
+                    game.queue.put(gson.toJson(new GameAction("Fire", direction, game.PlayerId, "", 0), GameAction.class));
+                    FireGap = 0;
+                }
         }
         catch (InterruptedException e) {
             e.printStackTrace();
