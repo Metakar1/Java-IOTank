@@ -15,6 +15,7 @@ import org.gyming.tank.connection.GameFrame;
 
 abstract public class GameObject extends Actor {
     protected static ColorPool colorPool = new ColorPool();
+    public Rectangle area;
     protected int identifier;
     protected float speed;
     protected float direction;
@@ -23,8 +24,6 @@ abstract public class GameObject extends Actor {
     protected TankGame game;
     protected Texture texture;
     protected Stage stage;
-    public Rectangle area;
-
 
     public GameObject(float speed, float direction, float posX, float posY, int hp, TankGame game, Stage stage) {
         this.speed = speed;
@@ -59,7 +58,7 @@ abstract public class GameObject extends Actor {
         posX += speed * MathUtils.sin(direction);
         posY += speed * MathUtils.cos(direction);
 
-        area.set(posX,posY,texture.getWidth(),texture.getHeight());
+        area.set(posX, posY, texture.getWidth(), texture.getHeight());
 
         recoverSpeed();
         GameFrame actions = game.actionGroup.modify.get(identifier);
@@ -87,11 +86,10 @@ abstract public class GameObject extends Actor {
         if ((this instanceof PlayerObject) && (this.identifier == game.playerID))
             stage.getCamera().position.set(posX, posY, 0);
         try {
-            if(getHp()<=0)
-                game.ToBeDeleted.put(this);
+            if (getHp() <= 0)
+                game.toBeDeleted.put(this);
         }
-        catch (Exception e)
-        {
+        catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -155,5 +153,6 @@ abstract public class GameObject extends Actor {
     }
 
     public abstract void die();
+
     public abstract int getPlayerID();
 }

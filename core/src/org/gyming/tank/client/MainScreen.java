@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -27,139 +26,121 @@ public class MainScreen extends ScreenAdapter {
         this.stage = new Stage();
         this.game = game;
         stage.addActor(new PlayerObject(0, 0, 50, 50, PlayerObject.playerHP, 0, "f", game, stage));
-        stage.addActor(makeBackGround(3840,2160,320,20));
+        stage.addActor(makeBackGround(3840, 2160, 320, 20));
     }
 
     public Image makeBackGround(int width, int height, int delta, int lineDelta) {
-        int newHeight = height+2*delta, newWidth = width+2*delta;
+        int newHeight = height + 2 * delta, newWidth = width + 2 * delta;
         Pixmap pixmap = new Pixmap(newWidth, newHeight, Pixmap.Format.RGBA8888);
-        Color backColor = new Color(205.f/255,205.f/255,205.f/255,1);
-        Color lineColor = new Color(195.f/255,195.f/255,195.f/255,1);
-        Color boardColor = new Color(184.f/255,184.f/255,184.f/255,1);
+        Color backColor = new Color(205.f / 255, 205.f / 255, 205.f / 255, 1);
+        Color lineColor = new Color(195.f / 255, 195.f / 255, 195.f / 255, 1);
+        Color boardColor = new Color(184.f / 255, 184.f / 255, 184.f / 255, 1);
         pixmap.setColor(backColor);
-        pixmap.fillRectangle(0,0,newWidth,newHeight);
+        pixmap.fillRectangle(0, 0, newWidth, newHeight);
         pixmap.setColor(boardColor);
-        pixmap.fillRectangle(0,0,delta,newHeight);
-        pixmap.fillRectangle(0,0,newWidth,delta);
-        pixmap.fillRectangle(newWidth-delta,0,delta,newHeight);
-        pixmap.fillRectangle(0,newWidth-delta,newWidth,delta);
+        pixmap.fillRectangle(0, 0, delta, newHeight);
+        pixmap.fillRectangle(0, 0, newWidth, delta);
+        pixmap.fillRectangle(newWidth - delta, 0, delta, newHeight);
+        pixmap.fillRectangle(0, newWidth - delta, newWidth, delta);
         pixmap.setColor(lineColor);
-        for(int i=0;i<=newWidth;i+=lineDelta) {
-            pixmap.fillRectangle(i,0,1,newHeight);
+        for (int i = 0; i <= newWidth; i += lineDelta) {
+            pixmap.fillRectangle(i, 0, 1, newHeight);
         }
-        for(int i=0;i<=newHeight;i+=lineDelta) {
-            pixmap.fillRectangle(0,i,newWidth,1);
+        for (int i = 0; i <= newHeight; i += lineDelta) {
+            pixmap.fillRectangle(0, i, newWidth, 1);
         }
         Image image = new Image(new Texture(pixmap));
         image.setZIndex(0);
         return image;
-
     }
 
-    public void CheckCollision()
-    {
-        while(!game.ToBeDeleted.isEmpty())
-        {
-            game.ToBeDeleted.peek().die();
-            game.ToBeDeleted.poll();
+    public void checkCollision() {
+        while (!game.toBeDeleted.isEmpty()) {
+            game.toBeDeleted.peek().die();
+            game.toBeDeleted.poll();
         }
-        if(stage.getActors().isEmpty())
+        if (stage.getActors().isEmpty())
             return;
-        for(int i=0; i < stage.getActors().size; i++)
-        {
-            if(stage.getActors().items[i] instanceof Image)
+        for (int i = 0; i < stage.getActors().size; i++) {
+            if (stage.getActors().items[i] instanceof Image)
                 continue;
             GameObject A = (GameObject) stage.getActors().items[i];
-            if(A.getHp()<=0)
+            if (A.getHp() <= 0)
                 continue;
-            for (int j=i+1; j < stage.getActors().size; j++)
-            {
-                if(stage.getActors().items[j] instanceof Image)
+            for (int j = i + 1; j < stage.getActors().size; j++) {
+                if (stage.getActors().items[j] instanceof Image)
                     continue;
                 GameObject B = (GameObject) stage.getActors().items[j];
-                if(B.getHp()<=0)
+                if (B.getHp() <= 0)
                     continue;
 
-                if(!(A instanceof SupplyObject) &&!(B instanceof SupplyObject))
-                    if(A.getPlayerID() == B.getPlayerID())
+                if (!(A instanceof SupplyObject) && !(B instanceof SupplyObject))
+                    if (A.getPlayerID() == B.getPlayerID())
                         continue;
 
-                if(A.area.overlaps(B.area))
-                {
+                if (A.area.overlaps(B.area)) {
                     System.out.println("FUCK");
-                    if(A instanceof BulletObject) {
+                    if (A instanceof BulletObject) {
                         A.setHp(0);
-                        if(B instanceof BulletObject)
+                        if (B instanceof BulletObject)
                             B.setHp(0);
-                        else if(B instanceof PlayerObject || B instanceof SupplyObject)
-                        {
-                            B.setHp(B.getHp()-10);
+                        else if (B instanceof PlayerObject || B instanceof SupplyObject) {
+                            B.setHp(B.getHp() - 10);
                             System.out.println("FUCK");
-                            if(B.getHp()<0) {
+                            if (B.getHp() < 0) {
                                 //add EXP to A.player
                             }
                         }
                     }
-                    else if(A instanceof PlayerObject){
+                    else if (A instanceof PlayerObject) {
                         A.setSpeed(-1);
-                        if(B instanceof BulletObject)
-                        {
+                        if (B instanceof BulletObject) {
 //                            System.out.println("FUCK");
-                            A.setHp(A.getHp()-10);
+                            A.setHp(A.getHp() - 10);
                             B.setHp(0);
-                            if(A.getHp()<0) {
+                            if (A.getHp() < 0) {
                                 // Add EXP to B.player
                             }
                         }
-                        else if(B instanceof PlayerObject || B instanceof SupplyObject)
-                        {
-                            A.setHp(A.getHp()-5);
-                            B.setHp(B.getHp()-5);
-                            if(A.getHp()<0)
-                            {
-                                if(B instanceof PlayerObject) {
+                        else if (B instanceof PlayerObject || B instanceof SupplyObject) {
+                            A.setHp(A.getHp() - 5);
+                            B.setHp(B.getHp() - 5);
+                            if (A.getHp() < 0) {
+                                if (B instanceof PlayerObject) {
                                     // add EXP to B.playerid
                                 }
                             }
-                            if(B.getHp()<0)
-                            {
+                            if (B.getHp() < 0) {
                                 // add EXP to A.playerid
                             }
                         }
-
                     }
-                    else if(A instanceof SupplyObject)
-                    {
+                    else if (A instanceof SupplyObject) {
                         A.setSpeed(-1);
-                        if(B instanceof BulletObject)
-                        {
-                            A.setHp(A.getHp()-10);
+                        if (B instanceof BulletObject) {
+                            A.setHp(A.getHp() - 10);
                             B.setHp(0);
-                            if(A.getHp()<0)
-                            {
+                            if (A.getHp() < 0) {
                                 // Add EXP to B.player
                             }
                         }
-                        else if(B instanceof PlayerObject || B instanceof SupplyObject)
-                        {
-                            A.setHp(A.getHp()-5);
-                            B.setHp(B.getHp()-5);
-                            if(A.getHp()<0)
-                            {
-                                if(B instanceof PlayerObject) {
+                        else if (B instanceof PlayerObject || B instanceof SupplyObject) {
+                            A.setHp(A.getHp() - 5);
+                            B.setHp(B.getHp() - 5);
+                            if (A.getHp() < 0) {
+                                if (B instanceof PlayerObject) {
                                     // add EXP to B.playerid
                                 }
                             }
                         }
                     }
-
                     break;
                 }
             }
         }
     }
 
-    private void ListenKey() {
+    private void listenKey() {
         float x = 0, y = 0;
         fireGap += 10;
 
@@ -221,9 +202,9 @@ public class MainScreen extends ScreenAdapter {
     @Override
     public void render(float delta) {
         ScreenUtils.clear(0, 0, 0, 0);
-        ListenKey();
+        listenKey();
         stage.act(delta);
-        CheckCollision();
+        checkCollision();
         stage.draw();
     }
 

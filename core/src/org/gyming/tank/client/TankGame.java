@@ -26,7 +26,7 @@ public class TankGame extends Game {
     private String userName, roomName;
     private String serverAddress;
     private int port;
-    public LinkedBlockingQueue<GameObject> ToBeDeleted;
+    public LinkedBlockingQueue<GameObject> toBeDeleted;
 
 
     public String getServerAddress() {
@@ -86,7 +86,7 @@ public class TankGame extends Game {
         gameOverScreen = new GameOverScreen(this);
         download = new LinkedBlockingQueue<>();
         queue = new LinkedBlockingQueue<>();
-        ToBeDeleted = new LinkedBlockingQueue<GameObject>();
+        toBeDeleted = new LinkedBlockingQueue<GameObject>();
         setScreen(startScreen);
     }
 
