@@ -5,27 +5,40 @@ import com.google.gson.Gson;
 import org.gyming.tank.connection.ConnectMsg;
 import org.gyming.tank.connection.GameFrame;
 import org.gyming.tank.connection.MsgIO;
-import org.gyming.tank.object.PlayerObject;
 
 import java.net.Socket;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class TankGame extends Game {
+    public static int test1 = 0, test2 = 0;
+    public int playerId;
+    public int nowFrame, lastFireFrame;
     StartScreen startScreen;
     MainScreen mainScreen;
     GameOverScreen gameOverScreen;
-    private String userName, roomName;
-
-    public int PlayerId;
-
-    public static int test1 = 0, test2 = 0;
-    private static String serverAddress = "10.44.0.188";
-    private static int port = 7650;
-    public int nowFrame, lastFireFrame;
     MsgIO S2C, C2S;
     LinkedBlockingQueue<GameFrame> download;
     LinkedBlockingQueue<String> queue;
     ActionGroup actionGroup;
+    private String userName, roomName;
+    private String serverAddress;
+    private int port;
+
+    public String getServerAddress() {
+        return serverAddress;
+    }
+
+    public void setServerAddress(String serverAddress) {
+        this.serverAddress = serverAddress;
+    }
+
+    public int getPort() {
+        return port;
+    }
+
+    public void setPort(int port) {
+        this.port = port;
+    }
 
     public String getUserName() {
         return userName;
@@ -61,7 +74,7 @@ public class TankGame extends Game {
     }
 
     @Override
-    public void create () {
+    public void create() {
         actionGroup = new ActionGroup();
         startScreen = new StartScreen(this);
         mainScreen = new MainScreen(this);
@@ -72,11 +85,11 @@ public class TankGame extends Game {
     }
 
     @Override
-    public void render () {
+    public void render() {
         super.render();
     }
 
     @Override
-    public void dispose () {
+    public void dispose() {
     }
 }
