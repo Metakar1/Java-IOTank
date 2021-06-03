@@ -24,7 +24,7 @@ abstract public class GameObject extends Actor {
     protected TankGame game;
     protected Texture texture;
     protected Stage stage;
-    protected static float acceleration = 5.0f/30;
+    protected static float acceleration = 5000.0f/30;
 
     public GameObject(float speed, float direction, float posX, float posY, int hp, TankGame game, Stage stage) {
         this.speed = speed;

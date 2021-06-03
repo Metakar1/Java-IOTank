@@ -11,7 +11,9 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.google.gson.Gson;
+import jdk.internal.net.http.frame.DataFrame;
 import org.gyming.tank.connection.GameAction;
+import org.gyming.tank.connection.GameFrame;
 import org.gyming.tank.object.BulletObject;
 import org.gyming.tank.object.GameObject;
 import org.gyming.tank.object.PlayerObject;
@@ -53,6 +55,16 @@ public class MainScreen extends ScreenAdapter {
         Image image = new Image(new Texture(pixmap));
         image.setZIndex(0);
         return image;
+    }
+
+    public void updateFrame(GameFrame gameFrame) {
+        for (GameAction i : gameFrame.frameList) {
+            if (game.actionGroup.modify.get(i.getObjectID()) == null)
+                game.actionGroup.modify.put(i.getObjectID(), new GameFrame(0));
+            GameFrame cur = game.actionGroup.modify.get(i.getObjectID());
+            cur.add(i);
+            game.actionGroup.modify.put(i.getObjectID(), cur);
+        }
     }
 
     public void checkCollision() {
