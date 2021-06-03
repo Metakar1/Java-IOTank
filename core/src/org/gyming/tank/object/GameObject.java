@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import org.gyming.tank.client.ColorPool;
@@ -22,6 +23,8 @@ abstract public class GameObject extends Actor {
     protected TankGame game;
     protected Texture texture;
     protected Stage stage;
+    public Rectangle area;
+
 
     public GameObject(float speed, float direction, float posX, float posY, int hp, TankGame game, Stage stage) {
         this.speed = speed;
@@ -34,6 +37,7 @@ abstract public class GameObject extends Actor {
         this.stage = stage;
 //        region = createRegion();
         setSize(this.texture.getWidth(), this.texture.getHeight());
+        this.area = new Rectangle();
     }
 
     static public Texture drawCircle(int r, Color color) {
@@ -54,6 +58,9 @@ abstract public class GameObject extends Actor {
     public void act(float delta) {
         posX += speed * MathUtils.sin(direction);
         posY += speed * MathUtils.cos(direction);
+
+        area.set(posX,posY,texture.getWidth(),texture.getHeight());
+
         recoverSpeed();
         GameFrame actions = game.actionGroup.modify.get(identifier);
         if (actions != null) {

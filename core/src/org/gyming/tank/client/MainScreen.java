@@ -4,10 +4,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.google.gson.Gson;
 import org.gyming.tank.connection.GameAction;
+import org.gyming.tank.object.BulletObject;
+import org.gyming.tank.object.GameObject;
 import org.gyming.tank.object.PlayerObject;
 
 public class MainScreen extends ScreenAdapter {
@@ -19,6 +22,32 @@ public class MainScreen extends ScreenAdapter {
         this.stage = new Stage();
         this.game = game;
         stage.addActor(new PlayerObject(0, 0, 50, 50, 0, 0, "f", game, stage));
+    }
+
+    public void CheckCollision()
+    {
+        if(stage.getActors().isEmpty())
+            return;
+        for(int i=0; i < stage.getActors().size; i++)
+        {
+            GameObject A = (GameObject) stage.getActors().items[i];
+            if(A.getHp()==0)
+                continue;
+            for (int j=i+1; j < stage.getActors().size; j++)
+            {
+                GameObject B = (GameObject) stage.getActors().items[j];
+
+                if(B.getHp()==0)
+                    continue;
+                if(A.area.overlaps(B.area))
+                {
+                    if(A instanceof BulletObject) {
+                    }
+
+                    break;
+                }
+            }
+        }
     }
 
     private void ListenKey() {
@@ -85,6 +114,7 @@ public class MainScreen extends ScreenAdapter {
         ScreenUtils.clear(0, 0, 0, 0);
         ListenKey();
         stage.act(delta);
+        CheckCollision();
         stage.draw();
     }
 
