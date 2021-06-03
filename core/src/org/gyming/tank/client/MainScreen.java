@@ -50,7 +50,12 @@ public class MainScreen extends ScreenAdapter {
             }
             if (Gdx.input.isTouched())
                 if (FireGap >= PlayerObject.playerFireGap) {
-                    game.queue.put(gson.toJson(new GameAction("Fire", direction, game.playerId, "", 0), GameAction.class));
+                    double posX = -(Gdx.graphics.getWidth()/2-Gdx.input.getX());
+                    double posY = Gdx.graphics.getHeight()/2-Gdx.input.getY();
+                    System.out.println(posX);
+                    System.out.println(posY);
+                    double angle = Math.atan2(posX,posY);
+                    game.queue.put(gson.toJson(new GameAction("Fire", angle, game.playerId, "", 0), GameAction.class));
                     FireGap = 0;
                 }
         }
