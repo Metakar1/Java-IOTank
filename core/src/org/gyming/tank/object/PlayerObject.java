@@ -2,7 +2,7 @@ package org.gyming.tank.object;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import org.gyming.tank.client.ActionGroup;
+import org.gyming.tank.client.TankGame;
 import org.gyming.tank.connection.GameAction;
 
 public class PlayerObject extends GameObject {
@@ -14,8 +14,9 @@ public class PlayerObject extends GameObject {
     private String playerName;
     private Stage stage;
 
-    public PlayerObject(double speed, double direction, double posX, double posY, int hp, int playerID, String playerName, ActionGroup actionGroup, Stage stage) {
-        super(speed, direction, posX, posY, hp, actionGroup, stage);
+    public PlayerObject(float speed, float direction, float posX, float posY, int hp, int playerID,
+                        String playerName, TankGame game, Stage stage) {
+        super(speed, direction, posX, posY, hp, game, stage);
         this.playerID = playerID;
         this.playerName = playerName;
         this.stage = stage;
@@ -42,12 +43,12 @@ public class PlayerObject extends GameObject {
     protected Texture createTexture() {
 //        System.out.println(colorPool.getUserColor(playerID));
 //        System.out.println("***");
-        return drawCircle(playerSize,colorPool.getUserColor(playerID));
+        return drawCircle(playerSize, colorPool.getUserColor(playerID));
     }
 
     @Override
-    public void fire(GameAction action, double posX, double posY) {
-        BulletObject bullet = new BulletObject(BulletObject.bulletSpeed,action.getDirection(),posX, posY, BulletObject.bulletHP,playerID,actionGroup,stage);
+    public void fire(GameAction action, float posX, float posY) {
+        BulletObject bullet = new BulletObject(BulletObject.bulletSpeed, action.getDirection(), posX, posY, BulletObject.bulletHP, playerID, game, stage);
         stage.addActor(bullet);
     }
 

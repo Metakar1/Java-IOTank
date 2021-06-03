@@ -2,12 +2,12 @@ package org.gyming.tank.connection;
 
 public class GameAction {
     String type;
-    double direction;
+    float direction;
     int objectID;
     String property;
-    double value;
+    float value;
 
-    public GameAction(String type, double direction, int objectID, String property, double value) {
+    public GameAction(String type, float direction, int objectID, String property, float value) {
         this.type = type;
         this.direction = direction;
         this.objectID = objectID;
@@ -23,11 +23,11 @@ public class GameAction {
         return type;
     }
 
-    public double getDirection() {
+    public float getDirection() {
         return direction;
     }
 
-    public double getValue() {
+    public float getValue() {
         return value;
     }
 

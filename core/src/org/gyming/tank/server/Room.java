@@ -10,10 +10,10 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class Room implements Runnable {
+    public ArrayList<GameFrame> totFrame;
     String roomID;
     BlockingQueue<Client> clients;
     int frameID = 0;
-    public ArrayList<GameFrame> totFrame;
     ArrayList<GameAction> curFrame;
     int nums = 0;
     TimerTask timerTask = new TimerTask() {

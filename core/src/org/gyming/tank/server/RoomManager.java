@@ -30,7 +30,7 @@ public class RoomManager implements Runnable {
         Client client = new Client(connectMsg, user);
         threadPool.submit(client.receive);
         threadPool.submit(client.send);
-        for(GameFrame gameFrame:room.totFrame) {
+        for (GameFrame gameFrame : room.totFrame) {
             client.download.offer(gameFrame);
         }
         room.clients.offer(client);

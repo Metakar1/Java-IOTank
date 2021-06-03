@@ -2,12 +2,12 @@ package org.gyming.tank.object;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import org.gyming.tank.client.ActionGroup;
+import org.gyming.tank.client.TankGame;
 import org.gyming.tank.connection.GameAction;
 
 public class SupplyObject extends GameObject {
-    public SupplyObject(double speed, double direction, double posX, double posY, int hp, ActionGroup actionGroup, Stage stage) {
-        super(speed, direction, posX, posY, hp, actionGroup, stage);
+    public SupplyObject(float speed, float direction, float posX, float posY, int hp, TankGame game, Stage stage) {
+        super(speed, direction, posX, posY, hp, game, stage);
     }
 
     @Override
@@ -16,7 +16,7 @@ public class SupplyObject extends GameObject {
     }
 
     @Override
-    protected void fire(GameAction action, double posX, double posY) {
+    protected void fire(GameAction action, float posX, float posY) {
         return;
     }
 

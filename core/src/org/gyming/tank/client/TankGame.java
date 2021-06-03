@@ -11,7 +11,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 public class TankGame extends Game {
     public static int test1 = 0, test2 = 0;
-    public int playerId;
+    public int playerID;
     public int nowFrame, lastFireFrame;
     StartScreen startScreen;
     MainScreen mainScreen;
@@ -19,7 +19,7 @@ public class TankGame extends Game {
     MsgIO S2C, C2S;
     LinkedBlockingQueue<GameFrame> download;
     LinkedBlockingQueue<String> queue;
-    ActionGroup actionGroup;
+    public ActionGroup actionGroup;
     private String userName, roomName;
     private String serverAddress;
     private int port;

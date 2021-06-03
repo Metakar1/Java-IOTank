@@ -2,17 +2,17 @@ package org.gyming.tank.object;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import org.gyming.tank.client.ActionGroup;
+import org.gyming.tank.client.TankGame;
 import org.gyming.tank.connection.GameAction;
 
 public class BulletObject extends GameObject {
-    static int bulletSize = 10;
     public static int bulletSpeed = 10;
     public static int bulletHP = 10;
+    static int bulletSize = 10;
     private int playerID;
 
-    public BulletObject(double speed, double direction, double posX, double posY, int hp, int playerID, ActionGroup actionGroup, Stage stage) {
-        super(speed, direction, posX, posY, hp, actionGroup, stage);
+    public BulletObject(float speed, float direction, float posX, float posY, int hp, int playerID, TankGame game, Stage stage) {
+        super(speed, direction, posX, posY, hp, game, stage);
         this.playerID = playerID;
     }
 
@@ -24,14 +24,13 @@ public class BulletObject extends GameObject {
         this.playerID = playerID;
     }
 
-
     @Override
     protected Texture createTexture() {
-        return drawCircle(bulletSize,colorPool.getUserColor(playerID));
+        return drawCircle(bulletSize, colorPool.getUserColor(playerID));
     }
 
     @Override
-    public void fire(GameAction action, double posX, double posY) {
+    public void fire(GameAction action, float posX, float posY) {
 
     }
 

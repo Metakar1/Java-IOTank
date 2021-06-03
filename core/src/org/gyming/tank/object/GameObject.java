@@ -4,113 +4,122 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import org.gyming.tank.client.ActionGroup;
 import org.gyming.tank.client.ColorPool;
+import org.gyming.tank.client.TankGame;
 import org.gyming.tank.connection.GameAction;
 import org.gyming.tank.connection.GameFrame;
 
 abstract public class GameObject extends Actor {
-    protected int identifier;
-    protected double speed;
-    protected double direction;
-    protected double posX, posY;
-    protected int hp;
-    protected ActionGroup actionGroup;
-    protected Texture texture;
     protected static ColorPool colorPool = new ColorPool();
+    protected int identifier;
+    protected float speed;
+    protected float direction;
+    protected float posX, posY;
+    protected int hp;
+    protected TankGame game;
+    protected Texture texture;
     protected Stage stage;
 
-    public GameObject(double speed, double direction, double posX, double posY, int hp, ActionGroup actionGroup, Stage stage) {
+    public GameObject(float speed, float direction, float posX, float posY, int hp, TankGame game, Stage stage) {
         this.speed = speed;
         this.direction = direction;
         this.posX = posX;
         this.posY = posY;
         this.hp = hp;
-        this.actionGroup = actionGroup;
+        this.game = game;
         texture = createTexture();
         this.stage = stage;
 //        region = createRegion();
         setSize(this.texture.getWidth(), this.texture.getHeight());
     }
 
+    static public Texture drawCircle(int r, Color color) {
+        Pixmap pixmap = new Pixmap(r * 2, r * 2, Pixmap.Format.RGBA8888);
+        pixmap.setColor(color);
+        pixmap.fillCircle(r, r, r);
+        Texture texture = new Texture(pixmap);
+        return texture;
+    }
+
     protected abstract Texture createTexture();
-    protected abstract void fire(GameAction action, double posX, double posY);
+
+    protected abstract void fire(GameAction action, float posX, float posY);
+
     protected abstract void recoverSpeed();
 
     @Override
     public void act(float delta) {
-        posX+=speed*Math.sin(direction);
-        posY+=speed*Math.cos(direction);
+        posX += speed * MathUtils.sin(direction);
+        posY += speed * MathUtils.cos(direction);
         recoverSpeed();
-        GameFrame actions = actionGroup.modify.get(identifier);
-        if(actions!=null) {
-            for(GameAction i:actions.frameList) {
+        GameFrame actions = game.actionGroup.modify.get(identifier);
+        if (actions != null) {
+            for (GameAction i : actions.frameList) {
 //                System.out.println(i.getType());
 //                System.out.println(identifier);
-                if(i.getType().equals("Move")) {
-                    direction = i.getDirection();
-                    speed = i.getValue();
-                } else if(i.getType().equals("Fire")) {
-                    fire(i,posX,posY);
-                } else if(i.getType().equals("NewPlayer")) {
+                switch (i.getType()) {
+                    case "Move":
+                        direction = i.getDirection();
+                        speed = i.getValue();
+                        break;
+                    case "Fire":
+                        fire(i, posX, posY);
+                        break;
+                    case "NewPlayer":
 //                    System.out.println();
-                    PlayerObject player = new PlayerObject(0,0,i.getDirection(),i.getValue(),PlayerObject.playerHP,i.getProperty().hashCode(),i.getProperty(),actionGroup,stage);
-                    stage.addActor(player);
+                        PlayerObject player = new PlayerObject(0, 0, i.getDirection(), i.getValue(), PlayerObject.playerHP, i.getProperty().hashCode(), i.getProperty(), game, stage);
+                        stage.addActor(player);
+                        break;
                 }
             }
             actions.frameList.clear();
         }
+        if ((this instanceof PlayerObject) && (this.identifier == game.playerID))
+            stage.getCamera().position.set(posX, posY, 0);
     }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
 //        System.out.println(t);
-        batch.draw(texture,(float) posX,(float) posY);
-    }
-
-    static public Texture drawCircle(int r,Color color) {
-        Pixmap pixmap = new Pixmap(r*2,r*2,Pixmap.Format.RGBA8888);
-        pixmap.setColor(color);
-        pixmap.fillCircle(r,r,r);
-        Texture texture = new Texture(pixmap);
-        return texture;
+        batch.draw(texture, (float) posX, (float) posY);
     }
 
 //    abstract public Texture createTexture();
 
 //    abstract public TextureRegion createRegion();
 
-    public final double getPosX() {
+    public final float getPosX() {
         return posX;
     }
 
-    public final void setPosX(double posX) {
+    public final void setPosX(float posX) {
         this.posX = posX;
     }
 
-    public final double getPosY() {
+    public final float getPosY() {
         return posY;
     }
 
-    public final void setPosY(double posY) {
+    public final void setPosY(float posY) {
         this.posY = posY;
     }
 
-    public final double getSpeed() {
+    public final float getSpeed() {
         return speed;
     }
 
-    public final void setSpeed(double speed) {
+    public final void setSpeed(float speed) {
         this.speed = speed;
     }
 
-    public final double getDirection() {
+    public final float getDirection() {
         return direction;
     }
 
-    public final void setDirection(double direction) {
+    public final void setDirection(float direction) {
         this.direction = direction;
     }
 

@@ -13,18 +13,18 @@ public class ColorPool {
     public ColorPool() {
         user = new HashMap<>();
         userColorPool = new ArrayList<>();
-        userColorPool.add(new Color((float) (191.0/255.0), (float)(127.0/255.0), (float)(145.0/255.0), 1));
-        userColorPool.add(new Color((float)(0/255.0), (float)(178/255.0), (float)(225/255.0), 1));
-        userColorPool.add(new Color((float)(241/255.0), (float)(78/255.0), (float)(84/255.0), 1));
-        userColorPool.add(new Color(0, (float)(225/255.0), (float)(110/255.0), 1));
+        userColorPool.add(new Color(191f / 255f, 127f / 255f, 145f / 255f, 1f));
+        userColorPool.add(new Color(0f / 255f, 178f / 255f, 225f / 255f, 1f));
+        userColorPool.add(new Color(241f / 255f, 78f / 255f, 84f / 255f, 1f));
+        userColorPool.add(new Color(0, 225f / 255f, 110f / 255f, 1f));
         userCnt = 0;
     }
 
-    public Color getUserColor(Integer userId) {
-        if (user.get(userId) == null) {
-            user.put(userId, userColorPool.get(userCnt));
+    public Color getUserColor(Integer userID) {
+        if (user.get(userID) == null) {
+            user.put(userID, userColorPool.get(userCnt));
             userCnt++;
         }
-        return user.get(userId);
+        return user.get(userID);
     }
 }
