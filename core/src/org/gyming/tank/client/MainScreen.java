@@ -26,7 +26,7 @@ public class MainScreen extends ScreenAdapter {
     public MainScreen(TankGame game) {
         this.stage = new Stage();
         this.game = game;
-        stage.addActor(new PlayerObject(0, 0, 50, 50, 0, 0, "f", game, stage));
+        stage.addActor(new PlayerObject(0, 0, 50, 50, PlayerObject.playerHP, 0, "f", game, stage));
         stage.addActor(makeBackGround(3840,2160,320,20));
     }
 
@@ -54,8 +54,6 @@ public class MainScreen extends ScreenAdapter {
         image.setZIndex(0);
         return image;
 
-
-        stage.addActor(new PlayerObject(0, 0, 50, 50, PlayerObject.playerHP, 0, "f", game, stage));
     }
 
     public void CheckCollision()
@@ -69,11 +67,15 @@ public class MainScreen extends ScreenAdapter {
             return;
         for(int i=0; i < stage.getActors().size; i++)
         {
+            if(stage.getActors().items[i] instanceof Image)
+                continue;
             GameObject A = (GameObject) stage.getActors().items[i];
             if(A.getHp()<=0)
                 continue;
             for (int j=i+1; j < stage.getActors().size; j++)
             {
+                if(stage.getActors().items[j] instanceof Image)
+                    continue;
                 GameObject B = (GameObject) stage.getActors().items[j];
                 if(B.getHp()<=0)
                     continue;
@@ -84,6 +86,7 @@ public class MainScreen extends ScreenAdapter {
 
                 if(A.area.overlaps(B.area))
                 {
+                    System.out.println("FUCK");
                     if(A instanceof BulletObject) {
                         A.setHp(0);
                         if(B instanceof BulletObject)
