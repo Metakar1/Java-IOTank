@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.google.gson.Gson;
 import org.gyming.tank.connection.GameAction;
@@ -25,14 +26,18 @@ public class MainScreen extends ScreenAdapter {
         this.stage = new Stage();
         this.game = game;
         stage.addActor(new PlayerObject(0, 0, 50, 50, 0, 0, "f", game, stage));
+        stage.addActor(makeBackGround(3840,2160,320,20));
     }
 
-    public Texture makeBackGround(int width, int height, int delta, int lineDelta) {
+    public Image makeBackGround(int width, int height, int delta, int lineDelta) {
         int newHeight = height+2*delta, newWidth = width+2*delta;
         Pixmap pixmap = new Pixmap(newWidth, newHeight, Pixmap.Format.RGBA8888);
         Color backColor = new Color(205.f/255,205.f/255,205.f/255,1);
         Color lineColor = new Color(195.f/255,195.f/255,195.f/255,1);
+        Color boardColor = new Color(184.f/255,184.f/255,184.f/255,1);
         pixmap.setColor(backColor);
+        pixmap.fillRectangle(0,0,newWidth,newHeight);
+        pixmap.setColor(boardColor);
         pixmap.fillRectangle(0,0,delta,newHeight);
         pixmap.fillRectangle(0,0,newWidth,delta);
         pixmap.fillRectangle(newWidth-delta,0,delta,newHeight);
@@ -41,7 +46,12 @@ public class MainScreen extends ScreenAdapter {
         for(int i=0;i<=newWidth;i+=lineDelta) {
             pixmap.fillRectangle(i,0,1,newHeight);
         }
-        return new Texture(pixmap);
+        for(int i=0;i<=newHeight;i+=lineDelta) {
+            pixmap.fillRectangle(0,i,newWidth,1);
+        }
+        Image image = new Image(new Texture(pixmap));
+        image.setZIndex(0);
+        return image;
 
 
     }
@@ -136,7 +146,7 @@ public class MainScreen extends ScreenAdapter {
         ScreenUtils.clear(0, 0, 0, 0);
         ListenKey();
         stage.act(delta);
-        CheckCollision();
+//        CheckCollision();
         stage.draw();
     }
 
