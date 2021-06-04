@@ -96,12 +96,14 @@ public class MainScreen extends ScreenAdapter {
             if (stage.getActors().items[i] instanceof Image)
                 continue;
             GameObject A = (GameObject) stage.getActors().items[i];
+            if(A==null) continue;
             if (A.getHp() <= 0)
                 continue;
             for (int j = i + 1; j < stage.getActors().size; j++) {
                 if (stage.getActors().items[j] instanceof Image)
                     continue;
                 GameObject B = (GameObject) stage.getActors().items[j];
+                if(B==null) continue;
                 if (B.getHp() <= 0)
                     continue;
 
@@ -212,7 +214,7 @@ public class MainScreen extends ScreenAdapter {
         game.playerID = game.getUserName().hashCode();
         Gson gson = new Gson();
         try {
-            game.queue.put(gson.toJson(new GameAction("NewPlayer", boarder, 0, game.getUserName(), boarder)));
+            game.queue.put(gson.toJson(new GameAction("NewPlayer", boarder+100, 0, game.getUserName(), boarder+100)));
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -246,10 +248,10 @@ public class MainScreen extends ScreenAdapter {
 
         ScreenUtils.clear(0, 0, 0, 0);
 //        updateLock = true;
-//        while (!game.toBeDeleted.isEmpty()) {
-//            game.toBeDeleted.peek().die();
-//            game.toBeDeleted.poll();
-//        }
+        while (!game.toBeDeleted.isEmpty()) {
+            game.toBeDeleted.peek().die();
+            game.toBeDeleted.poll();
+        }
         stage.draw();
 //        updateLock=false;
 //        updateAct.notify();
