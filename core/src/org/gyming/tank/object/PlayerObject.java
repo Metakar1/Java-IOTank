@@ -1,5 +1,6 @@
 package org.gyming.tank.object;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -80,10 +81,13 @@ public class PlayerObject extends GameObject {
 
     @Override
     public void fire(GameAction action, float posX, float posY) {
-        float diffX = MathUtils.cos(gunDirection)*PlayerObject.gunWidth;
-        float diffY = MathUtils.sin(gunDirection)*PlayerObject.gunWidth;
+//        System.out.println(360-gunDirection);
+        float diffX = MathUtils.sin((360-gunDirection)/180)*PlayerObject.gunWidth;
+        float diffY = MathUtils.cos((360-gunDirection)/180)*PlayerObject.gunWidth;
+        float rx = posX + PlayerObject.cirR +1;
+        float ry = posY + texture.getHeight()-(PlayerObject.cirR+PlayerObject.gunHeight-PlayerObject.boarder*2)-1;
         System.out.println(Float.toString(diffX)+" "+Float.toString(diffY));
-        BulletObject bullet = new BulletObject(BulletObject.bulletSpeed, action.getDirection(), diffX+posX + PlayerObject.cirR +1, diffY+posY + texture.getHeight()-(PlayerObject.cirR+PlayerObject.gunHeight-PlayerObject.boarder*2)-1, BulletObject.bulletHP, playerID, game, stage);
+        BulletObject bullet = new BulletObject(BulletObject.bulletSpeed, action.getDirection(), rx, ry, BulletObject.bulletHP, playerID, game, stage);
         stage.addActor(bullet);
     }
 
