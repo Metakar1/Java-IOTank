@@ -106,7 +106,7 @@ abstract public class GameObject extends Actor {
                     case "Rotate":
                         gunDirection = ((i.getDirection()+MathUtils.PI)/MathUtils.PI2)*360;
                         gunDirection = (360-(gunDirection+180.f)%360.f)%360.f;
-                        System.out.println(gunDirection);
+//                        System.out.println(gunDirection);
                         break;
                 }
             }

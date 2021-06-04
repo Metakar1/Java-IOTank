@@ -39,8 +39,8 @@ public class MainScreen extends ScreenAdapter {
     public static boolean isInside(GameObject A) {
         if (A.getPlayerID() == 0)
             return true;
-        System.out.println(A.getPosX());
-        System.out.println(A.getPosY());
+//        System.out.println(A.getPosX());
+//        System.out.println(A.getPosY());
         if (A.getPosX() < boarder || A.getPosX() > width + boarder)
             return false;
         if (A.getPosY() < boarder || A.getPosY() > height + boarder)
@@ -164,7 +164,7 @@ public class MainScreen extends ScreenAdapter {
                     }
                     else if (A instanceof SupplyObject) {
                         A.setDirection((float) (Math.PI * 2 - A.getDirection()));
-                        System.out.println("FUCK");
+//                        System.out.println("FUCK");
                         if (B instanceof BulletObject) {
                             A.setHp(A.getHp() - 10);
                             B.setHp(0);
