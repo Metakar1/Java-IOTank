@@ -1,5 +1,6 @@
 package org.gyming.tank.object;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import org.gyming.tank.client.MainScreen;
@@ -17,7 +18,9 @@ public class SupplyObject extends GameObject {
 
     @Override
     protected Texture createTexture() {
-        return null;
+//        System.out.println(colorPool.getUserColor(playerID));
+//        System.out.println("***");
+        return drawCircle(10, Color.BLACK);
     }
 
     @Override

@@ -150,7 +150,7 @@ public class MainScreen extends ScreenAdapter {
                         }
                     }
                     else if (A instanceof SupplyObject) {
-                        A.setSpeed(-1);
+                        A.setSpeed(-1*A.getSpeed());
                         System.out.println("FUCK");
                         if (B instanceof BulletObject) {
                             A.setHp(A.getHp() - 10);
@@ -221,13 +221,13 @@ public class MainScreen extends ScreenAdapter {
         {
             double theta = 2*Math.PI*datamaker.nextFloat();
             double delta = (0.5+datamaker.nextGaussian()*0.1)*r;
-            stage.addActor(new SupplyObject(1,0,(float) (X+delta*Math.cos(theta)),(float) (Y+delta*Math.sin(theta)),50,game,stage));
+            stage.addActor(new SupplyObject(0.01f,0,(float) (X+delta*Math.cos(theta)),(float) (Y+delta*Math.sin(theta)),50,game,stage));
         }
     }
 
     private void KeepSup(){
         if(supplies<20) {
-            while (supplies < 40) {
+            while (supplies < 60) {
                 double X, Y;
                 X = width / 2 + datamaker.nextGaussian() * 1000 + boarder;
                 Y = height / 2 + datamaker.nextGaussian() * 500 + boarder;
@@ -274,6 +274,7 @@ public class MainScreen extends ScreenAdapter {
         game.download.poll();
         stage.act(delta);
         checkCollision();
+        KeepSup();
         stage.draw();
     }
 
