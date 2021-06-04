@@ -33,11 +33,10 @@ abstract public class GameObject extends Actor {
         this.posY = posY;
         this.hp = hp;
         this.game = game;
-//        texture = createTexture();
-        texture = null;
+        texture = createTexture();
         this.stage = stage;
 //        region = createRegion();
-
+        setSize(this.texture.getWidth(), this.texture.getHeight());
         this.area = new Rectangle();
     }
 
@@ -59,13 +58,8 @@ abstract public class GameObject extends Actor {
     public void act(float delta) {
         posX += speed * MathUtils.sin(direction);
         posY += speed * MathUtils.cos(direction);
-//        if(identifier!=0) System.out.println(Float.toString(posX)+" "+Float.toString(posY));
-        if(texture!=null) {
-            area.set(posX, posY, texture.getWidth(), texture.getHeight());
-            if ((this instanceof PlayerObject) && (this.identifier == game.playerID))
-                stage.getCamera().position.set(posX + texture.getWidth() / 2f, posY + texture.getHeight() / 2f, 0);
-        }
 
+        area.set(posX, posY, texture.getWidth(), texture.getHeight());
 
         int flag = 1;
         GameFrame actions = game.actionGroup.modify.get(identifier);
@@ -76,7 +70,6 @@ abstract public class GameObject extends Actor {
 //                System.out.println(identifier);
                 switch (i.getType()) {
                     case "Move":
-                        System.out.println("Move");
                         flag = 0;
                         direction = i.getDirection();
                         if (i.getValue() > speed) {
@@ -87,12 +80,10 @@ abstract public class GameObject extends Actor {
                         }
                         break;
                     case "Fire":
-                        System.out.println("Fire");
                         fire(i, posX, posY);
                         break;
                     case "NewPlayer":
 //                    System.out.println();
-                        System.out.println("NewPlayer");
                         PlayerObject player = new PlayerObject(0, 0, i.getDirection(), i.getValue(), PlayerObject.playerHP, i.getProperty().hashCode(), i.getProperty(), game, stage);
                         stage.addActor(player);
                         break;
@@ -101,11 +92,11 @@ abstract public class GameObject extends Actor {
             if (flag == 1) recoverSpeed();
             actions.frameList.clear();
         }
-
+        if ((this instanceof PlayerObject) && (this.identifier == game.playerID))
+            stage.getCamera().position.set(posX + texture.getWidth() / 2f, posY + texture.getHeight() / 2f, 0);
         try {
             if (getHp() <= 0)
-                setVisible(false);
-//                game.toBeDeleted.put(this);
+                game.toBeDeleted.put(this);
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -115,12 +106,7 @@ abstract public class GameObject extends Actor {
     @Override
     public void draw(Batch batch, float parentAlpha) {
 //        System.out.println(t);
-        if(texture == null) texture = createTexture();
-        setSize(this.texture.getWidth(), this.texture.getHeight());
-
-
-        batch.draw(texture, posX, posY);
-//        if(identifier!=0) System.out.println(Float.toString(posX)+" "+Float.toString(posY));
+        batch.draw(texture, (float) posX, (float) posY);
     }
 
 //    abstract public Texture createTexture();

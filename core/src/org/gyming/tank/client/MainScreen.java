@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.utils.Null;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.google.gson.Gson;
 import org.gyming.tank.connection.GameAction;
@@ -20,38 +19,10 @@ import org.gyming.tank.object.PlayerObject;
 import org.gyming.tank.object.SupplyObject;
 
 public class MainScreen extends ScreenAdapter {
-
-    class updateAction implements Runnable {
-
-        @Override
-        public void run() {
-            while (true) {
-                if(updateLock) continue;
-                GameFrame g = game.download.peek();
-                while (g == null) {
-                    g = game.download.peek();
-                }
-                updateFrame(g);
-                game.download.poll();
-                for (int i = 0; i < stage.getActors().size; i++) {
-                    if (stage.getActors().items[i] == null) {
-                        System.out.println("Fxxking null ");
-                        return;
-                    }
-                }
-                stage.act(0);
-                checkCollision();
-                listenKey();
-            }
-        }
-    }
-
     static int fireGap = 0;
     static int boarder = 800;
     TankGame game;
     Stage stage;
-    Thread updateAct;
-    boolean updateLock = false;
 
     public MainScreen(TankGame game) {
         this.stage = new Stage();
@@ -96,21 +67,22 @@ public class MainScreen extends ScreenAdapter {
     }
 
     public void checkCollision() {
-
+        while (!game.toBeDeleted.isEmpty()) {
+            game.toBeDeleted.peek().die();
+            game.toBeDeleted.poll();
+        }
         if (stage.getActors().isEmpty())
             return;
         for (int i = 0; i < stage.getActors().size; i++) {
             if (stage.getActors().items[i] instanceof Image)
                 continue;
             GameObject A = (GameObject) stage.getActors().items[i];
-            if(A==null) continue;
             if (A.getHp() <= 0)
                 continue;
             for (int j = i + 1; j < stage.getActors().size; j++) {
                 if (stage.getActors().items[j] instanceof Image)
                     continue;
                 GameObject B = (GameObject) stage.getActors().items[j];
-                if(B==null) continue;
                 if (B.getHp() <= 0)
                     continue;
 
@@ -217,11 +189,10 @@ public class MainScreen extends ScreenAdapter {
 
     @Override
     public void show() {
-//        Gdx.graphics.setVSync(true);
         game.playerID = game.getUserName().hashCode();
         Gson gson = new Gson();
         try {
-            game.queue.put(gson.toJson(new GameAction("NewPlayer", boarder+300, 0, game.getUserName(), boarder+300)));
+            game.queue.put(gson.toJson(new GameAction("NewPlayer", boarder + 100, 0, game.getUserName(), boarder + 100)));
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -234,10 +205,6 @@ public class MainScreen extends ScreenAdapter {
             downloader.start();
             listener.start();
             Thread.sleep(1000);
-//            Gdx.graphics.setContinuousRendering(false);
-            updateAct = new Thread(new updateAction());
-            updateAct.start();
-//            Gdx.graphics.setVSync(true);
         }
         catch (InterruptedException e) {
             e.printStackTrace();
@@ -246,23 +213,17 @@ public class MainScreen extends ScreenAdapter {
 
     @Override
     public void render(float delta) {
-//        try {
-//            updateAct.wait();
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-//        updateAct.suspend();
-
         ScreenUtils.clear(0, 0, 0, 0);
-//        updateLock = true;
-        while (!game.toBeDeleted.isEmpty()) {
-            game.toBeDeleted.peek().die();
-            game.toBeDeleted.poll();
+        listenKey();
+        GameFrame g = game.download.peek();
+        while (g == null) {
+            g = game.download.peek();
         }
+        updateFrame(g);
+        game.download.poll();
+        stage.act(delta);
+        checkCollision();
         stage.draw();
-//        updateLock=false;
-//        updateAct.notify();
-//        updateAct.resume();
     }
 
     @Override
