@@ -32,7 +32,10 @@ public class MainScreen extends ScreenAdapter {
                 }
                 updateFrame(g);
                 game.download.poll();
-                stage.act(0);
+                synchronized (stage) {
+                    stage.act(0);
+                }
+
                 checkCollision();
                 listenKey();
             }
@@ -214,7 +217,7 @@ public class MainScreen extends ScreenAdapter {
         game.playerID = game.getUserName().hashCode();
         Gson gson = new Gson();
         try {
-            game.queue.put(gson.toJson(new GameAction("NewPlayer", boarder+300, 0, game.getUserName(), boarder+300)));
+            game.queue.put(gson.toJson(new GameAction("NewPlayer", boarder+500, 0, game.getUserName(), boarder+500)));
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -252,7 +255,10 @@ public class MainScreen extends ScreenAdapter {
             game.toBeDeleted.peek().die();
             game.toBeDeleted.poll();
         }
-        stage.draw();
+        synchronized (stage) {
+            stage.draw();
+        }
+
 //        updateLock=false;
 //        updateAct.notify();
 //        updateAct.resume();
