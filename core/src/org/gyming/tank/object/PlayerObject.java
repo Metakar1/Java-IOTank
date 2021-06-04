@@ -12,6 +12,10 @@ public class PlayerObject extends GameObject {
     public static int playerSpeed = 25;
     public static int playerHP = 100;
     public static int playerFireGap = 60;
+    public static int ratio = 1;
+    public static int gunHeight = playerSize*ratio*2/3+3;
+    public static int gunWidth = gunHeight*5/6;
+    public static int cirR = playerSize*ratio-gunHeight/2;
     private int playerID;
     private String playerName;
     private Stage stage;
@@ -44,11 +48,9 @@ public class PlayerObject extends GameObject {
 
     @Override
     protected Texture createTexture() {
-        int ratio = 1;
+
         int cutSize =playerSize*ratio;
-        int gunHeight = cutSize*2/3+3;
-        int gunWidth = gunHeight*5/6;
-        int cirR = cutSize-gunHeight/2;
+
         int boarder = 3*ratio;
         Pixmap pixmap = new Pixmap(cutSize * 2, cutSize * 2, Pixmap.Format.RGBA8888);
 

@@ -26,6 +26,7 @@ abstract public class GameObject extends Actor {
     protected TankGame game;
     protected Texture texture;
     protected Stage stage;
+    protected float gunDirection;
 
     public GameObject(float speed, float direction, float posX, float posY, int hp, TankGame game, Stage stage) {
         this.speed = speed;
@@ -39,6 +40,7 @@ abstract public class GameObject extends Actor {
 //        region = createRegion();
         setSize(this.texture.getWidth(), this.texture.getHeight());
         this.area = new Rectangle();
+        this.gunDirection = 0;
     }
 
     static public Texture drawCircle(int r, Color color) {
@@ -101,6 +103,11 @@ abstract public class GameObject extends Actor {
                         PlayerObject player = new PlayerObject(0, 0, i.getDirection(), i.getValue(), PlayerObject.playerHP, i.getProperty().hashCode(), i.getProperty(), game, stage);
                         stage.addActor(player);
                         break;
+                    case "Rotate":
+                        gunDirection = ((i.getDirection()+MathUtils.PI)/MathUtils.PI2)*360;
+                        gunDirection = (360-(gunDirection+180.f)%360.f)%360.f;
+                        System.out.println(gunDirection);
+                        break;
                 }
             }
             if (flag == 1) recoverSpeed();
@@ -120,7 +127,13 @@ abstract public class GameObject extends Actor {
     @Override
     public void draw(Batch batch, float parentAlpha) {
 //        System.out.println(t);
-        batch.draw(texture, (float) posX, (float) posY);
+        if(this instanceof PlayerObject) {
+            batch.draw(texture,posX,posY,PlayerObject.cirR ,PlayerObject.cirR,texture.getWidth(),texture.getHeight(),1f,1f,gunDirection,0,0,texture.getWidth(),texture.getHeight(),false,false);
+        } else {
+            batch.draw(texture,posX,posY,texture.getWidth()/2f,texture.getHeight()/2f,texture.getWidth(),texture.getHeight(),1,1,180,0,0,texture.getWidth(),texture.getHeight(),false,false);
+        }
+
+//        batch.draw(texture, (float) posX, (float) posY);
     }
 
 //    abstract public Texture createTexture();

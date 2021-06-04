@@ -68,8 +68,8 @@ public class MainScreen extends ScreenAdapter {
 
         if(A.getPlayerID()==0)
             return true;
-        System.out.println(A.getPosX());
-        System.out.println(A.getPosY());
+//        System.out.println(A.getPosX());
+//        System.out.println(A.getPosY());
         if(A.getPosX()<boarder||A.getPosX()>width+boarder)
             return false;
         if(A.getPosY()<boarder||A.getPosY()>height+boarder)
@@ -113,7 +113,7 @@ public class MainScreen extends ScreenAdapter {
                         continue;
 
                 if (A.area.overlaps(B.area)) {
-                    System.out.println("FUCK");
+//                    System.out.println("FUCK");
                     if (A instanceof BulletObject) {
                         A.setHp(0);
                         if (B instanceof BulletObject)
@@ -121,7 +121,7 @@ public class MainScreen extends ScreenAdapter {
                         else if (B instanceof PlayerObject || B instanceof SupplyObject) {
                             B.setDirection((float) (Math.PI*2-B.getDirection()));
                             B.setHp(B.getHp() - 10);
-                            System.out.println("FUCK");
+//                            System.out.println("FUCK");
                             if (B.getHp() < 0) {
                                 //add EXP to A.player
                             }
@@ -153,7 +153,7 @@ public class MainScreen extends ScreenAdapter {
                     }
                     else if (A instanceof SupplyObject) {
                         A.setDirection((float) (Math.PI*2-A.getDirection()));
-                        System.out.println("FUCK");
+//                        System.out.println("FUCK");
                         if (B instanceof BulletObject) {
                             A.setHp(A.getHp() - 10);
                             B.setHp(0);
@@ -162,7 +162,7 @@ public class MainScreen extends ScreenAdapter {
                             }
                         }
                         else if (B instanceof PlayerObject || B instanceof SupplyObject) {
-                            System.out.println("FUCK");
+//                            System.out.println("FUCK");
                             if(B instanceof PlayerObject) {
                                 A.setHp(A.getHp() - 5);
                                 B.setHp(B.getHp() - 5);
@@ -206,8 +206,8 @@ public class MainScreen extends ScreenAdapter {
             if (Gdx.input.isTouched())
                 if (fireGap >= PlayerObject.playerFireGap) {
 
-                    System.out.println(posX);
-                    System.out.println(posY);
+//                    System.out.println(posX);
+//                    System.out.println(posY);
 
                     game.queue.put(gson.toJson(new GameAction("Fire", angle, game.playerID, "", 0), GameAction.class));
                     fireGap = 0;
