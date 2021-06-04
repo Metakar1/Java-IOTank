@@ -2,14 +2,16 @@ package org.gyming.tank.client;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Json;
+import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 public class StartScreen extends ScreenAdapter {
@@ -20,22 +22,68 @@ public class StartScreen extends ScreenAdapter {
     private final Stage startStage;
 
     public StartScreen(final TankGame game) {
-
         font = new BitmapFont();
-        skin = new Skin(Gdx.files.internal("uiskin.json"));
+        skin = new Skin(Gdx.files.internal("skin.json")) {
+            //Override json loader to process FreeType fonts from skin JSON
+            @Override
+            protected Json getJsonLoader(final FileHandle skinFile) {
+                Json json = super.getJsonLoader(skinFile);
+                final Skin skin = this;
 
-        serverAddressField = new TextField("10.44.0.188", skin);
-        portField = new TextField("7650", skin);
-        userField = new TextField("", skin);
-        roomField = new TextField("", skin);
+                json.setSerializer(FreeTypeFontGenerator.class, new Json.ReadOnlySerializer<FreeTypeFontGenerator>() {
+                    @Override
+                    public FreeTypeFontGenerator read(Json json,
+                                                      JsonValue jsonData, Class type) {
+                        String path = json.readValue("font", String.class, jsonData);
+                        jsonData.remove("font");
+
+                        FreeTypeFontGenerator.Hinting hinting = FreeTypeFontGenerator.Hinting.valueOf(json.readValue("hinting",
+                                String.class, "AutoMedium", jsonData));
+                        jsonData.remove("hinting");
+
+                        Texture.TextureFilter minFilter = Texture.TextureFilter.valueOf(
+                                json.readValue("minFilter", String.class, "Nearest", jsonData));
+                        jsonData.remove("minFilter");
+
+                        Texture.TextureFilter magFilter = Texture.TextureFilter.valueOf(
+                                json.readValue("magFilter", String.class, "Nearest", jsonData));
+                        jsonData.remove("magFilter");
+
+                        FreeTypeFontGenerator.FreeTypeFontParameter parameter = json.readValue(FreeTypeFontGenerator.FreeTypeFontParameter.class, jsonData);
+                        parameter.hinting = hinting;
+                        parameter.minFilter = minFilter;
+                        parameter.magFilter = magFilter;
+                        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(skinFile.parent().child(path));
+                        BitmapFont font = generator.generateFont(parameter);
+                        skin.add(jsonData.name, font);
+                        if (parameter.incremental) {
+                            generator.dispose();
+                            return null;
+                        }
+                        else {
+                            return generator;
+                        }
+                    }
+                });
+
+                return json;
+            }
+        };
+
+        serverAddressField = new TextField("10.44.0.188", skin, "textfield-tank");
+        portField = new TextField("7650", skin, "textfield-tank");
+        userField = new TextField("", skin, "textfield-tank");
+        roomField = new TextField("", skin, "textfield-tank");
         serverAddressField.setMessageText("Input the server address.");
         portField.setMessageText("Input the server port.");
         userField.setMessageText("Input your username.");
         roomField.setMessageText("Input the room name.");
-        TextButton confirmButton = new TextButton("OK", skin);
-        messageDialog = new Dialog("Error", skin);
-        messageDialog.text("Username and room name cannot be empty.");
-        messageDialog.button("OK", true).addListener(new ClickListener() {});
+        TextButton confirmButton = new TextButton("OK", skin, "textbutton-tank-red");
+        messageDialog = new Dialog("Error", skin, "window-tank");
+        messageDialog.text("Username and room name cannot be empty.", skin.get("label-tank", Label.LabelStyle.class));
+        messageDialog.button("OK", true, skin.get("textbutton-tank-gray",
+                TextButton.TextButtonStyle.class)).addListener(new ClickListener() {
+        });
         confirmButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {

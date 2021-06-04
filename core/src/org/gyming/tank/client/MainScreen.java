@@ -11,7 +11,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.google.gson.Gson;
-import jdk.internal.net.http.frame.DataFrame;
 import org.gyming.tank.connection.GameAction;
 import org.gyming.tank.connection.GameFrame;
 import org.gyming.tank.object.BulletObject;
@@ -193,7 +192,7 @@ public class MainScreen extends ScreenAdapter {
         game.playerID = game.getUserName().hashCode();
         Gson gson = new Gson();
         try {
-            game.queue.put(gson.toJson(new GameAction("NewPlayer", boarder, 0, game.getUserName(), boarder)));
+            game.queue.put(gson.toJson(new GameAction("NewPlayer", boarder + 100, 0, game.getUserName(), boarder + 100)));
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -217,7 +216,7 @@ public class MainScreen extends ScreenAdapter {
         ScreenUtils.clear(0, 0, 0, 0);
         listenKey();
         GameFrame g = game.download.peek();
-        while(g==null) {
+        while (g == null) {
             g = game.download.peek();
         }
         updateFrame(g);

@@ -15,6 +15,7 @@ import org.gyming.tank.connection.GameFrame;
 
 abstract public class GameObject extends Actor {
     protected static ColorPool colorPool = new ColorPool();
+    protected static float acceleration = 5000.0f / 30;
     public Rectangle area;
     protected int identifier;
     protected float speed;
@@ -24,7 +25,6 @@ abstract public class GameObject extends Actor {
     protected TankGame game;
     protected Texture texture;
     protected Stage stage;
-    protected static float acceleration = 5000.0f/30;
 
     public GameObject(float speed, float direction, float posX, float posY, int hp, TankGame game, Stage stage) {
         this.speed = speed;
@@ -72,10 +72,11 @@ abstract public class GameObject extends Actor {
                     case "Move":
                         flag = 0;
                         direction = i.getDirection();
-                        if(i.getValue()>speed) {
-                            speed = Math.min(speed+acceleration,i.getValue());
-                        } else {
-                            speed = Math.max(speed-acceleration, i.getValue());
+                        if (i.getValue() > speed) {
+                            speed = Math.min(speed + acceleration, i.getValue());
+                        }
+                        else {
+                            speed = Math.max(speed - acceleration, i.getValue());
                         }
                         break;
                     case "Fire":
@@ -88,7 +89,7 @@ abstract public class GameObject extends Actor {
                         break;
                 }
             }
-            if(flag==1) recoverSpeed();
+            if (flag == 1) recoverSpeed();
             actions.frameList.clear();
         }
         if ((this instanceof PlayerObject) && (this.identifier == game.playerID))
