@@ -110,7 +110,7 @@ abstract public class GameObject extends Actor {
         setSize(this.texture.getWidth(), this.texture.getHeight());
 
         if ((this instanceof PlayerObject) && (this.identifier == game.playerID))
-            stage.getCamera().position.set((int)(posX + texture.getWidth() / 2f), (int)(posY + texture.getHeight() / 2f), 0);
+            stage.getCamera().position.set(posX + texture.getWidth() / 2f, posY + texture.getHeight() / 2f, 0);
         batch.draw(texture, (float) posX, (float) posY);
 //        if(identifier!=0) System.out.println(Float.toString(posX)+" "+Float.toString(posY));
     }
