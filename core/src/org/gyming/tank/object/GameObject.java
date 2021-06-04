@@ -93,8 +93,7 @@ abstract public class GameObject extends Actor {
             if (flag == 1) recoverSpeed();
             actions.frameList.clear();
         }
-        if ((this instanceof PlayerObject) && (this.identifier == game.playerID))
-            stage.getCamera().position.set(posX + texture.getWidth() / 2f, posY + texture.getHeight() / 2f, 0);
+
         try {
             if (getHp() <= 0)
                 game.toBeDeleted.put(this);
@@ -110,8 +109,10 @@ abstract public class GameObject extends Actor {
         if(texture == null) texture = createTexture();
         setSize(this.texture.getWidth(), this.texture.getHeight());
         area.set(posX, posY, texture.getWidth(), texture.getHeight());
-
+        if ((this instanceof PlayerObject) && (this.identifier == game.playerID))
+            stage.getCamera().position.set((int)(posX + texture.getWidth() / 2f), (int)(posY + texture.getHeight() / 2f), 0);
         batch.draw(texture, (float) posX, (float) posY);
+//        if(identifier!=0) System.out.println(Float.toString(posX)+" "+Float.toString(posY));
     }
 
 //    abstract public Texture createTexture();

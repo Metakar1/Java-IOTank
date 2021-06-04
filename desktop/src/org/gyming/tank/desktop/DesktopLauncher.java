@@ -1,5 +1,6 @@
 package org.gyming.tank.desktop;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import org.gyming.tank.client.TankGame;
@@ -11,7 +12,8 @@ public class DesktopLauncher {
         config.title = "Tank Game";
         config.width = 1500;
         config.height = 900;
-        config.foregroundFPS = 110;
+        config.foregroundFPS = 60;
+//        config.backgroundFPS = 110;
         new LwjglApplication(new TankGame(), config);
     }
 }

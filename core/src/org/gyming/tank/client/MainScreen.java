@@ -25,6 +25,7 @@ public class MainScreen extends ScreenAdapter {
         @Override
         public void run() {
             while (true) {
+                if(updateLock) continue;
                 GameFrame g = game.download.peek();
                 while (g == null) {
                     g = game.download.peek();
@@ -41,6 +42,8 @@ public class MainScreen extends ScreenAdapter {
     static int boarder = 800;
     TankGame game;
     Stage stage;
+    Thread updateAct;
+    boolean updateLock = false;
 
     public MainScreen(TankGame game) {
         this.stage = new Stage();
@@ -207,6 +210,7 @@ public class MainScreen extends ScreenAdapter {
 
     @Override
     public void show() {
+//        Gdx.graphics.setVSync(true);
         game.playerID = game.getUserName().hashCode();
         Gson gson = new Gson();
         try {
@@ -224,7 +228,7 @@ public class MainScreen extends ScreenAdapter {
             listener.start();
             Thread.sleep(1000);
 //            Gdx.graphics.setContinuousRendering(false);
-            Thread updateAct = new Thread(new updateAction());
+            updateAct = new Thread(new updateAction());
             updateAct.start();
         }
         catch (InterruptedException e) {
@@ -234,12 +238,21 @@ public class MainScreen extends ScreenAdapter {
 
     @Override
     public void render(float delta) {
+//        try {
+//            updateAct.wait();
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//        updateAct.suspend();
+
         ScreenUtils.clear(0, 0, 0, 0);
         listenKey();
-
-//        stage.act(delta);
+//        updateLock = true;
 
         stage.draw();
+//        updateLock=false;
+//        updateAct.notify();
+//        updateAct.resume();
     }
 
     @Override

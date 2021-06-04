@@ -28,7 +28,7 @@ public class ClientDownloader implements Runnable {
 //                    g = game.download.peek();
 //                }
 //                game.download.poll();
-                Gdx.graphics.requestRendering();
+//                Gdx.graphics.requestRendering();
 //                if (g.frameList.size() != 0) {
 //                    System.out.print(TankGame.test1);
 //                    System.out.print("        ");
