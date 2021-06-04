@@ -93,7 +93,7 @@ abstract public class GameObject extends Actor {
             actions.frameList.clear();
         }
         if ((this instanceof PlayerObject) && (this.identifier == game.playerID))
-            stage.getCamera().position.set(posX, posY, 0);
+            stage.getCamera().position.set(posX + texture.getWidth() / 2f, posY + texture.getHeight() / 2f, 0);
         try {
             if (getHp() <= 0)
                 game.toBeDeleted.put(this);
