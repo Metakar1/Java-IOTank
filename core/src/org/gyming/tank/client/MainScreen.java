@@ -230,7 +230,7 @@ public class MainScreen extends ScreenAdapter {
         }
     }
 
-    private void GenerateSup(double X, double Y) {
+    private void generateSup(double X, double Y) {
         double r = dataMaker.nextGaussian() * 40 + 200;
         int size = (int) (dataMaker.nextGaussian() * 5 + 12);
         if (size <= 0)
@@ -243,13 +243,13 @@ public class MainScreen extends ScreenAdapter {
         }
     }
 
-    private void KeepSup() {
+    private void keepSup() {
         if (supplies < 20) {
             while (supplies < 60) {
                 double X, Y;
                 X = width / 2 + dataMaker.nextGaussian() * 1000 + boarder;
                 Y = height / 2 + dataMaker.nextGaussian() * 500 + boarder;
-                GenerateSup(X, Y);
+                generateSup(X, Y);
             }
         }
     }
@@ -291,7 +291,7 @@ public class MainScreen extends ScreenAdapter {
         game.download.poll();
         stage.act(delta);
         checkCollision();
-        KeepSup();
+        keepSup();
         stage.draw();
     }
 

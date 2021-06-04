@@ -35,7 +35,7 @@ abstract public class GameObject extends Actor {
         this.posY = posY;
         this.hp = hp;
         this.game = game;
-        texture = createTexture();
+        this.texture = createTexture();
         this.stage = stage;
 //        region = createRegion();
         setSize(this.texture.getWidth(), this.texture.getHeight());
@@ -59,9 +59,9 @@ abstract public class GameObject extends Actor {
 
     @Override
     public void act(float delta) {
-        if(this instanceof SupplyObject) {
-            if(MainScreen.dataMaker.nextFloat()<0.01) {
-                direction = (float) ((float) MainScreen.dataMaker.nextFloat() * 2 * Math.PI);
+        if (this instanceof SupplyObject) {
+            if (MainScreen.dataMaker.nextFloat() < 0.01) {
+                direction = MainScreen.dataMaker.nextFloat() * 2 * MathUtils.PI;
                 speed = 0.1f;
             }
         }
@@ -69,11 +69,11 @@ abstract public class GameObject extends Actor {
         posX += speed * MathUtils.sin(direction);
         posY += speed * MathUtils.cos(direction);
 
-        if(this instanceof PlayerObject || this instanceof SupplyObject) {
-            posX = Math.max(posX,MainScreen.boarder);
-            posX = Math.min(posX,MainScreen.boarder+MainScreen.width);
-            posY = Math.max(posY,MainScreen.boarder);
-            posY = Math.min(posY,MainScreen.boarder+MainScreen.height);
+        if (this instanceof PlayerObject || this instanceof SupplyObject) {
+            posX = Math.max(posX, MainScreen.boarder);
+            posX = Math.min(posX, MainScreen.boarder + MainScreen.width);
+            posY = Math.max(posY, MainScreen.boarder);
+            posY = Math.min(posY, MainScreen.boarder + MainScreen.height);
         }
         area.set(posX, posY, texture.getWidth(), texture.getHeight());
 
@@ -120,7 +120,7 @@ abstract public class GameObject extends Actor {
             }
         }
         try {
-            if (getHp() <= 0|| (!MainScreen.isInside(this) && (this instanceof BulletObject)))
+            if (getHp() <= 0 || (!MainScreen.isInside(this) && (this instanceof BulletObject)))
                 game.toBeDeleted.put(this);
         }
         catch (Exception e) {
