@@ -89,10 +89,7 @@ public class MainScreen extends ScreenAdapter {
     }
 
     public void checkCollision() {
-        while (!game.toBeDeleted.isEmpty()) {
-            game.toBeDeleted.peek().die();
-            game.toBeDeleted.poll();
-        }
+
         if (stage.getActors().isEmpty())
             return;
         for (int i = 0; i < stage.getActors().size; i++) {
@@ -213,7 +210,7 @@ public class MainScreen extends ScreenAdapter {
         game.playerID = game.getUserName().hashCode();
         Gson gson = new Gson();
         try {
-            game.queue.put(gson.toJson(new GameAction("NewPlayer", boarder, 0, game.getUserName(), boarder)));
+            game.queue.put(gson.toJson(new GameAction("NewPlayer", boarder+200, 0, game.getUserName(), boarder+200)));
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -247,7 +244,10 @@ public class MainScreen extends ScreenAdapter {
 
         ScreenUtils.clear(0, 0, 0, 0);
 //        updateLock = true;
-
+        while (!game.toBeDeleted.isEmpty()) {
+            game.toBeDeleted.peek().die();
+            game.toBeDeleted.poll();
+        }
         stage.draw();
 //        updateLock=false;
 //        updateAct.notify();
