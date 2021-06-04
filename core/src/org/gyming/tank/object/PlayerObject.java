@@ -64,5 +64,6 @@ public class PlayerObject extends GameObject {
 
     public void die() {
         stage.getRoot().removeActor(this);
+        this.setHp(0);
     }
 }

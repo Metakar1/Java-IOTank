@@ -31,8 +31,8 @@ public class SupplyObject extends GameObject {
     }
 
     public void die() {
-//      stage.getRoot().removeActor(this);
-        this.setVisible(false);
+        stage.getRoot().removeActor(this);
+        this.setHp(0);
         MainScreen.supplies--;
     }
 

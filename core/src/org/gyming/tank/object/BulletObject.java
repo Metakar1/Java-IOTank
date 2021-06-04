@@ -43,5 +43,6 @@ public class BulletObject extends GameObject {
 
     public void die() {
         stage.getRoot().removeActor(this);
+        this.setHp(0);
     }
 }
