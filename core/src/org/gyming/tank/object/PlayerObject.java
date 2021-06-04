@@ -1,18 +1,21 @@
 package org.gyming.tank.object;
 
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import org.gyming.tank.client.TankGame;
 import org.gyming.tank.connection.GameAction;
 
 public class PlayerObject extends GameObject {
-    public static int playerSize = 20;
+    public static int playerSize = 30;
     public static int playerSpeed = 25;
     public static int playerHP = 100;
     public static int playerFireGap = 60;
     private int playerID;
     private String playerName;
     private Stage stage;
+//    public static int playerGunWidth =
 
     public PlayerObject(float speed, float direction, float posX, float posY, int hp, int playerID,
                         String playerName, TankGame game, Stage stage) {
@@ -41,9 +44,29 @@ public class PlayerObject extends GameObject {
 
     @Override
     protected Texture createTexture() {
+        playerSize=playerSize*2;
+        int gunHeight = playerSize*2/3+3;
+        int gunWidth = gunHeight*5/6;
+        int cirR = playerSize-gunHeight/2;
+        Pixmap pixmap = new Pixmap(playerSize * 2, playerSize * 2, Pixmap.Format.RGBA8888);
+
+        pixmap.setColor(colorPool.getGunBoarderColor());
+        pixmap.fillRectangle(cirR-gunWidth/2,0,gunWidth,gunHeight);
+
+        pixmap.setColor(colorPool.getGunColor());
+        pixmap.fillRectangle(cirR-gunWidth/2+3,0+3,gunWidth-6,gunHeight-6);
+
+
+        pixmap.setColor(colorPool.getUserBoarderColor(playerID));
+        pixmap.fillCircle(cirR, cirR+gunHeight-5, cirR);
+        pixmap.setColor(colorPool.getUserColor(playerID));
+        pixmap.fillCircle(cirR, cirR+gunHeight-5, cirR - 3);
+        Texture texture = new Texture(pixmap);
+        texture.setFilter (Texture.TextureFilter.Linear, Texture.TextureFilter.Linear );
 //        System.out.println(colorPool.getUserColor(playerID));
 //        System.out.println("***");
-        return drawCircle(playerSize, colorPool.getUserColor(playerID));
+//        texture
+        return texture;
     }
 
     @Override
