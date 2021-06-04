@@ -89,10 +89,7 @@ public class MainScreen extends ScreenAdapter {
     }
 
     public void checkCollision() {
-        while (!game.toBeDeleted.isEmpty()) {
-            game.toBeDeleted.peek().die();
-            game.toBeDeleted.poll();
-        }
+
         if (stage.getActors().isEmpty())
             return;
         for (int i = 0; i < stage.getActors().size; i++) {
@@ -249,7 +246,10 @@ public class MainScreen extends ScreenAdapter {
 
         ScreenUtils.clear(0, 0, 0, 0);
 //        updateLock = true;
-
+//        while (!game.toBeDeleted.isEmpty()) {
+//            game.toBeDeleted.peek().die();
+//            game.toBeDeleted.poll();
+//        }
         stage.draw();
 //        updateLock=false;
 //        updateAct.notify();
