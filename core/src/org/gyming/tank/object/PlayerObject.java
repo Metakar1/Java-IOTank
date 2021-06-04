@@ -44,24 +44,29 @@ public class PlayerObject extends GameObject {
 
     @Override
     protected Texture createTexture() {
-        playerSize=playerSize*2;
-        int gunHeight = playerSize*2/3+3;
+        int ratio = 1;
+        int cutSize =playerSize*ratio;
+        int gunHeight = cutSize*2/3+3;
         int gunWidth = gunHeight*5/6;
-        int cirR = playerSize-gunHeight/2;
-        Pixmap pixmap = new Pixmap(playerSize * 2, playerSize * 2, Pixmap.Format.RGBA8888);
+        int cirR = cutSize-gunHeight/2;
+        int boarder = 3*ratio;
+        Pixmap pixmap = new Pixmap(cutSize * 2, cutSize * 2, Pixmap.Format.RGBA8888);
 
         pixmap.setColor(colorPool.getGunBoarderColor());
         pixmap.fillRectangle(cirR-gunWidth/2,0,gunWidth,gunHeight);
 
         pixmap.setColor(colorPool.getGunColor());
-        pixmap.fillRectangle(cirR-gunWidth/2+3,0+3,gunWidth-6,gunHeight-6);
+        pixmap.fillRectangle(cirR-gunWidth/2+boarder,0+boarder,gunWidth-boarder*2,gunHeight-boarder*2);
 
 
         pixmap.setColor(colorPool.getUserBoarderColor(playerID));
-        pixmap.fillCircle(cirR, cirR+gunHeight-5, cirR);
+        pixmap.fillCircle(cirR, cirR+gunHeight-boarder*2, cirR);
         pixmap.setColor(colorPool.getUserColor(playerID));
-        pixmap.fillCircle(cirR, cirR+gunHeight-5, cirR - 3);
-        Texture texture = new Texture(pixmap);
+        pixmap.fillCircle(cirR, cirR+gunHeight-boarder*2, cirR - boarder);
+
+        Pixmap pixmap1 = new Pixmap(playerSize*2,playerSize*2,Pixmap.Format.RGBA8888);
+        pixmap1.drawPixmap(pixmap,0,0,pixmap.getWidth(),pixmap.getHeight(),0,0,pixmap1.getWidth(),pixmap1.getHeight());
+        Texture texture = new Texture(pixmap1);
         texture.setFilter (Texture.TextureFilter.Linear, Texture.TextureFilter.Linear );
 //        System.out.println(colorPool.getUserColor(playerID));
 //        System.out.println("***");
