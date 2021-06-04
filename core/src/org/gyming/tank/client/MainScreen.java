@@ -18,9 +18,14 @@ import org.gyming.tank.object.GameObject;
 import org.gyming.tank.object.PlayerObject;
 import org.gyming.tank.object.SupplyObject;
 
+import java.util.Random;
+
 public class MainScreen extends ScreenAdapter {
     static int fireGap = 0;
-    static int boarder = 800;
+    public static int boarder = 800;
+    public static int supplies = 0;
+    public static int width,height;
+    Random datamaker;
     TankGame game;
     Stage stage;
 
@@ -29,9 +34,12 @@ public class MainScreen extends ScreenAdapter {
         this.game = game;
         stage.addActor(new PlayerObject(0, 0, 50, 50, PlayerObject.playerHP, 0, "f", game, stage));
         stage.addActor(makeBackGround(3840, 2160, boarder, 40));
+
     }
 
     public Image makeBackGround(int width, int height, int delta, int lineDelta) {
+        this.width = width;
+        this.height = height;
         int newHeight = height + 2 * delta, newWidth = width + 2 * delta;
         Pixmap pixmap = new Pixmap(newWidth, newHeight, Pixmap.Format.RGBA8888);
         Color backColor = new Color(205.f / 255, 205.f / 255, 205.f / 255, 1);
@@ -55,6 +63,20 @@ public class MainScreen extends ScreenAdapter {
         image.setZIndex(0);
         return image;
     }
+
+    public static boolean IsInside(GameObject A) {
+
+        if(A.getPlayerID()==0)
+            return true;
+        System.out.println(A.getPosX());
+        System.out.println(A.getPosY());
+        if(A.getPosX()<boarder||A.getPosX()>width+boarder)
+            return false;
+        if(A.getPosY()<boarder||A.getPosY()>height+boarder)
+            return false;
+        return true;
+    }
+
 
     public void updateFrame(GameFrame gameFrame) {
         for (GameAction i : gameFrame.frameList) {
@@ -129,6 +151,7 @@ public class MainScreen extends ScreenAdapter {
                     }
                     else if (A instanceof SupplyObject) {
                         A.setSpeed(-1);
+                        System.out.println("FUCK");
                         if (B instanceof BulletObject) {
                             A.setHp(A.getHp() - 10);
                             B.setHp(0);
@@ -137,6 +160,7 @@ public class MainScreen extends ScreenAdapter {
                             }
                         }
                         else if (B instanceof PlayerObject || B instanceof SupplyObject) {
+                            System.out.println("FUCK");
                             A.setHp(A.getHp() - 5);
                             B.setHp(B.getHp() - 5);
                             if (A.getHp() < 0) {
@@ -187,12 +211,39 @@ public class MainScreen extends ScreenAdapter {
         }
     }
 
+    private void GenerateSup(double X,double Y) {
+        double r = datamaker.nextGaussian()*40+200;
+        int size = (int)(datamaker.nextGaussian()*5+12);
+        if(size<=0)
+            return;
+        supplies+=size;
+        while((size--)!=0)
+        {
+            double theta = 2*Math.PI*datamaker.nextFloat();
+            double delta = (0.5+datamaker.nextGaussian()*0.1)*r;
+            stage.addActor(new SupplyObject(1,0,(float) (X+delta*Math.cos(theta)),(float) (Y+delta*Math.sin(theta)),50,game,stage));
+        }
+    }
+
+    private void KeepSup(){
+        if(supplies<20) {
+            while (supplies < 40) {
+                double X, Y;
+                X = width / 2 + datamaker.nextGaussian() * 1000 + boarder;
+                Y = height / 2 + datamaker.nextGaussian() * 500 + boarder;
+                GenerateSup(X,Y);
+            }
+        }
+    }
+
+
     @Override
     public void show() {
+        datamaker = new Random(game.getRoomName().hashCode());
         game.playerID = game.getUserName().hashCode();
         Gson gson = new Gson();
         try {
-            game.queue.put(gson.toJson(new GameAction("NewPlayer", boarder, 0, game.getUserName(), boarder)));
+            game.queue.put(gson.toJson(new GameAction("NewPlayer", boarder+100, 0, game.getUserName(), boarder+100)));
         }
         catch (Exception e) {
             e.printStackTrace();

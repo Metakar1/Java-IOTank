@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import org.gyming.tank.client.ColorPool;
+import org.gyming.tank.client.MainScreen;
 import org.gyming.tank.client.TankGame;
 import org.gyming.tank.connection.GameAction;
 import org.gyming.tank.connection.GameFrame;
@@ -59,6 +60,12 @@ abstract public class GameObject extends Actor {
         posX += speed * MathUtils.sin(direction);
         posY += speed * MathUtils.cos(direction);
 
+        if(this instanceof PlayerObject || this instanceof SupplyObject) {
+            posX = Math.max(posX,MainScreen.boarder);
+            posX = Math.min(posX,MainScreen.boarder+MainScreen.width);
+            posY = Math.max(posY,MainScreen.boarder);
+            posY = Math.min(posY,MainScreen.boarder+MainScreen.height);
+        }
         area.set(posX, posY, texture.getWidth(), texture.getHeight());
 
         int flag = 1;
@@ -95,7 +102,7 @@ abstract public class GameObject extends Actor {
         if ((this instanceof PlayerObject) && (this.identifier == game.playerID))
             stage.getCamera().position.set(posX + texture.getWidth() / 2f, posY + texture.getHeight() / 2f, 0);
         try {
-            if (getHp() <= 0)
+            if (getHp() <= 0|| (!MainScreen.IsInside(this) && (this instanceof BulletObject)))
                 game.toBeDeleted.put(this);
         }
         catch (Exception e) {
