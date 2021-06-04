@@ -33,6 +33,12 @@ public class MainScreen extends ScreenAdapter {
                 }
                 updateFrame(g);
                 game.download.poll();
+                for (int i = 0; i < stage.getActors().size; i++) {
+                    if (stage.getActors().items[i] == null) {
+                        System.out.println("Fxxking null ");
+                        return;
+                    }
+                }
                 stage.act(0);
                 checkCollision();
                 listenKey();
@@ -90,10 +96,6 @@ public class MainScreen extends ScreenAdapter {
     }
 
     public void checkCollision() {
-
-        for (int i = 0; i < stage.getActors().size; i++)
-            if(stage.getActors().items[i] == null)
-                System.out.println("Fxxking null ");
 
         if (stage.getActors().isEmpty())
             return;
