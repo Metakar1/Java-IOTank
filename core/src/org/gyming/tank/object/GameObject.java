@@ -59,7 +59,7 @@ abstract public class GameObject extends Actor {
     public void act(float delta) {
         posX += speed * MathUtils.sin(direction);
         posY += speed * MathUtils.cos(direction);
-
+        if(texture!=null) area.set(posX, posY, texture.getWidth(), texture.getHeight());
 
 
         int flag = 1;
@@ -108,7 +108,7 @@ abstract public class GameObject extends Actor {
 //        System.out.println(t);
         if(texture == null) texture = createTexture();
         setSize(this.texture.getWidth(), this.texture.getHeight());
-        area.set(posX, posY, texture.getWidth(), texture.getHeight());
+
         if ((this instanceof PlayerObject) && (this.identifier == game.playerID))
             stage.getCamera().position.set((int)(posX + texture.getWidth() / 2f), (int)(posY + texture.getHeight() / 2f), 0);
         batch.draw(texture, (float) posX, (float) posY);
