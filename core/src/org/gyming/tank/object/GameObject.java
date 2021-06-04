@@ -59,7 +59,7 @@ abstract public class GameObject extends Actor {
     public void act(float delta) {
         posX += speed * MathUtils.sin(direction);
         posY += speed * MathUtils.cos(direction);
-        if(identifier!=0) System.out.println(Float.toString(posX)+" "+Float.toString(posY));
+//        if(identifier!=0) System.out.println(Float.toString(posX)+" "+Float.toString(posY));
         if(texture!=null) {
             area.set(posX, posY, texture.getWidth(), texture.getHeight());
             if ((this instanceof PlayerObject) && (this.identifier == game.playerID))

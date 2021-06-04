@@ -43,7 +43,8 @@ public class BulletObject extends GameObject {
 
     public void die()
     {
-        stage.getRoot().removeActor(this);
+//        stage.getRoot().removeActor(this);
+        setVisible(false);
     }
 
 }

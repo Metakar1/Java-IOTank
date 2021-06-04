@@ -14,7 +14,7 @@ public class ClientDownloader implements Runnable {
         game = game_;
         S2C = S2C_;
     }
-
+    int cnt=0;
     public void run() {
         GameFrame g;
 
@@ -23,6 +23,11 @@ public class ClientDownloader implements Runnable {
                 Gson gson = new Gson();
                 g = gson.fromJson(S2C.receive(), GameFrame.class);
                 game.download.offer(g);
+                if(!g.frameList.isEmpty())  {
+                    cnt++;
+                    System.out.println(cnt);
+                }
+
 //                GameFrame gg = game.download.peek();
 //                while(g==null) {
 //                    g = game.download.peek();
