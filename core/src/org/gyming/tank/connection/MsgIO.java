@@ -23,4 +23,8 @@ public class MsgIO {
     public void send(String msg) throws IOException {
         dataOutputStream.writeUTF(msg);
     }
+
+    public boolean isConnect() {
+        return !socket.isClosed();
+    }
 }

@@ -24,7 +24,6 @@ public class RoomManager implements Runnable {
             Room room = new Room(connectMsg.room);
             roomHashMap.put(connectMsg.room, room);
             threadPool.submit(room);
-            System.out.println("QWQ");
         }
         Room room = roomHashMap.get(connectMsg.room);
         Client client = new Client(connectMsg, user);

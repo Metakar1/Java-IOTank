@@ -16,10 +16,18 @@ public class Room implements Runnable {
     int frameID = 0;
     ArrayList<GameAction> curFrame;
     int nums = 0;
+    boolean endState = false;
+    boolean startState = false;
     TimerTask timerTask = new TimerTask() {
         @Override
         public void run() {
+            boolean hasClient = false;
             for (Client client : clients) {
+                startState = true;
+                if(client.endState) {
+                    continue;
+                }
+                hasClient = true;
                 while (!client.upload.isEmpty()) {
                     curFrame.add(client.upload.peek());
                     client.upload.poll();
@@ -28,13 +36,14 @@ public class Room implements Runnable {
             }
             GameFrame sumFrame = new GameFrame(frameID);
             for (GameAction action : curFrame) sumFrame.add(action);
-            System.out.println(nums);
+//            System.out.println(nums);
             curFrame.clear();
             for (Client client : clients) {
                 client.download.offer(sumFrame);
             }
             frameID++;
             totFrame.add(sumFrame);
+            if(!hasClient) endState = true;
         }
     };
 
@@ -49,6 +58,8 @@ public class Room implements Runnable {
     public void run() {
         Timer timer = new Timer(true);
         timer.schedule(timerTask, 1, 10);
-        while (true) ;
+        while (!(startState && endState)) ;
+        timerTask.cancel();
+        System.out.println("Room Stop");
     }
 }

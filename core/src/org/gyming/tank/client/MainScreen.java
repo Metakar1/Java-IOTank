@@ -219,10 +219,9 @@ public class MainScreen extends ScreenAdapter {
         GameFrame g = game.download.peek();
         while(g==null) {
             g = game.download.peek();
-
         }
-        game.download.poll();
         updateFrame(g);
+        game.download.poll();
         stage.act(delta);
         checkCollision();
         stage.draw();

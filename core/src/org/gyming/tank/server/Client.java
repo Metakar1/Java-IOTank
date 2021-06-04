@@ -15,6 +15,7 @@ public class Client {
     LinkedBlockingQueue<GameFrame> download;
     Receive receive;
     Send send;
+    boolean endState;
 
     public Client(ConnectMsg _connectMsg, User _user) {
         user = _user;
@@ -23,6 +24,7 @@ public class Client {
         download = new LinkedBlockingQueue<>();
         receive = new Receive();
         send = new Send();
+        endState = false;
     }
 
     public class Receive implements Runnable {
@@ -37,7 +39,8 @@ public class Client {
                 }
             }
             catch (Exception e) {
-                e.printStackTrace();
+//                e.printStackTrace();
+                endState = true;
             }
         }
     }
@@ -56,7 +59,8 @@ public class Client {
                 }
             }
             catch (Exception e) {
-                e.printStackTrace();
+//                e.printStackTrace();
+                endState = true;
             }
         }
     }

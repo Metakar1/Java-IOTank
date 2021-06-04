@@ -49,7 +49,7 @@ public class PlayerObject extends GameObject {
 
     @Override
     public void fire(GameAction action, float posX, float posY) {
-        BulletObject bullet = new BulletObject(BulletObject.bulletSpeed, action.getDirection(), posX, posY, BulletObject.bulletHP, playerID, game, stage);
+        BulletObject bullet = new BulletObject(BulletObject.bulletSpeed, action.getDirection(), posX+(texture.getWidth())/2.0f, posY+(texture.getHeight())/2.0f, BulletObject.bulletHP, playerID, game, stage);
         stage.addActor(bullet);
     }
 
