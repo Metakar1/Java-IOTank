@@ -1,14 +1,13 @@
 package org.gyming.tank.client;
 
-import com.badlogic.gdx.Gdx;
 import com.google.gson.Gson;
-import org.gyming.tank.connection.GameAction;
 import org.gyming.tank.connection.GameFrame;
 import org.gyming.tank.connection.MsgIO;
 
 public class ClientDownloader implements Runnable {
     TankGame game;
     MsgIO S2C;
+    int frameCnt = 0;
 
     public ClientDownloader(TankGame game_, MsgIO S2C_) {
         game = game_;
@@ -22,6 +21,12 @@ public class ClientDownloader implements Runnable {
             try {
                 Gson gson = new Gson();
                 g = gson.fromJson(S2C.receive(), GameFrame.class);
+//                if (g != null)
+//                    System.out.println(g.frameList.size());
+                if (!g.frameList.isEmpty()) {
+                    frameCnt++;
+                    System.out.println("FRAME CNT: " + frameCnt);
+                }
                 game.download.offer(g);
                 if(!g.frameList.isEmpty())  {
                     cnt++;

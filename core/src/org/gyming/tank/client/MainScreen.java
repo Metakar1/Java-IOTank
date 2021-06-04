@@ -126,7 +126,7 @@ public class MainScreen extends ScreenAdapter {
                         }
                     }
                     else if (A instanceof PlayerObject) {
-                        A.setSpeed(-1);
+//                        A.setSpeed(-1);
                         if (B instanceof BulletObject) {
 //                            System.out.println("FUCK");
                             A.setHp(A.getHp() - 10);
