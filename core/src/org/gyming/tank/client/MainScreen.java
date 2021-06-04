@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.utils.Null;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.google.gson.Gson;
 import org.gyming.tank.connection.GameAction;
@@ -90,6 +91,10 @@ public class MainScreen extends ScreenAdapter {
 
     public void checkCollision() {
 
+        for (int i = 0; i < stage.getActors().size; i++)
+            if(stage.getActors().items[i] == null)
+                System.out.println("Fxxking null ");
+
         if (stage.getActors().isEmpty())
             return;
         for (int i = 0; i < stage.getActors().size; i++) {
@@ -126,7 +131,7 @@ public class MainScreen extends ScreenAdapter {
                         }
                     }
                     else if (A instanceof PlayerObject) {
-//                        A.setSpeed(-1);
+                        A.setSpeed(-1);
                         if (B instanceof BulletObject) {
 //                            System.out.println("FUCK");
                             A.setHp(A.getHp() - 10);
