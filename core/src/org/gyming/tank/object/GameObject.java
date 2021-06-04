@@ -132,7 +132,7 @@ abstract public class GameObject extends Actor {
     public void draw(Batch batch, float parentAlpha) {
 //        System.out.println(t);
         if(this instanceof PlayerObject) {
-            batch.draw(texture,posX,posY,PlayerObject.cirR ,PlayerObject.cirR,texture.getWidth(),texture.getHeight(),1f,1f,gunDirection,0,0,texture.getWidth(),texture.getHeight(),false,false);
+            batch.draw(texture,posX,posY,PlayerObject.cirR ,PlayerObject.cirR+PlayerObject.boarder,texture.getWidth(),texture.getHeight(),1f,1f,gunDirection,0,0,texture.getWidth(),texture.getHeight(),false,false);
         } else {
             batch.draw(texture,posX,posY,texture.getWidth()/2f,texture.getHeight()/2f,texture.getWidth(),texture.getHeight(),1,1,180,0,0,texture.getWidth(),texture.getHeight(),false,false);
         }

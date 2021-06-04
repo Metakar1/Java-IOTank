@@ -16,6 +16,7 @@ public class PlayerObject extends GameObject {
     public static int gunHeight = playerSize*ratio*2/3+3;
     public static int gunWidth = gunHeight*5/6;
     public static int cirR = playerSize*ratio-gunHeight/2;
+    static public int boarder = 3*ratio;
     private int playerID;
     private String playerName;
     private Stage stage;
@@ -51,7 +52,7 @@ public class PlayerObject extends GameObject {
 
         int cutSize =playerSize*ratio;
 
-        int boarder = 3*ratio;
+
         Pixmap pixmap = new Pixmap(cutSize * 2, cutSize * 2, Pixmap.Format.RGBA8888);
 
         pixmap.setColor(colorPool.getGunBoarderColor());
