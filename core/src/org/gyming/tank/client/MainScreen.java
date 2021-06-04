@@ -228,7 +228,7 @@ public class MainScreen extends ScreenAdapter {
 //            Gdx.graphics.setContinuousRendering(false);
             updateAct = new Thread(new updateAction());
             updateAct.start();
-            Gdx.graphics.setVSync(true);
+//            Gdx.graphics.setVSync(true);
         }
         catch (InterruptedException e) {
             e.printStackTrace();
