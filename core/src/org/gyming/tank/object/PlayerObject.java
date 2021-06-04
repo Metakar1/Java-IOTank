@@ -10,7 +10,6 @@ public class PlayerObject extends GameObject {
     public static int playerSpeed = 25;
     public static int playerHP = 100;
     public static int playerFireGap = 60;
-
     private int playerID;
     private String playerName;
     private Stage stage;
@@ -49,21 +48,21 @@ public class PlayerObject extends GameObject {
 
     @Override
     public void fire(GameAction action, float posX, float posY) {
-        BulletObject bullet = new BulletObject(BulletObject.bulletSpeed, action.getDirection(), posX+(texture.getWidth())/2.0f, posY+(texture.getHeight())/2.0f, BulletObject.bulletHP, playerID, game, stage);
+        BulletObject bullet = new BulletObject(BulletObject.bulletSpeed, action.getDirection(), posX + (texture.getWidth()) / 2.0f, posY + (texture.getHeight()) / 2.0f, BulletObject.bulletHP, playerID, game, stage);
         stage.addActor(bullet);
     }
 
     @Override
     protected void recoverSpeed() {
-        if(speed>0) {
-            speed = Math.max(speed-acceleration,0);
-        } else {
-            speed = Math.min(speed+acceleration,0);
+        if (speed > 0) {
+            speed = Math.max(speed - acceleration, 0);
+        }
+        else {
+            speed = Math.min(speed + acceleration, 0);
         }
     }
 
-    public void die()
-    {
+    public void die() {
         stage.getRoot().removeActor(this);
     }
 }

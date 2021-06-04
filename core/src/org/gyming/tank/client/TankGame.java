@@ -8,26 +8,23 @@ import org.gyming.tank.connection.MsgIO;
 import org.gyming.tank.object.GameObject;
 
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class TankGame extends Game {
     public static int test1 = 0, test2 = 0;
     public int playerID;
     public int nowFrame, lastFireFrame;
+    public ActionGroup actionGroup;
+    public LinkedBlockingQueue<GameObject> toBeDeleted;
     StartScreen startScreen;
     MainScreen mainScreen;
     GameOverScreen gameOverScreen;
     MsgIO S2C, C2S;
     LinkedBlockingQueue<GameFrame> download;
     LinkedBlockingQueue<String> queue;
-    public ActionGroup actionGroup;
     private String userName, roomName;
     private String serverAddress;
     private int port;
-    public LinkedBlockingQueue<GameObject> toBeDeleted;
-
 
     public String getServerAddress() {
         return serverAddress;

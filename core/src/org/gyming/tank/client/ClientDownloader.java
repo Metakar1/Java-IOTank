@@ -2,7 +2,6 @@ package org.gyming.tank.client;
 
 import com.badlogic.gdx.Gdx;
 import com.google.gson.Gson;
-import org.gyming.tank.connection.GameAction;
 import org.gyming.tank.connection.GameFrame;
 import org.gyming.tank.connection.MsgIO;
 

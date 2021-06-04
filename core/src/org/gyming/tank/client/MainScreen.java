@@ -223,7 +223,7 @@ public class MainScreen extends ScreenAdapter {
         game.playerID = game.getUserName().hashCode();
         Gson gson = new Gson();
         try {
-            game.queue.put(gson.toJson(new GameAction("NewPlayer", boarder + 100, 0, game.getUserName(), boarder + 100)));
+            game.queue.put(gson.toJson(new GameAction("NewPlayer", boarder, 0, game.getUserName(), boarder)));
         }
         catch (Exception e) {
             e.printStackTrace();

@@ -14,7 +14,6 @@ public class DesktopLauncher {
         config.height = 900;
         config.foregroundFPS = 0;
         config.vSyncEnabled = false;
-//        config.backgroundFPS = 110;
         new LwjglApplication(new TankGame(), config);
     }
 }
