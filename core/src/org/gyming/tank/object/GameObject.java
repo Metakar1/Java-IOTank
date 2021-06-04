@@ -59,7 +59,7 @@ abstract public class GameObject extends Actor {
     public void act(float delta) {
         posX += speed * MathUtils.sin(direction);
         posY += speed * MathUtils.cos(direction);
-        if(identifier!=0) System.out.println(Float.toString(posX)+" "+Float.toString(posY));
+//        if(identifier!=0) System.out.println(Float.toString(posX)+" "+Float.toString(posY));
         if(texture!=null) {
             area.set(posX, posY, texture.getWidth(), texture.getHeight());
             if ((this instanceof PlayerObject) && (this.identifier == game.playerID))
@@ -76,6 +76,7 @@ abstract public class GameObject extends Actor {
 //                System.out.println(identifier);
                 switch (i.getType()) {
                     case "Move":
+                        System.out.println("Move");
                         flag = 0;
                         direction = i.getDirection();
                         if (i.getValue() > speed) {
@@ -86,10 +87,12 @@ abstract public class GameObject extends Actor {
                         }
                         break;
                     case "Fire":
+                        System.out.println("Fire");
                         fire(i, posX, posY);
                         break;
                     case "NewPlayer":
 //                    System.out.println();
+                        System.out.println("NewPlayer");
                         PlayerObject player = new PlayerObject(0, 0, i.getDirection(), i.getValue(), PlayerObject.playerHP, i.getProperty().hashCode(), i.getProperty(), game, stage);
                         stage.addActor(player);
                         break;
@@ -101,7 +104,8 @@ abstract public class GameObject extends Actor {
 
         try {
             if (getHp() <= 0)
-                game.toBeDeleted.put(this);
+                setVisible(false);
+//                game.toBeDeleted.put(this);
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -115,7 +119,7 @@ abstract public class GameObject extends Actor {
         setSize(this.texture.getWidth(), this.texture.getHeight());
 
 
-        batch.draw(texture, (float) posX, (float) posY);
+        batch.draw(texture, posX, posY);
 //        if(identifier!=0) System.out.println(Float.toString(posX)+" "+Float.toString(posY));
     }
 
