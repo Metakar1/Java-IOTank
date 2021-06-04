@@ -25,7 +25,7 @@ public class MainScreen extends ScreenAdapter {
     public static int boarder = 800;
     public static int supplies = 0;
     public static int width,height;
-    Random datamaker;
+    public static Random datamaker;
     TankGame game;
     Stage stage;
 
@@ -119,6 +119,7 @@ public class MainScreen extends ScreenAdapter {
                         if (B instanceof BulletObject)
                             B.setHp(0);
                         else if (B instanceof PlayerObject || B instanceof SupplyObject) {
+                            B.setDirection((float) (Math.PI*2-B.getDirection()));
                             B.setHp(B.getHp() - 10);
                             System.out.println("FUCK");
                             if (B.getHp() < 0) {
@@ -127,7 +128,7 @@ public class MainScreen extends ScreenAdapter {
                         }
                     }
                     else if (A instanceof PlayerObject) {
-                        A.setSpeed(-1);
+                        A.setSpeed(-1*A.getSpeed());
                         if (B instanceof BulletObject) {
 //                            System.out.println("FUCK");
                             A.setHp(A.getHp() - 10);
@@ -147,10 +148,11 @@ public class MainScreen extends ScreenAdapter {
                             if (B.getHp() < 0) {
                                 // add EXP to A.playerid
                             }
+                            B.setDirection((float) (Math.PI*2-B.getDirection()));
                         }
                     }
                     else if (A instanceof SupplyObject) {
-                        A.setSpeed(-1*A.getSpeed());
+                        A.setDirection((float) (Math.PI*2-A.getDirection()));
                         System.out.println("FUCK");
                         if (B instanceof BulletObject) {
                             A.setHp(A.getHp() - 10);
@@ -161,8 +163,11 @@ public class MainScreen extends ScreenAdapter {
                         }
                         else if (B instanceof PlayerObject || B instanceof SupplyObject) {
                             System.out.println("FUCK");
-                            A.setHp(A.getHp() - 5);
-                            B.setHp(B.getHp() - 5);
+                            if(B instanceof PlayerObject) {
+                                A.setHp(A.getHp() - 5);
+                                B.setHp(B.getHp() - 5);
+                            }
+                            B.setDirection((float) (Math.PI*2-B.getDirection()));
                             if (A.getHp() < 0) {
                                 if (B instanceof PlayerObject) {
                                     // add EXP to B.playerid
@@ -224,7 +229,7 @@ public class MainScreen extends ScreenAdapter {
         {
             double theta = 2*Math.PI*datamaker.nextFloat();
             double delta = (0.5+datamaker.nextGaussian()*0.1)*r;
-            stage.addActor(new SupplyObject(0.01f,0,(float) (X+delta*Math.cos(theta)),(float) (Y+delta*Math.sin(theta)),50,game,stage));
+            stage.addActor(new SupplyObject(0f,0,(float) (X+delta*Math.cos(theta)),(float) (Y+delta*Math.sin(theta)),50,game,stage));
         }
     }
 

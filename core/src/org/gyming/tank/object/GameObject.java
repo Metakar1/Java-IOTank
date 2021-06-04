@@ -57,6 +57,13 @@ abstract public class GameObject extends Actor {
 
     @Override
     public void act(float delta) {
+        if(this instanceof SupplyObject) {
+            if(MainScreen.datamaker.nextFloat()<0.01) {
+                direction = (float) ((float) MainScreen.datamaker.nextFloat() * 2 * Math.PI);
+                speed = 0.1f;
+            }
+        }
+
         posX += speed * MathUtils.sin(direction);
         posY += speed * MathUtils.cos(direction);
 
