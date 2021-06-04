@@ -21,11 +21,11 @@ import org.gyming.tank.object.SupplyObject;
 import java.util.Random;
 
 public class MainScreen extends ScreenAdapter {
-    static int fireGap = 0;
     public static int boarder = 800;
     public static int supplies = 0;
-    public static int width,height;
-    public static Random datamaker;
+    public static int width, height;
+    public static Random dataMaker;
+    static int fireGap = 0;
     TankGame game;
     Stage stage;
 
@@ -33,11 +33,22 @@ public class MainScreen extends ScreenAdapter {
         this.stage = new Stage();
         this.game = game;
         stage.addActor(new PlayerObject(0, 0, 50, 50, PlayerObject.playerHP, 0, "f", game, stage));
-        stage.addActor(makeBackGround(3840, 2160, boarder, 30));
-
+        stage.addActor(makeBackground(3840, 2160, boarder, 30));
     }
 
-    public Image makeBackGround(int width, int height, int delta, int lineDelta) {
+    public static boolean isInside(GameObject A) {
+        if (A.getPlayerID() == 0)
+            return true;
+        System.out.println(A.getPosX());
+        System.out.println(A.getPosY());
+        if (A.getPosX() < boarder || A.getPosX() > width + boarder)
+            return false;
+        if (A.getPosY() < boarder || A.getPosY() > height + boarder)
+            return false;
+        return true;
+    }
+
+    public Image makeBackground(int width, int height, int delta, int lineDelta) {
         this.width = width;
         this.height = height;
         int newHeight = height + 2 * delta, newWidth = width + 2 * delta;
@@ -63,20 +74,6 @@ public class MainScreen extends ScreenAdapter {
         image.setZIndex(0);
         return image;
     }
-
-    public static boolean IsInside(GameObject A) {
-
-        if(A.getPlayerID()==0)
-            return true;
-        System.out.println(A.getPosX());
-        System.out.println(A.getPosY());
-        if(A.getPosX()<boarder||A.getPosX()>width+boarder)
-            return false;
-        if(A.getPosY()<boarder||A.getPosY()>height+boarder)
-            return false;
-        return true;
-    }
-
 
     public void updateFrame(GameFrame gameFrame) {
         for (GameAction i : gameFrame.frameList) {
@@ -119,7 +116,7 @@ public class MainScreen extends ScreenAdapter {
                         if (B instanceof BulletObject)
                             B.setHp(0);
                         else if (B instanceof PlayerObject || B instanceof SupplyObject) {
-                            B.setDirection((float) (Math.PI*2-B.getDirection()));
+                            B.setDirection((float) (Math.PI * 2 - B.getDirection()));
                             B.setHp(B.getHp() - 10);
                             System.out.println("FUCK");
                             if (B.getHp() < 0) {
@@ -128,7 +125,7 @@ public class MainScreen extends ScreenAdapter {
                         }
                     }
                     else if (A instanceof PlayerObject) {
-                        A.setSpeed(-1*A.getSpeed());
+                        A.setSpeed(-1 * A.getSpeed());
                         if (B instanceof BulletObject) {
 //                            System.out.println("FUCK");
                             A.setHp(A.getHp() - 10);
@@ -148,11 +145,11 @@ public class MainScreen extends ScreenAdapter {
                             if (B.getHp() < 0) {
                                 // add EXP to A.playerid
                             }
-                            B.setDirection((float) (Math.PI*2-B.getDirection()));
+                            B.setDirection((float) (Math.PI * 2 - B.getDirection()));
                         }
                     }
                     else if (A instanceof SupplyObject) {
-                        A.setDirection((float) (Math.PI*2-A.getDirection()));
+                        A.setDirection((float) (Math.PI * 2 - A.getDirection()));
                         System.out.println("FUCK");
                         if (B instanceof BulletObject) {
                             A.setHp(A.getHp() - 10);
@@ -163,11 +160,11 @@ public class MainScreen extends ScreenAdapter {
                         }
                         else if (B instanceof PlayerObject || B instanceof SupplyObject) {
                             System.out.println("FUCK");
-                            if(B instanceof PlayerObject) {
+                            if (B instanceof PlayerObject) {
                                 A.setHp(A.getHp() - 5);
                                 B.setHp(B.getHp() - 5);
                             }
-                            B.setDirection((float) (Math.PI*2-B.getDirection()));
+                            B.setDirection((float) (Math.PI * 2 - B.getDirection()));
                             if (A.getHp() < 0) {
                                 if (B instanceof PlayerObject) {
                                     // add EXP to B.playerid
@@ -219,39 +216,37 @@ public class MainScreen extends ScreenAdapter {
         }
     }
 
-    private void GenerateSup(double X,double Y) {
-        double r = datamaker.nextGaussian()*40+200;
-        int size = (int)(datamaker.nextGaussian()*5+12);
-        if(size<=0)
+    private void GenerateSup(double X, double Y) {
+        double r = dataMaker.nextGaussian() * 40 + 200;
+        int size = (int) (dataMaker.nextGaussian() * 5 + 12);
+        if (size <= 0)
             return;
-        supplies+=size;
-        while((size--)!=0)
-        {
-            double theta = 2*Math.PI*datamaker.nextFloat();
-            double delta = (0.5+datamaker.nextGaussian()*0.1)*r;
-            stage.addActor(new SupplyObject(0f,0,(float) (X+delta*Math.cos(theta)),(float) (Y+delta*Math.sin(theta)),50,game,stage));
+        supplies += size;
+        while ((size--) != 0) {
+            double theta = 2 * MathUtils.PI * dataMaker.nextFloat();
+            double delta = (0.5 + dataMaker.nextGaussian() * 0.1) * r;
+            stage.addActor(new SupplyObject(0f, 0, (float) (X + delta * Math.cos(theta)), (float) (Y + delta * Math.sin(theta)), 50, game, stage));
         }
     }
 
-    private void KeepSup(){
-        if(supplies<20) {
+    private void KeepSup() {
+        if (supplies < 20) {
             while (supplies < 60) {
                 double X, Y;
-                X = width / 2 + datamaker.nextGaussian() * 1000 + boarder;
-                Y = height / 2 + datamaker.nextGaussian() * 500 + boarder;
-                GenerateSup(X,Y);
+                X = width / 2 + dataMaker.nextGaussian() * 1000 + boarder;
+                Y = height / 2 + dataMaker.nextGaussian() * 500 + boarder;
+                GenerateSup(X, Y);
             }
         }
     }
 
-
     @Override
     public void show() {
-        datamaker = new Random(game.getRoomName().hashCode());
+        dataMaker = new Random(game.getRoomName().hashCode());
         game.playerID = game.getUserName().hashCode();
         Gson gson = new Gson();
         try {
-            game.queue.put(gson.toJson(new GameAction("NewPlayer", boarder+100, 0, game.getUserName(), boarder+100)));
+            game.queue.put(gson.toJson(new GameAction("NewPlayer", boarder + 100, 0, game.getUserName(), boarder + 100)));
         }
         catch (Exception e) {
             e.printStackTrace();

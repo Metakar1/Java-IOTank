@@ -27,4 +27,8 @@ public class MsgIO {
     public boolean isConnect() {
         return !socket.isClosed();
     }
+
+    public void closeConnection() throws IOException {
+        socket.close();
+    }
 }
