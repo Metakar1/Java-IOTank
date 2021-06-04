@@ -12,7 +12,7 @@ public class DesktopLauncher {
         config.title = "Tank Game";
         config.width = 1500;
         config.height = 900;
-        config.foregroundFPS = 60;
+        config.foregroundFPS = 100;
 //        config.backgroundFPS = 110;
         new LwjglApplication(new TankGame(), config);
     }

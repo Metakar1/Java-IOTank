@@ -34,6 +34,7 @@ public class MainScreen extends ScreenAdapter {
                 game.download.poll();
                 stage.act(0);
                 checkCollision();
+                listenKey();
             }
         }
     }
@@ -247,7 +248,6 @@ public class MainScreen extends ScreenAdapter {
 //        updateAct.suspend();
 
         ScreenUtils.clear(0, 0, 0, 0);
-        listenKey();
 //        updateLock = true;
 
         stage.draw();
