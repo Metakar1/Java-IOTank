@@ -18,9 +18,13 @@ import org.gyming.tank.object.GameObject;
 import org.gyming.tank.object.PlayerObject;
 import org.gyming.tank.object.SupplyObject;
 
+import java.util.Random;
+
 public class MainScreen extends ScreenAdapter {
     static int fireGap = 0;
     static int boarder = 800;
+    static int supplies = 0;
+    Random datamaker;
     TankGame game;
     Stage stage;
 
@@ -29,6 +33,7 @@ public class MainScreen extends ScreenAdapter {
         this.game = game;
         stage.addActor(new PlayerObject(0, 0, 50, 50, PlayerObject.playerHP, 0, "f", game, stage));
         stage.addActor(makeBackGround(3840, 2160, boarder, 40));
+        datamaker = new Random(game.getRoomName().hashCode());
     }
 
     public Image makeBackGround(int width, int height, int delta, int lineDelta) {
@@ -186,6 +191,32 @@ public class MainScreen extends ScreenAdapter {
             e.printStackTrace();
         }
     }
+
+    private void GenerateSup(double X,double Y) {
+        double r = datamaker.nextGaussian()*20+100;
+        int size = (int)(datamaker.nextGaussian()*5+12);
+        if(size<=0)
+            return;
+        supplies+=size;
+        while((size--)!=0)
+        {
+            double theta = 2*Math.PI*datamaker.nextFloat();
+            double delta = (0.5+datamaker.nextGaussian()*0.1)*r;
+            stage.addActor(new SupplyObject(1,0,(float) (X+delta*Math.cos(theta)),(float) (Y+delta*Math.sin(theta)),50,game,stage));
+        }
+    }
+
+    private void KeepSup(){
+        if(supplies<20) {
+            while (supplies < 40) {
+                double X, Y;
+                X = 3840 / 2 + datamaker.nextGaussian() * 1000;
+                Y = 2160 / 2 + datamaker.nextGaussian() * 500;
+                GenerateSup(X,Y);
+            }
+        }
+    }
+
 
     @Override
     public void show() {
