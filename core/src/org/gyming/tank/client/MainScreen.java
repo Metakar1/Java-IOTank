@@ -29,7 +29,7 @@ public class MainScreen extends ScreenAdapter {
         this.stage = new Stage();
         this.game = game;
         stage.addActor(new PlayerObject(0, 0, 50, 50, PlayerObject.playerHP, 0, "f", game, stage));
-        stage.addActor(makeBackGround(3840, 2160, boarder, 20));
+        stage.addActor(makeBackGround(3840, 2160, boarder, 40));
     }
 
     public Image makeBackGround(int width, int height, int delta, int lineDelta) {
@@ -216,6 +216,13 @@ public class MainScreen extends ScreenAdapter {
     public void render(float delta) {
         ScreenUtils.clear(0, 0, 0, 0);
         listenKey();
+        GameFrame g = game.download.peek();
+        while(g==null) {
+            g = game.download.peek();
+
+        }
+        game.download.poll();
+        updateFrame(g);
         stage.act(delta);
         checkCollision();
         stage.draw();

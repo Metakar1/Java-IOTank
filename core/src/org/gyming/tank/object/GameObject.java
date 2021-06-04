@@ -63,7 +63,7 @@ abstract public class GameObject extends Actor {
 
         int flag = 1;
         GameFrame actions = game.actionGroup.modify.get(identifier);
-        game.actionGroup.modify.put(identifier,new GameFrame(0));
+//        game.actionGroup.modify.put(identifier,null);
         if (actions != null) {
             for (GameAction i : actions.frameList) {
 //                System.out.println(i.getType());

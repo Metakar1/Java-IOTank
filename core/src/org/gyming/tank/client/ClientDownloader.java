@@ -1,5 +1,6 @@
 package org.gyming.tank.client;
 
+import com.badlogic.gdx.Gdx;
 import com.google.gson.Gson;
 import org.gyming.tank.connection.GameAction;
 import org.gyming.tank.connection.GameFrame;
@@ -22,11 +23,18 @@ public class ClientDownloader implements Runnable {
                 Gson gson = new Gson();
                 g = gson.fromJson(S2C.receive(), GameFrame.class);
                 game.download.offer(g);
-                if (g.frameList.size() != 0) {
-                    System.out.print(TankGame.test1);
-                    System.out.print("        ");
-                    System.out.println(TankGame.test2);
-                }
+                GameFrame gg = game.download.peek();
+//                while(g==null) {
+//                    g = game.download.peek();
+//                }
+                game.download.poll();
+                game.mainScreen.updateFrame(gg);
+                Gdx.graphics.requestRendering();
+//                if (g.frameList.size() != 0) {
+//                    System.out.print(TankGame.test1);
+//                    System.out.print("        ");
+//                    System.out.println(TankGame.test2);
+//                }
             }
             catch (Exception e) {
                 e.printStackTrace();
