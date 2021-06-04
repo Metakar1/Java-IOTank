@@ -4,6 +4,78 @@ size: 1024,1024
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
+button-down-blue
+  rotate: false
+  xy: 257, 170
+  size: 49, 35
+  split: 4, 4, 4, 4
+  orig: 49, 35
+  offset: 0, 0
+  index: -1
+button-down-gray
+  rotate: false
+  xy: 515, 647
+  size: 49, 35
+  split: 4, 4, 4, 4
+  orig: 49, 35
+  offset: 0, 0
+  index: -1
+button-down-red
+  rotate: false
+  xy: 566, 684
+  size: 49, 35
+  split: 4, 4, 4, 4
+  orig: 49, 35
+  offset: 0, 0
+  index: -1
+button-over-blue
+  rotate: false
+  xy: 1, 54
+  size: 49, 35
+  split: 4, 4, 4, 4
+  orig: 49, 35
+  offset: 0, 0
+  index: -1
+button-over-gray
+  rotate: false
+  xy: 52, 91
+  size: 49, 35
+  split: 4, 4, 4, 4
+  orig: 49, 35
+  offset: 0, 0
+  index: -1
+button-over-red
+  rotate: false
+  xy: 257, 133
+  size: 49, 35
+  split: 4, 4, 4, 4
+  orig: 49, 35
+  offset: 0, 0
+  index: -1
+button-up-blue
+  rotate: false
+  xy: 308, 170
+  size: 49, 35
+  split: 4, 4, 4, 4
+  orig: 49, 35
+  offset: 0, 0
+  index: -1
+button-up-gray
+  rotate: false
+  xy: 515, 610
+  size: 49, 35
+  split: 4, 4, 4, 4
+  orig: 49, 35
+  offset: 0, 0
+  index: -1
+button-up-red
+  rotate: false
+  xy: 566, 647
+  size: 49, 35
+  split: 4, 4, 4, 4
+  orig: 49, 35
+  offset: 0, 0
+  index: -1
 check-off
   rotate: false
   xy: 308, 154
@@ -229,78 +301,6 @@ white
   xy: 324, 165
   size: 3, 3
   orig: 3, 3
-  offset: 0, 0
-  index: -1
-button-down-blue
-  rotate: false
-  xy: 257, 170
-  size: 49, 35
-  split: 4, 4, 4, 4
-  orig: 49, 35
-  offset: 0, 0
-  index: -1
-button-down-gray
-  rotate: false
-  xy: 515, 647
-  size: 49, 35
-  split: 4, 4, 4, 4
-  orig: 49, 35
-  offset: 0, 0
-  index: -1
-button-down-red
-  rotate: false
-  xy: 566, 684
-  size: 49, 35
-  split: 4, 4, 4, 4
-  orig: 49, 35
-  offset: 0, 0
-  index: -1
-button-over-blue
-  rotate: false
-  xy: 1, 54
-  size: 49, 35
-  split: 4, 4, 4, 4
-  orig: 49, 35
-  offset: 0, 0
-  index: -1
-button-over-gray
-  rotate: false
-  xy: 52, 91
-  size: 49, 35
-  split: 4, 4, 4, 4
-  orig: 49, 35
-  offset: 0, 0
-  index: -1
-button-over-red
-  rotate: false
-  xy: 257, 133
-  size: 49, 35
-  split: 4, 4, 4, 4
-  orig: 49, 35
-  offset: 0, 0
-  index: -1
-button-up-blue
-  rotate: false
-  xy: 308, 170
-  size: 49, 35
-  split: 4, 4, 4, 4
-  orig: 49, 35
-  offset: 0, 0
-  index: -1
-button-up-gray
-  rotate: false
-  xy: 515, 610
-  size: 49, 35
-  split: 4, 4, 4, 4
-  orig: 49, 35
-  offset: 0, 0
-  index: -1
-button-up-red
-  rotate: false
-  xy: 566, 647
-  size: 49, 35
-  split: 4, 4, 4, 4
-  orig: 49, 35
   offset: 0, 0
   index: -1
 window

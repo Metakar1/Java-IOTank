@@ -60,8 +60,8 @@ abstract public class GameObject extends Actor {
     @Override
     public void act(float delta) {
         if(this instanceof SupplyObject) {
-            if(MainScreen.datamaker.nextFloat()<0.01) {
-                direction = (float) ((float) MainScreen.datamaker.nextFloat() * 2 * Math.PI);
+            if(MainScreen.dataMaker.nextFloat()<0.01) {
+                direction = (float) ((float) MainScreen.dataMaker.nextFloat() * 2 * Math.PI);
                 speed = 0.1f;
             }
         }
@@ -113,10 +113,14 @@ abstract public class GameObject extends Actor {
             if (flag == 1) recoverSpeed();
             actions.frameList.clear();
         }
-        if ((this instanceof PlayerObject) && (this.identifier == game.playerID))
+        if ((this instanceof PlayerObject) && (this.identifier == game.playerID)) {
             stage.getCamera().position.set(posX + texture.getWidth() / 2f, posY + texture.getHeight() / 2f, 0);
+            if (getHp() <= 0) {
+                game.setScreen(game.gameOverScreen);
+            }
+        }
         try {
-            if (getHp() <= 0|| (!MainScreen.IsInside(this) && (this instanceof BulletObject)))
+            if (getHp() <= 0|| (!MainScreen.isInside(this) && (this instanceof BulletObject)))
                 game.toBeDeleted.put(this);
         }
         catch (Exception e) {

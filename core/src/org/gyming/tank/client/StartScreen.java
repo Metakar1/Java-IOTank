@@ -2,86 +2,35 @@ package org.gyming.tank.client;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.Json;
-import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 public class StartScreen extends ScreenAdapter {
-    private final BitmapFont font;
-    private final Skin skin;
+    private final TankGame game;
     private final TextField serverAddressField, portField, userField, roomField;
     private final Dialog messageDialog;
     private final Stage startStage;
 
     public StartScreen(final TankGame game) {
-        font = new BitmapFont();
-        skin = new Skin(Gdx.files.internal("skin.json")) {
-            //Override json loader to process FreeType fonts from skin JSON
-            @Override
-            protected Json getJsonLoader(final FileHandle skinFile) {
-                Json json = super.getJsonLoader(skinFile);
-                final Skin skin = this;
-
-                json.setSerializer(FreeTypeFontGenerator.class, new Json.ReadOnlySerializer<FreeTypeFontGenerator>() {
-                    @Override
-                    public FreeTypeFontGenerator read(Json json,
-                                                      JsonValue jsonData, Class type) {
-                        String path = json.readValue("font", String.class, jsonData);
-                        jsonData.remove("font");
-
-                        FreeTypeFontGenerator.Hinting hinting = FreeTypeFontGenerator.Hinting.valueOf(json.readValue("hinting",
-                                String.class, "AutoMedium", jsonData));
-                        jsonData.remove("hinting");
-
-                        Texture.TextureFilter minFilter = Texture.TextureFilter.valueOf(
-                                json.readValue("minFilter", String.class, "Nearest", jsonData));
-                        jsonData.remove("minFilter");
-
-                        Texture.TextureFilter magFilter = Texture.TextureFilter.valueOf(
-                                json.readValue("magFilter", String.class, "Nearest", jsonData));
-                        jsonData.remove("magFilter");
-
-                        FreeTypeFontGenerator.FreeTypeFontParameter parameter = json.readValue(FreeTypeFontGenerator.FreeTypeFontParameter.class, jsonData);
-                        parameter.hinting = hinting;
-                        parameter.minFilter = minFilter;
-                        parameter.magFilter = magFilter;
-                        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(skinFile.parent().child(path));
-                        BitmapFont font = generator.generateFont(parameter);
-                        skin.add(jsonData.name, font);
-                        if (parameter.incremental) {
-                            generator.dispose();
-                            return null;
-                        }
-                        else {
-                            return generator;
-                        }
-                    }
-                });
-
-                return json;
-            }
-        };
-
-        serverAddressField = new TextField("10.44.0.188", skin, "textfield-tank");
-        portField = new TextField("7650", skin, "textfield-tank");
-        userField = new TextField("", skin, "textfield-tank");
-        roomField = new TextField("", skin, "textfield-tank");
+        this.game = game;
+        serverAddressField = new TextField("", game.skin, "textfield-tank");
+        portField = new TextField("", game.skin, "textfield-tank");
+        userField = new TextField("", game.skin, "textfield-tank");
+        roomField = new TextField("", game.skin, "textfield-tank");
         serverAddressField.setMessageText("Input the server address.");
         portField.setMessageText("Input the server port.");
         userField.setMessageText("Input your username.");
         roomField.setMessageText("Input the room name.");
-        TextButton confirmButton = new TextButton("OK", skin, "textbutton-tank-red");
-        messageDialog = new Dialog("Error", skin, "window-tank");
-        messageDialog.text("Username and room name cannot be empty.", skin.get("label-tank", Label.LabelStyle.class));
-        messageDialog.button("OK", true, skin.get("textbutton-tank-gray",
+        TextButton confirmButton = new TextButton("OK", game.skin, "textbutton-tank-red");
+        messageDialog = new Dialog("Error", game.skin, "window-tank");
+        messageDialog.text("Username and room name cannot be empty.", game.skin.get("label-tank", Label.LabelStyle.class));
+        messageDialog.button("OK", true, game.skin.get("textbutton-tank-gray",
                 TextButton.TextButtonStyle.class)).addListener(new ClickListener() {
         });
         confirmButton.addListener(new ClickListener() {
@@ -122,19 +71,21 @@ public class StartScreen extends ScreenAdapter {
     @Override
     public void show() {
         Gdx.input.setInputProcessor(startStage);
+        userField.setText("");
+        roomField.setText("");
+        serverAddressField.setText("10.44.0.188");
+        portField.setText("7650");
     }
 
     @Override
     public void render(float delta) {
-        ScreenUtils.clear(skin.getColor("gray"));
+        ScreenUtils.clear(game.skin.getColor("gray"));
         startStage.act();
         startStage.draw();
     }
 
     @Override
     public void dispose() {
-        font.dispose();
-        skin.dispose();
         startStage.dispose();
     }
 }
