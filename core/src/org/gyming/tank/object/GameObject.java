@@ -33,10 +33,11 @@ abstract public class GameObject extends Actor {
         this.posY = posY;
         this.hp = hp;
         this.game = game;
-        texture = createTexture();
+//        texture = createTexture();
+        texture = null;
         this.stage = stage;
 //        region = createRegion();
-        setSize(this.texture.getWidth(), this.texture.getHeight());
+
         this.area = new Rectangle();
     }
 
@@ -59,7 +60,7 @@ abstract public class GameObject extends Actor {
         posX += speed * MathUtils.sin(direction);
         posY += speed * MathUtils.cos(direction);
 
-        area.set(posX, posY, texture.getWidth(), texture.getHeight());
+
 
         int flag = 1;
         GameFrame actions = game.actionGroup.modify.get(identifier);
@@ -106,6 +107,10 @@ abstract public class GameObject extends Actor {
     @Override
     public void draw(Batch batch, float parentAlpha) {
 //        System.out.println(t);
+        if(texture == null) texture = createTexture();
+        setSize(this.texture.getWidth(), this.texture.getHeight());
+        area.set(posX, posY, texture.getWidth(), texture.getHeight());
+
         batch.draw(texture, (float) posX, (float) posY);
     }
 

@@ -19,6 +19,24 @@ import org.gyming.tank.object.PlayerObject;
 import org.gyming.tank.object.SupplyObject;
 
 public class MainScreen extends ScreenAdapter {
+
+    class updateAction implements Runnable {
+
+        @Override
+        public void run() {
+            while (true) {
+                GameFrame g = game.download.peek();
+                while (g == null) {
+                    g = game.download.peek();
+                }
+                updateFrame(g);
+                game.download.poll();
+                stage.act(0);
+                checkCollision();
+            }
+        }
+    }
+
     static int fireGap = 0;
     static int boarder = 800;
     TankGame game;
@@ -192,7 +210,7 @@ public class MainScreen extends ScreenAdapter {
         game.playerID = game.getUserName().hashCode();
         Gson gson = new Gson();
         try {
-            game.queue.put(gson.toJson(new GameAction("NewPlayer", boarder + 100, 0, game.getUserName(), boarder + 100)));
+            game.queue.put(gson.toJson(new GameAction("NewPlayer", boarder, 0, game.getUserName(), boarder)));
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -205,6 +223,9 @@ public class MainScreen extends ScreenAdapter {
             downloader.start();
             listener.start();
             Thread.sleep(1000);
+//            Gdx.graphics.setContinuousRendering(false);
+            Thread updateAct = new Thread(new updateAction());
+            updateAct.start();
         }
         catch (InterruptedException e) {
             e.printStackTrace();
@@ -215,14 +236,9 @@ public class MainScreen extends ScreenAdapter {
     public void render(float delta) {
         ScreenUtils.clear(0, 0, 0, 0);
         listenKey();
-        GameFrame g = game.download.peek();
-        while (g == null) {
-            g = game.download.peek();
-        }
-        updateFrame(g);
-        game.download.poll();
-        stage.act(delta);
-        checkCollision();
+
+//        stage.act(delta);
+
         stage.draw();
     }
 

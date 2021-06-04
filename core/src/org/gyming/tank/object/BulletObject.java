@@ -14,8 +14,8 @@ public class BulletObject extends GameObject {
     public BulletObject(float speed, float direction, float posX, float posY, int hp, int playerID, TankGame game, Stage stage) {
         super(speed, direction, posX, posY, hp, game, stage);
         this.playerID = playerID;
-        this.posX-=texture.getWidth()/2.0f;
-        this.posY-=texture.getHeight()/2.0f;
+        this.posX-=bulletSize;
+        this.posY-=bulletSize;
     }
 
     public final int getPlayerID() {
