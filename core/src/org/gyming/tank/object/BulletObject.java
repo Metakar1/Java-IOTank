@@ -1,5 +1,6 @@
 package org.gyming.tank.object;
 
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import org.gyming.tank.client.TankGame;
@@ -28,7 +29,13 @@ public class BulletObject extends GameObject {
 
     @Override
     protected Texture createTexture() {
-        return drawCircle(bulletSize, colorPool.getUserColor(playerID));
+        Pixmap pixmap = new Pixmap(bulletSize * 2, bulletSize * 2, Pixmap.Format.RGBA8888);
+        pixmap.setColor(colorPool.getUserBoarderColor(playerID));
+        pixmap.fillCircle(bulletSize, bulletSize, bulletSize);
+        pixmap.setColor(colorPool.getUserColor(playerID));
+        pixmap.fillCircle(bulletSize, bulletSize, bulletSize - 3);
+        Texture texture = new Texture(pixmap);
+        return texture;
     }
 
     @Override
