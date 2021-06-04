@@ -33,7 +33,7 @@ public class MainScreen extends ScreenAdapter {
         this.stage = new Stage();
         this.game = game;
         stage.addActor(new PlayerObject(0, 0, 50, 50, PlayerObject.playerHP, 0, "f", game, stage));
-        stage.addActor(makeBackGround(3840, 2160, boarder, 40));
+        stage.addActor(makeBackGround(3840, 2160, boarder, 30));
 
     }
 
@@ -195,16 +195,19 @@ public class MainScreen extends ScreenAdapter {
             if (x != 0 || y != 0) {
                 game.queue.put(gson.toJson(new GameAction("Move", direction, game.playerID, "", 4), GameAction.class));
             }
+            float posX = -(Gdx.graphics.getWidth() / 2f - Gdx.input.getX());
+            float posY = Gdx.graphics.getHeight() / 2f - Gdx.input.getY();
+            float angle = MathUtils.atan2(posX, posY);
             if (Gdx.input.isTouched())
                 if (fireGap >= PlayerObject.playerFireGap) {
-                    float posX = -(Gdx.graphics.getWidth() / 2f - Gdx.input.getX());
-                    float posY = Gdx.graphics.getHeight() / 2f - Gdx.input.getY();
+
                     System.out.println(posX);
                     System.out.println(posY);
-                    float angle = MathUtils.atan2(posX, posY);
+
                     game.queue.put(gson.toJson(new GameAction("Fire", angle, game.playerID, "", 0), GameAction.class));
                     fireGap = 0;
                 }
+            game.queue.put(gson.toJson(new GameAction("Rotate", angle, game.playerID, "", 0), GameAction.class));
         }
         catch (InterruptedException e) {
             e.printStackTrace();
