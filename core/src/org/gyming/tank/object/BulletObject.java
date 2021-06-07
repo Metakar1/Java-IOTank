@@ -2,6 +2,7 @@ package org.gyming.tank.object;
 
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import org.gyming.tank.client.TankGame;
 import org.gyming.tank.connection.GameAction;
@@ -12,8 +13,8 @@ public class BulletObject extends GameObject {
     static int bulletSize = 10;
     private int playerID;
 
-    public BulletObject(float speed, float direction, float posX, float posY, int hp, int playerID, TankGame game, Stage stage) {
-        super(speed, direction, posX, posY, hp, game, stage);
+    public BulletObject(float speed, float direction, float posX, float posY, int hp, int playerID, TankGame game, Stage stage, Group[] group) {
+        super(speed, direction, posX, posY, hp, game, stage, group);
         this.playerID = playerID;
         this.posX -= texture.getWidth() / 2.0f;
         this.posY -= texture.getHeight() / 2.0f;
@@ -50,6 +51,8 @@ public class BulletObject extends GameObject {
 
     public void die() {
         stage.getRoot().removeActor(this);
+        group[1].removeActor(this);
+        group[0].removeActor(this);
         this.setHp(0);
     }
 }

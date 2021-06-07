@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import org.gyming.tank.client.ColorPool;
 import org.gyming.tank.client.MainScreen;
@@ -27,8 +28,9 @@ abstract public class GameObject extends Actor {
     protected Texture texture;
     protected Stage stage;
     protected float gunDirection;
+    protected Group[] group;
 
-    public GameObject(float speed, float direction, float posX, float posY, int hp, TankGame game, Stage stage) {
+    public GameObject(float speed, float direction, float posX, float posY, int hp, TankGame game, Stage stage, Group[] group) {
         this.speed = speed;
         this.direction = direction;
         this.posX = posX;
@@ -37,6 +39,7 @@ abstract public class GameObject extends Actor {
         this.game = game;
         this.texture = createTexture();
         this.stage = stage;
+        this.group = group;
 //        region = createRegion();
         setSize(this.texture.getWidth(), this.texture.getHeight());
         this.area = new Rectangle();
@@ -100,8 +103,8 @@ abstract public class GameObject extends Actor {
                         break;
                     case "NewPlayer":
 //                    System.out.println();
-                        PlayerObject player = new PlayerObject(0, 0, i.getDirection(), i.getValue(), PlayerObject.playerHP, i.getProperty().hashCode(), i.getProperty(), game, stage);
-                        stage.addActor(player);
+                        PlayerObject player = new PlayerObject(0, 0, i.getDirection(), i.getValue(), PlayerObject.playerHP, i.getProperty().hashCode(), i.getProperty(), game, stage, group);
+                        group[1].addActor(player);
                         break;
                     case "Rotate":
                         gunDirection = ((i.getDirection() + MathUtils.PI) / MathUtils.PI2) * 360;

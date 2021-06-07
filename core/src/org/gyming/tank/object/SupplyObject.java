@@ -1,15 +1,17 @@
 package org.gyming.tank.object;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import org.gyming.tank.client.MainScreen;
 import org.gyming.tank.client.TankGame;
 import org.gyming.tank.connection.GameAction;
 
 public class SupplyObject extends GameObject {
-    public SupplyObject(float speed, float direction, float posX, float posY, int hp, TankGame game, Stage stage) {
-        super(speed, direction, posX, posY, hp, game, stage);
+    public SupplyObject(float speed, float direction, float posX, float posY, int hp, TankGame game, Stage stage,Group[] group) {
+        super(speed, direction, posX, posY, hp, game, stage, group);
     }
 
     public final int getPlayerID() {
@@ -39,6 +41,10 @@ public class SupplyObject extends GameObject {
     public void die() {
         stage.getRoot().removeActor(this);
         this.setHp(0);
+        group[1].removeActor(this);
+        group[0].removeActor(this);
         MainScreen.supplies--;
+        System.out.println(MainScreen.supplies);
     }
+
 }

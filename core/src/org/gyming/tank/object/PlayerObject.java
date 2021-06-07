@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import org.gyming.tank.client.TankGame;
 import org.gyming.tank.connection.GameAction;
@@ -25,8 +26,8 @@ public class PlayerObject extends GameObject {
 //    public static int playerGunWidth =
 
     public PlayerObject(float speed, float direction, float posX, float posY, int hp, int playerID,
-                        String playerName, TankGame game, Stage stage) {
-        super(speed, direction, posX, posY, hp, game, stage);
+                        String playerName, TankGame game, Stage stage, Group[] group) {
+        super(speed, direction, posX, posY, hp, game, stage, group);
         this.playerID = playerID;
         this.playerName = playerName;
         this.stage = stage;
@@ -87,8 +88,10 @@ public class PlayerObject extends GameObject {
         float rx = posX + PlayerObject.cirR +1;
         float ry = posY + texture.getHeight()-(PlayerObject.cirR+PlayerObject.gunHeight-PlayerObject.boarder*2)-1;
         System.out.println(Float.toString(diffX)+" "+Float.toString(diffY));
-        BulletObject bullet = new BulletObject(BulletObject.bulletSpeed, action.getDirection(), rx, ry, BulletObject.bulletHP, playerID, game, stage);
-        stage.addActor(bullet);
+        rx += 40*MathUtils.sin((360-gunDirection)/180*(float) Math.PI);
+        ry += 40*MathUtils.cos((360-gunDirection)/180*(float) Math.PI);
+        BulletObject bullet = new BulletObject(BulletObject.bulletSpeed, action.getDirection(), rx, ry, BulletObject.bulletHP, playerID, game, stage, group);
+        group[0].addActor(bullet);
     }
 
     @Override
@@ -103,6 +106,8 @@ public class PlayerObject extends GameObject {
 
     public void die() {
         stage.getRoot().removeActor(this);
+        group[1].removeActor(this);
+        group[0].removeActor(this);
         this.setHp(0);
     }
 }
