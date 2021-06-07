@@ -1,6 +1,5 @@
 package org.gyming.tank.object;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -42,5 +41,4 @@ public class SupplyObject extends GameObject {
         this.setHp(0);
         MainScreen.supplies--;
     }
-
 }

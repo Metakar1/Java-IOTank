@@ -20,7 +20,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 public class TankGame extends Game {
     public static int test1 = 0, test2 = 0;
-    public int playerID;
+    public int playerID, playerMP;
     public int nowFrame, lastFireFrame;
     public ActionGroup actionGroup;
     public LinkedBlockingQueue<GameObject> toBeDeleted;

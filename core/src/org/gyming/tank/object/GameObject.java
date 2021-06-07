@@ -104,8 +104,8 @@ abstract public class GameObject extends Actor {
                         stage.addActor(player);
                         break;
                     case "Rotate":
-                        gunDirection = ((i.getDirection()+MathUtils.PI)/MathUtils.PI2)*360;
-                        gunDirection = (360-(gunDirection+180.f)%360.f)%360.f;
+                        gunDirection = ((i.getDirection() + MathUtils.PI) / MathUtils.PI2) * 360;
+                        gunDirection = (360 - (gunDirection + 180.f) % 360.f) % 360.f;
 //                        System.out.println(gunDirection);
                         break;
                 }
@@ -131,10 +131,11 @@ abstract public class GameObject extends Actor {
     @Override
     public void draw(Batch batch, float parentAlpha) {
 //        System.out.println(t);
-        if(this instanceof PlayerObject) {
-            batch.draw(texture,posX,posY,PlayerObject.cirR +1,texture.getHeight()-(PlayerObject.cirR+PlayerObject.gunHeight-PlayerObject.boarder*2)-1,texture.getWidth(),texture.getHeight(),1f,1f,gunDirection,0,0,texture.getWidth(),texture.getHeight(),false,false);
-        } else {
-            batch.draw(texture,posX,posY,texture.getWidth()/2f,texture.getHeight()/2f,texture.getWidth(),texture.getHeight(),1,1,180,0,0,texture.getWidth(),texture.getHeight(),false,false);
+        if (this instanceof PlayerObject) {
+            batch.draw(texture, posX, posY, PlayerObject.cirR + 1, texture.getHeight() - (PlayerObject.cirR + PlayerObject.gunHeight - PlayerObject.boarder * 2) - 1, texture.getWidth(), texture.getHeight(), 1f, 1f, gunDirection, 0, 0, texture.getWidth(), texture.getHeight(), false, false);
+        }
+        else {
+            batch.draw(texture, posX, posY, texture.getWidth() / 2f, texture.getHeight() / 2f, texture.getWidth(), texture.getHeight(), 1, 1, 180, 0, 0, texture.getWidth(), texture.getHeight(), false, false);
         }
 
 //        batch.draw(texture, (float) posX, (float) posY);

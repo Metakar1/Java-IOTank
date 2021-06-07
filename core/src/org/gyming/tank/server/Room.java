@@ -24,7 +24,7 @@ public class Room implements Runnable {
             boolean hasClient = false;
             for (Client client : clients) {
                 startState = true;
-                if(client.endState) {
+                if (client.endState) {
                     continue;
                 }
                 hasClient = true;
@@ -43,7 +43,7 @@ public class Room implements Runnable {
             }
             frameID++;
             totFrame.add(sumFrame);
-            if(!hasClient) endState = true;
+            if (!hasClient) endState = true;
         }
     };
 

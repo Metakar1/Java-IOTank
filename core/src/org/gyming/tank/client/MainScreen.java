@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.google.gson.Gson;
 import org.gyming.tank.connection.GameAction;
@@ -27,10 +28,11 @@ public class MainScreen extends ScreenAdapter {
     public static Random dataMaker;
     static int fireGap = 0;
     TankGame game;
-    Stage stage;
+    Stage stage, uiStage;
 
     public MainScreen(TankGame game) {
         this.stage = new Stage();
+        this.uiStage = new Stage();
         this.game = game;
         stage.addActor(new PlayerObject(0, 0, 50, 50, PlayerObject.playerHP, 0, "f", game, stage));
         stage.addActor(makeBackground(3840, 2160, boarder, 30));
@@ -46,11 +48,24 @@ public class MainScreen extends ScreenAdapter {
         if (A.getPosY() < boarder || A.getPosY() > height + boarder)
             return false;
         return true;
-}
+    }
+
+    public static boolean IsInside(GameObject A) {
+
+        if (A.getPlayerID() == 0)
+            return true;
+//        System.out.println(A.getPosX());
+//        System.out.println(A.getPosY());
+        if (A.getPosX() < boarder || A.getPosX() > width + boarder)
+            return false;
+        if (A.getPosY() < boarder || A.getPosY() > height + boarder)
+            return false;
+        return true;
+    }
 
     public Image makeBackground(int width, int height, int delta, int lineDelta) {
-        this.width = width;
-        this.height = height;
+        MainScreen.width = width;
+        MainScreen.height = height;
         int newHeight = height + 2 * delta, newWidth = width + 2 * delta;
         Pixmap pixmap = new Pixmap(newWidth, newHeight, Pixmap.Format.RGBA8888);
         Color backColor = new Color(205.f / 255, 205.f / 255, 205.f / 255, 1);
@@ -74,20 +89,6 @@ public class MainScreen extends ScreenAdapter {
         image.setZIndex(0);
         return image;
     }
-
-    public static boolean IsInside(GameObject A) {
-
-        if(A.getPlayerID()==0)
-            return true;
-//        System.out.println(A.getPosX());
-//        System.out.println(A.getPosY());
-        if(A.getPosX()<boarder||A.getPosX()>width+boarder)
-            return false;
-        if(A.getPosY()<boarder||A.getPosY()>height+boarder)
-            return false;
-        return true;
-    }
-
 
     public void updateFrame(GameFrame gameFrame) {
         for (GameAction i : gameFrame.frameList) {
@@ -133,8 +134,12 @@ public class MainScreen extends ScreenAdapter {
                             B.setDirection((float) (Math.PI * 2 - B.getDirection()));
                             B.setHp(B.getHp() - 10);
 //                            System.out.println("FUCK");
-                            if (B.getHp() < 0) {
-                                //add EXP to A.player
+                            if (B.getHp() <= 0) {
+                                if (A.getPlayerID() == game.playerID) {
+                                    game.playerMP++;
+                                    System.out.println(game.playerID);
+                                    System.out.println(A.getPlayerID());
+                                }
                             }
                         }
                     }
@@ -144,20 +149,32 @@ public class MainScreen extends ScreenAdapter {
 //                            System.out.println("FUCK");
                             A.setHp(A.getHp() - 10);
                             B.setHp(0);
-                            if (A.getHp() < 0) {
-                                // Add EXP to B.player
+                            if (A.getHp() <= 0) {
+                                if (B.getPlayerID() == game.playerID) {
+                                    game.playerMP++;
+                                    System.out.println(game.playerID);
+                                    System.out.println(B.getPlayerID());
+                                }
                             }
                         }
                         else if (B instanceof PlayerObject || B instanceof SupplyObject) {
                             A.setHp(A.getHp() - 5);
                             B.setHp(B.getHp() - 5);
-                            if (A.getHp() < 0) {
+                            if (A.getHp() <= 0) {
                                 if (B instanceof PlayerObject) {
-                                    // add EXP to B.playerid
+                                    if (B.getPlayerID() == game.playerID) {
+                                        game.playerMP++;
+                                        System.out.println(game.playerID);
+                                        System.out.println(B.getPlayerID());
+                                    }
                                 }
                             }
-                            if (B.getHp() < 0) {
-                                // add EXP to A.playerid
+                            if (B.getHp() <= 0) {
+                                if (A.getPlayerID() == game.playerID) {
+                                    game.playerMP++;
+                                    System.out.println(game.playerID);
+                                    System.out.println(A.getPlayerID());
+                                }
                             }
                             B.setDirection((float) (Math.PI * 2 - B.getDirection()));
                         }
@@ -168,20 +185,28 @@ public class MainScreen extends ScreenAdapter {
                         if (B instanceof BulletObject) {
                             A.setHp(A.getHp() - 10);
                             B.setHp(0);
-                            if (A.getHp() < 0) {
-                                // Add EXP to B.player
+                            if (A.getHp() <= 0) {
+                                if (B.getPlayerID() == game.playerID) {
+                                    game.playerMP++;
+                                    System.out.println(game.playerID);
+                                    System.out.println(B.getPlayerID());
+                                }
                             }
                         }
                         else if (B instanceof PlayerObject || B instanceof SupplyObject) {
 //                            System.out.println("FUCK");
-                            if(B instanceof PlayerObject) {
+                            if (B instanceof PlayerObject) {
                                 A.setHp(A.getHp() - 5);
                                 B.setHp(B.getHp() - 5);
                             }
                             B.setDirection((float) (Math.PI * 2 - B.getDirection()));
-                            if (A.getHp() < 0) {
+                            if (A.getHp() <= 0) {
                                 if (B instanceof PlayerObject) {
-                                    // add EXP to B.playerid
+                                    if (B.getPlayerID() == game.playerID) {
+                                        game.playerMP++;
+                                        System.out.println(game.playerID);
+                                        System.out.println(B.getPlayerID());
+                                    }
                                 }
                             }
                         }
@@ -290,9 +315,14 @@ public class MainScreen extends ScreenAdapter {
         updateFrame(g);
         game.download.poll();
         stage.act(delta);
+        uiStage.clear();
+        Label mpLabel = new Label("MP " + game.playerMP + "/10", game.skin, "label-tank");
+        uiStage.addActor(mpLabel);
+        uiStage.act();
         checkCollision();
         keepSup();
         stage.draw();
+        uiStage.draw();
     }
 
     @Override
