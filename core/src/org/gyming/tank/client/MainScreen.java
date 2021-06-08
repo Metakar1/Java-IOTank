@@ -123,18 +123,12 @@ public class MainScreen extends ScreenAdapter {
         for (int i2 = 0; i2 < 2; i2++)
             for (int i = 0; i < group[i2].getChildren().size; i++) {
                 Object[] array = group[i2].getChildren().begin();
-
-                if (array[i] instanceof Image)
-                    continue;
                 GameObject A = (GameObject) array[i];
                 if (A.getHp() <= 0)
                     continue;
                 for (int j2 = 0; j2 < 2; j2++)
                     for (int j = 0; j < group[j2].getChildren().size; j++) {
                         Object[] array2 = group[j2].getChildren().begin();
-
-                        if (array2[j] instanceof Image)
-                            continue;
                         GameObject B = (GameObject) array2[j];
                         if (B.getHp() <= 0)
                             continue;
@@ -162,22 +156,21 @@ public class MainScreen extends ScreenAdapter {
                                         }
                                     }
                                 }
+                            }
                                 else if (A instanceof PlayerObject) {
                                     A.setSpeed(-1 * A.getSpeed());
                                     if (B instanceof BulletObject) {
                                         //                            System.out.println("FUCK");
                                         A.setHp(A.getHp() - 10);
                                         B.setHp(0);
-                                        if (A.getHp() <= 0) {
+                                        if (A.getHp() <= 0)
                                             if (B.getPlayerID() == game.playerID) {
                                                 if (game.playerMP < 10)
                                                     game.playerMP++;
                                                 System.out.println(game.playerID);
                                                 System.out.println(B.getPlayerID());
                                             }
-                                        }
-                                    }
-                                    else if (B instanceof PlayerObject || B instanceof SupplyObject) {
+                                    } else if (B instanceof PlayerObject || B instanceof SupplyObject) {
                                         A.setHp(A.getHp() - 5);
                                         B.setHp(B.getHp() - 5);
                                         if (A.getHp() <= 0) {
@@ -240,7 +233,6 @@ public class MainScreen extends ScreenAdapter {
                         }
                     }
             }
-    }
 
     private void listenKey() {
         float x = 0, y = 0;
