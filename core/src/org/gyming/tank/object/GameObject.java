@@ -147,7 +147,7 @@ abstract public class GameObject extends Actor {
 //        System.out.println(t);
         if (this instanceof PlayerObject) {
             batch.draw(texture, posX, posY, ((PlayerObject)this).cirR + 1, texture.getHeight() - (((PlayerObject)this).cirR + ((PlayerObject)this).gunHeight - PlayerObject.boarder * 2) - 1, texture.getWidth(), texture.getHeight(), 1f, 1f, gunDirection, 0, 0, texture.getWidth(), texture.getHeight(), false, false);
-            ((PlayerObject) this).hpProgress.setPosition(posX,posY-((PlayerObject) this).hpProgress.getHeight());
+            ((PlayerObject) this).hpProgress.setPosition(posX-5,posY-((PlayerObject) this).hpProgress.getHeight());
             ((PlayerObject) this).hpProgress.draw(batch,parentAlpha);
             System.out.println(((PlayerObject)this).cirR + 1);
         }
