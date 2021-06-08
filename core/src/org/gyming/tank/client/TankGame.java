@@ -138,9 +138,9 @@ public class TankGame extends Game {
             }
         };
         characterImage = new Array<>();
-        characterImage.add(new Image(new TextureRegion(new Texture(Gdx.files.internal("1.jpg")), 0, 0, 431, 431)));
-        characterImage.add(new Image(new TextureRegion(new Texture(Gdx.files.internal("2.jpg")), 0, 0, 411, 411)));
-        characterImage.add(new Image(new TextureRegion(new Texture(Gdx.files.internal("3.jpg")), 0, 0, 343, 343)));
+        characterImage.add(new Image(new TextureRegion(new Texture(Gdx.files.internal("0.jpg")), 0, 0, 431, 431)));
+        characterImage.add(new Image(new TextureRegion(new Texture(Gdx.files.internal("1.jpg")), 0, 0, 411, 411)));
+        characterImage.add(new Image(new TextureRegion(new Texture(Gdx.files.internal("2.jpg")), 0, 0, 343, 343)));
         actionGroup = new ActionGroup();
         startScreen = new StartScreen(this);
         mainScreen = new MainScreen(this);
