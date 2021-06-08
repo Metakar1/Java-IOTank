@@ -29,6 +29,7 @@ public class PlayerObject extends GameObject {
 
     public PlayerObject(float speed, float direction, float posX, float posY, int hp, int playerID,
                         String playerName, TankGame game, Stage stage, Group[] group, int type) {
+
         super(speed, direction, posX, posY, hp, game, stage, group);
         if(type==1) {
             playerSize = 30;
@@ -41,7 +42,7 @@ public class PlayerObject extends GameObject {
             cirR = playerSize * ratio - gunHeight / 2;
             boarder = 3 * ratio;
         }
-
+        this.texture = createTexture();
         this.setHp(playerHP);
         this.playerID = playerID;
         this.playerName = playerName;
