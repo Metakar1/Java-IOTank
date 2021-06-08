@@ -11,7 +11,6 @@ import org.gyming.tank.client.TankGame;
 import org.gyming.tank.connection.GameAction;
 
 public class PlayerObject extends GameObject {
-
     public  int playerSize;
     public  int playerSpeed;
     public  int playerHP;
@@ -22,6 +21,7 @@ public class PlayerObject extends GameObject {
     public  int cirR;
     static  int boarder;
     private int playerID;
+    private int playerType;
     private String playerName;
     private Stage stage;
 
@@ -31,6 +31,7 @@ public class PlayerObject extends GameObject {
                         String playerName, TankGame game, Stage stage, Group[] group, int type) {
 
         super(speed, direction, posX, posY, hp, game, stage, group);
+        playerType = type;
         if(type==1) {
             playerSize = 30;
             playerSpeed = 25;

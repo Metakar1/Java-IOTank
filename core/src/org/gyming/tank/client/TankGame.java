@@ -5,8 +5,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonValue;
 import com.google.gson.Gson;
@@ -20,17 +23,19 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 public class TankGame extends Game {
     public static int test1 = 0, test2 = 0;
-    public int playerID, playerMP;
+    public int playerID, playerMP, playerType;
     public int nowFrame, lastFireFrame;
     public ActionGroup actionGroup;
     public LinkedBlockingQueue<GameObject> toBeDeleted;
     public StartScreen startScreen;
     public MainScreen mainScreen;
     public GameOverScreen gameOverScreen;
+    public CharacterSelectionScreen characterSelectionScreen;
     public Skin skin;
     MsgIO S2C, C2S;
     LinkedBlockingQueue<GameFrame> download;
     LinkedBlockingQueue<String> queue;
+    Array<Image> characterImage;
     private String userName, roomName;
     private String serverAddress;
     private int port;
@@ -132,10 +137,15 @@ public class TankGame extends Game {
                 return json;
             }
         };
+        characterImage = new Array<>();
+        characterImage.add(new Image(new TextureRegion(new Texture(Gdx.files.internal("1.jpg")), 0, 0, 431, 431)));
+        characterImage.add(new Image(new TextureRegion(new Texture(Gdx.files.internal("2.jpg")), 0, 0, 411, 411)));
+        characterImage.add(new Image(new TextureRegion(new Texture(Gdx.files.internal("3.jpg")), 0, 0, 343, 343)));
         actionGroup = new ActionGroup();
         startScreen = new StartScreen(this);
         mainScreen = new MainScreen(this);
         gameOverScreen = new GameOverScreen(this);
+        characterSelectionScreen = new CharacterSelectionScreen(this);
         download = new LinkedBlockingQueue<>();
         queue = new LinkedBlockingQueue<>();
         toBeDeleted = new LinkedBlockingQueue<GameObject>();
