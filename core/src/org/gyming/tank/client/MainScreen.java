@@ -40,13 +40,26 @@ public class MainScreen extends ScreenAdapter {
         this.group = new Group[2];
         group[0] = new Group();
         group[1] = new Group();
-        group[0].addActor(new PlayerObject(0, 0, 50, 50, 0, 0, "f", game, stage,group,1));
+        group[0].addActor(new PlayerObject(0, 0, 50, 50, 0, 0, "f", game, stage, group, 1));
         stage.addActor(makeBackground(3840, 2160, boarder, 30));
         this.stage.addActor(group[0]);
         this.stage.addActor(group[1]);
     }
 
     public static boolean isInside(GameObject A) {
+        if (A.getPlayerID() == 0)
+            return true;
+//        System.out.println(A.getPosX());
+//        System.out.println(A.getPosY());
+        if (A.getPosX() < boarder || A.getPosX() > width + boarder)
+            return false;
+        if (A.getPosY() < boarder || A.getPosY() > height + boarder)
+            return false;
+        return true;
+    }
+
+    public static boolean IsInside(GameObject A) {
+
         if (A.getPlayerID() == 0)
             return true;
 //        System.out.println(A.getPosX());
@@ -84,20 +97,6 @@ public class MainScreen extends ScreenAdapter {
         image.setZIndex(0);
         return image;
     }
-
-    public static boolean IsInside(GameObject A) {
-
-        if(A.getPlayerID()==0)
-            return true;
-//        System.out.println(A.getPosX());
-//        System.out.println(A.getPosY());
-        if(A.getPosX()<boarder||A.getPosX()>width+boarder)
-            return false;
-        if(A.getPosY()<boarder||A.getPosY()>height+boarder)
-            return false;
-        return true;
-    }
-
 
     public void updateFrame(GameFrame gameFrame) {
         for (GameAction i : gameFrame.frameList) {
@@ -149,60 +148,84 @@ public class MainScreen extends ScreenAdapter {
                                     B.setDirection((float) (Math.PI * 2 - B.getDirection()));
                                     B.setHp(B.getHp() - 10);
                                     //                            System.out.println("FUCK");
-                                    if (B.getHp() < 0) {
-                                        //add EXP to A.player
-                                    }
-                                }
-                            }
-                            else if (A instanceof PlayerObject) {
-                                A.setSpeed(-1 * A.getSpeed());
-                                if (B instanceof BulletObject) {
-                                    //                            System.out.println("FUCK");
-                                    A.setHp(A.getHp() - 10);
-                                    B.setHp(0);
-                                    if (A.getHp() < 0) {
-                                        // Add EXP to B.player
-                                    }
-                                }
-                                else if (B instanceof PlayerObject || B instanceof SupplyObject) {
-                                    A.setHp(A.getHp() - 5);
-                                    B.setHp(B.getHp() - 5);
-                                    if (A.getHp() < 0) {
-                                        if (B instanceof PlayerObject) {
-                                            // add EXP to B.playerid
+                                    if (B.getHp() <= 0) {
+                                        if (A.getPlayerID() == game.playerID) {
+                                            game.playerMP++;
+                                            System.out.println(game.playerID);
+                                            System.out.println(A.getPlayerID());
                                         }
                                     }
-                                    if (B.getHp() < 0) {
-                                        // add EXP to A.playerid
-                                    }
-                                    B.setDirection((float) (Math.PI * 2 - B.getDirection()));
                                 }
-                            }
-                            else if (A instanceof SupplyObject) {
-                                A.setDirection((float) (Math.PI * 2 - A.getDirection()));
-                                //                        System.out.println("FUCK");
-                                if (B instanceof BulletObject) {
-                                    A.setHp(A.getHp() - 10);
-                                    B.setHp(0);
-                                    if (A.getHp() < 0) {
-                                        // Add EXP to B.player
+                                else if (A instanceof PlayerObject) {
+                                    A.setSpeed(-1 * A.getSpeed());
+                                    if (B instanceof BulletObject) {
+                                        //                            System.out.println("FUCK");
+                                        A.setHp(A.getHp() - 10);
+                                        B.setHp(0);
+                                        if (A.getHp() <= 0) {
+                                            if (B.getPlayerID() == game.playerID) {
+                                                game.playerMP++;
+                                                System.out.println(game.playerID);
+                                                System.out.println(B.getPlayerID());
+                                            }
+                                        }
                                     }
-                                }
-                                else if (B instanceof PlayerObject || B instanceof SupplyObject) {
-                                    //                            System.out.println("FUCK");
-                                    if (B instanceof PlayerObject) {
+                                    else if (B instanceof PlayerObject || B instanceof SupplyObject) {
                                         A.setHp(A.getHp() - 5);
                                         B.setHp(B.getHp() - 5);
+                                        if (A.getHp() <= 0) {
+                                            if (B instanceof PlayerObject) {
+                                                if (B.getPlayerID() == game.playerID) {
+                                                    game.playerMP++;
+                                                    System.out.println(game.playerID);
+                                                    System.out.println(B.getPlayerID());
+                                                }
+                                            }
+                                        }
+                                        if (B.getHp() <= 0) {
+                                            if (A.getPlayerID() == game.playerID) {
+                                                game.playerMP++;
+                                                System.out.println(game.playerID);
+                                                System.out.println(A.getPlayerID());
+                                            }
+                                        }
+                                        B.setDirection((float) (Math.PI * 2 - B.getDirection()));
                                     }
-                                    B.setDirection((float) (Math.PI * 2 - B.getDirection()));
-                                    if (A.getHp() < 0) {
+                                }
+                                else if (A instanceof SupplyObject) {
+                                    A.setDirection((float) (Math.PI * 2 - A.getDirection()));
+                                    //                        System.out.println("FUCK");
+                                    if (B instanceof BulletObject) {
+                                        A.setHp(A.getHp() - 10);
+                                        B.setHp(0);
+                                        if (A.getHp() <= 0) {
+                                            if (B.getPlayerID() == game.playerID) {
+                                                game.playerMP++;
+                                                System.out.println(game.playerID);
+                                                System.out.println(B.getPlayerID());
+                                            }
+                                        }
+                                    }
+                                    else if (B instanceof PlayerObject || B instanceof SupplyObject) {
+                                        //                            System.out.println("FUCK");
                                         if (B instanceof PlayerObject) {
-                                            // add EXP to B.playerid
+                                            A.setHp(A.getHp() - 5);
+                                            B.setHp(B.getHp() - 5);
+                                        }
+                                        B.setDirection((float) (Math.PI * 2 - B.getDirection()));
+                                        if (A.getHp() <= 0) {
+                                            if (B instanceof PlayerObject) {
+                                                if (B.getPlayerID() == game.playerID) {
+                                                    game.playerMP++;
+                                                    System.out.println(game.playerID);
+                                                    System.out.println(B.getPlayerID());
+                                                }
+                                            }
                                         }
                                     }
                                 }
+                                break;
                             }
-                            break;
                         }
                     }
             }
@@ -306,6 +329,10 @@ public class MainScreen extends ScreenAdapter {
         updateFrame(g);
         game.download.poll();
         stage.act(delta);
+        uiStage.clear();
+        Label mpLabel = new Label("MP " + game.playerMP + "/10", game.skin, "label-tank");
+        uiStage.addActor(mpLabel);
+        uiStage.act();
         checkCollision();
         keepSup();
         stage.draw();

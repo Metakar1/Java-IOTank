@@ -46,8 +46,7 @@ public class StartScreen extends ScreenAdapter {
                 game.setPort(Integer.parseInt(portField.getText()));
                 game.setUserName(userField.getText());
                 game.setRoomName(roomField.getText());
-                game.buildConnection();
-                game.setScreen(game.mainScreen);
+                game.setScreen(game.characterSelectionScreen);
             }
         });
 
