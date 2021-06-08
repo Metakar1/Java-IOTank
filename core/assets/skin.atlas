@@ -329,3 +329,20 @@ progress-bar-before-knob
   orig: 9, 12
   offset: 0, 0
   index: -1
+progress-bar
+  rotate: false
+  xy: 308, 156
+  size: 15, 12
+  split: 6, 4, 5, 5
+  pad: 6, 0, 0, 0
+  orig: 15, 12
+  offset: 0, 0
+  index: -1
+progress-bar-before-knob
+  rotate: false
+  xy: 52, 55
+  size: 9, 12
+  split: 0, 6, 0, 0
+  orig: 9, 12
+  offset: 0, 0
+  index: -1
