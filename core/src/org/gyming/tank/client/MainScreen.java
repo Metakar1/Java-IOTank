@@ -283,8 +283,8 @@ public class MainScreen extends ScreenAdapter {
     }
 
     private void keepSup() {
-        if (supplies < 20) {
-            while (supplies < 60) {
+        if (supplies < 30) {
+            while (supplies < 30) {
                 double X, Y;
                 X = width / 2 + dataMaker.nextGaussian() * 1000 + boarder;
                 Y = height / 2 + dataMaker.nextGaussian() * 500 + boarder;
