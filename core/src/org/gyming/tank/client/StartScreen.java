@@ -1,5 +1,6 @@
 package org.gyming.tank.client;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -50,15 +51,29 @@ public class StartScreen extends ScreenAdapter {
             }
         });
 
-        serverAddressField.setSize(300, serverAddressField.getPrefHeight());
-        portField.setSize(300, portField.getPrefHeight());
-        userField.setSize(300, userField.getPrefHeight());
-        roomField.setSize(300, roomField.getPrefHeight());
-        serverAddressField.setPosition((Gdx.graphics.getWidth() - serverAddressField.getWidth()) / 2f, Gdx.graphics.getHeight() / 2f + 100f);
-        portField.setPosition((Gdx.graphics.getWidth() - portField.getWidth()) / 2f, Gdx.graphics.getHeight() / 2f + 50f);
-        userField.setPosition((Gdx.graphics.getWidth() - userField.getWidth()) / 2f, Gdx.graphics.getHeight() / 2f);
-        roomField.setPosition((Gdx.graphics.getWidth() - roomField.getWidth()) / 2f, Gdx.graphics.getHeight() / 2f - 50f);
-        confirmButton.setPosition((Gdx.graphics.getWidth() - confirmButton.getWidth()) / 2f, Gdx.graphics.getHeight() / 2f - 100f);
+        if (Gdx.app.getType() == Application.ApplicationType.Android) {
+            serverAddressField.setSize(800, 100);
+            portField.setSize(800, 100);
+            userField.setSize(800, 100);
+            roomField.setSize(800, 100);
+            confirmButton.setSize(200, 100);
+            serverAddressField.setPosition((Gdx.graphics.getWidth() - serverAddressField.getWidth()) / 2f, Gdx.graphics.getHeight() / 2f + 300f);
+            portField.setPosition((Gdx.graphics.getWidth() - portField.getWidth()) / 2f, Gdx.graphics.getHeight() / 2f + 150f);
+            userField.setPosition((Gdx.graphics.getWidth() - userField.getWidth()) / 2f, Gdx.graphics.getHeight() / 2f);
+            roomField.setPosition((Gdx.graphics.getWidth() - roomField.getWidth()) / 2f, Gdx.graphics.getHeight() / 2f - 150f);
+            confirmButton.setPosition((Gdx.graphics.getWidth() - confirmButton.getWidth()) / 2f, Gdx.graphics.getHeight() / 2f - 300f);
+        }
+        else {
+            serverAddressField.setSize(300, serverAddressField.getPrefHeight());
+            portField.setSize(300, portField.getPrefHeight());
+            userField.setSize(300, userField.getPrefHeight());
+            roomField.setSize(300, roomField.getPrefHeight());
+            serverAddressField.setPosition((Gdx.graphics.getWidth() - serverAddressField.getWidth()) / 2f, Gdx.graphics.getHeight() / 2f + 100f);
+            portField.setPosition((Gdx.graphics.getWidth() - portField.getWidth()) / 2f, Gdx.graphics.getHeight() / 2f + 50f);
+            userField.setPosition((Gdx.graphics.getWidth() - userField.getWidth()) / 2f, Gdx.graphics.getHeight() / 2f);
+            roomField.setPosition((Gdx.graphics.getWidth() - roomField.getWidth()) / 2f, Gdx.graphics.getHeight() / 2f - 50f);
+            confirmButton.setPosition((Gdx.graphics.getWidth() - confirmButton.getWidth()) / 2f, Gdx.graphics.getHeight() / 2f - 100f);
+        }
 
         startStage = new Stage();
         startStage.addActor(serverAddressField);
