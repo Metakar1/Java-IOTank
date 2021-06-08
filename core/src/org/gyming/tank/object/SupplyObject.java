@@ -3,8 +3,10 @@ package org.gyming.tank.object;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import org.gyming.tank.client.MainScreen;
 import org.gyming.tank.client.TankGame;
 import org.gyming.tank.connection.GameAction;
@@ -12,9 +14,13 @@ import org.gyming.tank.connection.GameAction;
 public class SupplyObject extends GameObject {
 
     public int alpha;
-    public SupplyObject(float speed, float direction, float posX, float posY, int hp, TankGame game, Stage stage,Group[] group) {
+    public float theta;
+    public float selfdirect;
+    public SupplyObject(float speed, float direction, float posX, float posY, int hp, TankGame game, Stage stage,Group[] group,float theta) {
         super(speed, direction, posX, posY, hp, game, stage, group);
-        alpha = 0;
+        this.theta = theta;
+//        this.addAction();
+        this.addAction(Actions.alpha(0f,5f));
     }
 
     public final int getPlayerID() {

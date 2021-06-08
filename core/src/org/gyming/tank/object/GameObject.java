@@ -46,14 +46,6 @@ abstract public class GameObject extends Actor {
         this.gunDirection = 0;
     }
 
-    static public Texture drawCircle(int r, Color color) {
-        Pixmap pixmap = new Pixmap(r * 2, r * 2, Pixmap.Format.RGBA8888);
-        pixmap.setColor(color);
-        pixmap.fillCircle(r, r, r);
-        Texture texture = new Texture(pixmap);
-        return texture;
-    }
-
     protected abstract Texture createTexture();
 
     protected abstract void fire(GameAction action, float posX, float posY);
@@ -63,9 +55,25 @@ abstract public class GameObject extends Actor {
     @Override
     public void act(float delta) {
         if (this instanceof SupplyObject) {
+            ((SupplyObject)this).selfdirect += ((SupplyObject)this).theta;
             if (MainScreen.dataMaker.nextFloat() < 0.01) {
                 direction = MainScreen.dataMaker.nextFloat() * 2 * MathUtils.PI;
                 speed = 0.1f;
+            }
+            if(((SupplyObject)this).alpha<120)
+            {
+                float alpha = ((SupplyObject)this).alpha*1f/120f;
+                ((SupplyObject)this).alpha++;
+                Pixmap pixmap = new Pixmap(40, 40, Pixmap.Format.RGBA8888);
+                pixmap.setColor(191f / 255f, 174f / 255f, 78f / 255f, alpha);
+                pixmap.fillRectangle(0, 0, 40, 40);
+                pixmap.setColor(255f / 255f, 232f / 255f, 105f / 255f, alpha);
+                pixmap.fillRectangle(5, 5, 30, 30);
+                this.texture = new Texture(pixmap);
+            }
+            else
+            {
+
             }
         }
 
@@ -144,7 +152,10 @@ abstract public class GameObject extends Actor {
             System.out.println(((PlayerObject)this).cirR + 1);
         }
         else {
-            batch.draw(texture, posX, posY, texture.getWidth() / 2f, texture.getHeight() / 2f, texture.getWidth(), texture.getHeight(), 1, 1, 180, 0, 0, texture.getWidth(), texture.getHeight(), false, false);
+            if(this instanceof BulletObject)
+                batch.draw(texture, posX, posY, texture.getWidth() / 2f, texture.getHeight() / 2f, texture.getWidth(), texture.getHeight(), 1, 1, 180, 0, 0, texture.getWidth(), texture.getHeight(), false, false);
+            else
+                batch.draw(texture, posX, posY, texture.getWidth() / 2f, texture.getHeight() / 2f, texture.getWidth(), texture.getHeight(), 1, 1, ((SupplyObject)this).selfdirect, 0, 0, texture.getWidth(), texture.getHeight(), false, false);
         }
 
 //        batch.draw(texture, (float) posX, (float) posY);

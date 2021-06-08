@@ -289,7 +289,7 @@ public class MainScreen extends ScreenAdapter {
         while ((size--) != 0) {
             double theta = 2 * MathUtils.PI * dataMaker.nextFloat();
             double delta = (0.5 + dataMaker.nextGaussian() * 0.1) * r;
-            group[0].addActor(new SupplyObject(0f, 0, (float) (X + delta * Math.cos(theta)), (float) (Y + delta * Math.sin(theta)), 50, game, stage, group));
+            group[0].addActor(new SupplyObject(0f, 0, (float) (X + delta * Math.cos(theta)), (float) (Y + delta * Math.sin(theta)), 50, game, stage, group, (float) dataMaker.nextGaussian()*0.2f));
         }
     }
 
