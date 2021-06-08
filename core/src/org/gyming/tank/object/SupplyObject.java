@@ -10,8 +10,11 @@ import org.gyming.tank.client.TankGame;
 import org.gyming.tank.connection.GameAction;
 
 public class SupplyObject extends GameObject {
+
+    public int alpha;
     public SupplyObject(float speed, float direction, float posX, float posY, int hp, TankGame game, Stage stage,Group[] group) {
         super(speed, direction, posX, posY, hp, game, stage, group);
+        alpha = 0;
     }
 
     public final int getPlayerID() {
