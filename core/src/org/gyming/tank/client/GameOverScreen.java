@@ -23,13 +23,13 @@ public class GameOverScreen extends ScreenAdapter {
 
     @Override
     public void show() {
-//        try {
-//            game.C2S.closeConnection();
-//            game.S2C.closeConnection();
-//        }
-//        catch (IOException e) {
-//            e.printStackTrace();
-//        }
+        try {
+            game.C2S.closeConnection();
+            game.S2C.closeConnection();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
         Label gameOverLabel = new Label("Game Over", game.skin, "label-title-tank");
         Label continueLabel = new Label("Click to continue...", game.skin, "label-info-tank");
         gameOverLabel.setPosition((Gdx.graphics.getWidth() - gameOverLabel.getWidth()) / 2f, Gdx.graphics.getHeight() / 2f + 100f);

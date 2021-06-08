@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.google.gson.Gson;
 import org.gyming.tank.connection.GameAction;
@@ -32,6 +33,7 @@ public class MainScreen extends ScreenAdapter {
     TankGame game;
     Group group[];
     Stage stage, uiStage;
+    ProgressBar mpProgress;
 
     public MainScreen(TankGame game) {
         this.stage = new Stage();
@@ -44,6 +46,9 @@ public class MainScreen extends ScreenAdapter {
         stage.addActor(makeBackground(3840, 2160, boarder, 30));
         this.stage.addActor(group[0]);
         this.stage.addActor(group[1]);
+        mpProgress = new ProgressBar(0f, 10f, 1f, false, game.skin, "progressbar-tank");
+        mpProgress.setWidth(300);
+        mpProgress.setPosition((Gdx.graphics.getWidth() - mpProgress.getWidth()) / 2f, 50f);
     }
 
     public static boolean isInside(GameObject A) {
@@ -150,7 +155,8 @@ public class MainScreen extends ScreenAdapter {
                                     //                            System.out.println("FUCK");
                                     if (B.getHp() <= 0) {
                                         if (A.getPlayerID() == game.playerID) {
-                                            game.playerMP++;
+                                            if (game.playerMP < 10)
+                                                game.playerMP++;
                                             System.out.println(game.playerID);
                                             System.out.println(A.getPlayerID());
                                         }
@@ -164,7 +170,8 @@ public class MainScreen extends ScreenAdapter {
                                         B.setHp(0);
                                         if (A.getHp() <= 0) {
                                             if (B.getPlayerID() == game.playerID) {
-                                                game.playerMP++;
+                                                if (game.playerMP < 10)
+                                                    game.playerMP++;
                                                 System.out.println(game.playerID);
                                                 System.out.println(B.getPlayerID());
                                             }
@@ -176,7 +183,8 @@ public class MainScreen extends ScreenAdapter {
                                         if (A.getHp() <= 0) {
                                             if (B instanceof PlayerObject) {
                                                 if (B.getPlayerID() == game.playerID) {
-                                                    game.playerMP++;
+                                                    if (game.playerMP < 10)
+                                                        game.playerMP++;
                                                     System.out.println(game.playerID);
                                                     System.out.println(B.getPlayerID());
                                                 }
@@ -184,7 +192,8 @@ public class MainScreen extends ScreenAdapter {
                                         }
                                         if (B.getHp() <= 0) {
                                             if (A.getPlayerID() == game.playerID) {
-                                                game.playerMP++;
+                                                if (game.playerMP < 10)
+                                                    game.playerMP++;
                                                 System.out.println(game.playerID);
                                                 System.out.println(A.getPlayerID());
                                             }
@@ -200,7 +209,8 @@ public class MainScreen extends ScreenAdapter {
                                         B.setHp(0);
                                         if (A.getHp() <= 0) {
                                             if (B.getPlayerID() == game.playerID) {
-                                                game.playerMP++;
+                                                if (game.playerMP < 10)
+                                                    game.playerMP++;
                                                 System.out.println(game.playerID);
                                                 System.out.println(B.getPlayerID());
                                             }
@@ -216,7 +226,8 @@ public class MainScreen extends ScreenAdapter {
                                         if (A.getHp() <= 0) {
                                             if (B instanceof PlayerObject) {
                                                 if (B.getPlayerID() == game.playerID) {
-                                                    game.playerMP++;
+                                                    if (game.playerMP < 10)
+                                                        game.playerMP++;
                                                     System.out.println(game.playerID);
                                                     System.out.println(B.getPlayerID());
                                                 }
@@ -297,6 +308,8 @@ public class MainScreen extends ScreenAdapter {
     public void show() {
         dataMaker = new Random(game.getRoomName().hashCode());
         game.playerID = game.getUserName().hashCode();
+        game.playerMP = 0;
+        mpProgress.setValue(0f);
         Gson gson = new Gson();
         try {
             game.queue.put(gson.toJson(new GameAction("NewPlayer", boarder + 100, 0, game.getUserName(), boarder + 100)));
@@ -331,11 +344,15 @@ public class MainScreen extends ScreenAdapter {
         stage.act(delta);
         uiStage.clear();
         Label mpLabel = new Label("MP " + game.playerMP + "/10", game.skin, "label-tank");
+        mpLabel.setPosition(mpProgress.getX() + (mpProgress.getWidth() - mpLabel.getWidth()) / 2f, mpProgress.getY() - 20f);
+        mpProgress.setValue((float) game.playerMP);
         uiStage.addActor(mpLabel);
+        uiStage.addActor(mpProgress);
         uiStage.act();
         checkCollision();
         keepSup();
         stage.draw();
+        uiStage.draw();
     }
 
     @Override
