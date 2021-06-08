@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.google.gson.Gson;
 import org.gyming.tank.connection.GameAction;
@@ -26,6 +27,7 @@ public class MainScreen extends ScreenAdapter {
     public static int supplies = 0;
     public static int width, height;
     public static Random dataMaker;
+    public static PlayerObject MainPlayer;
     static int fireGap = 0;
     TankGame game;
     Group group[];
@@ -38,26 +40,13 @@ public class MainScreen extends ScreenAdapter {
         this.group = new Group[2];
         group[0] = new Group();
         group[1] = new Group();
-        group[0].addActor(new PlayerObject(0, 0, 50, 50, PlayerObject.playerHP, 0, "f", game, stage, group));
+        group[0].addActor(new PlayerObject(0, 0, 50, 50, 0, 0, "f", game, stage,group,1));
         stage.addActor(makeBackground(3840, 2160, boarder, 30));
         this.stage.addActor(group[0]);
         this.stage.addActor(group[1]);
     }
 
     public static boolean isInside(GameObject A) {
-        if (A.getPlayerID() == 0)
-            return true;
-//        System.out.println(A.getPosX());
-//        System.out.println(A.getPosY());
-        if (A.getPosX() < boarder || A.getPosX() > width + boarder)
-            return false;
-        if (A.getPosY() < boarder || A.getPosY() > height + boarder)
-            return false;
-        return true;
-    }
-
-    public static boolean IsInside(GameObject A) {
-
         if (A.getPlayerID() == 0)
             return true;
 //        System.out.println(A.getPosX());
@@ -95,6 +84,20 @@ public class MainScreen extends ScreenAdapter {
         image.setZIndex(0);
         return image;
     }
+
+    public static boolean IsInside(GameObject A) {
+
+        if(A.getPlayerID()==0)
+            return true;
+//        System.out.println(A.getPosX());
+//        System.out.println(A.getPosY());
+        if(A.getPosX()<boarder||A.getPosX()>width+boarder)
+            return false;
+        if(A.getPosY()<boarder||A.getPosY()>height+boarder)
+            return false;
+        return true;
+    }
+
 
     public void updateFrame(GameFrame gameFrame) {
         for (GameAction i : gameFrame.frameList) {
@@ -228,7 +231,7 @@ public class MainScreen extends ScreenAdapter {
             float posY = Gdx.graphics.getHeight() / 2f - Gdx.input.getY();
             float angle = MathUtils.atan2(posX, posY);
             if (Gdx.input.isTouched())
-                if (fireGap >= PlayerObject.playerFireGap) {
+                if (fireGap >= MainPlayer.playerFireGap) {
 
 //                    System.out.println(posX);
 //                    System.out.println(posY);

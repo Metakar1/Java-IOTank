@@ -57,7 +57,7 @@ public class Room implements Runnable {
     @Override
     public void run() {
         Timer timer = new Timer(true);
-        timer.schedule(timerTask, 1, 12);
+        timer.schedule(timerTask, 1, 17);
         while (!(startState && endState)) ;
         timerTask.cancel();
         System.out.println("Room Stop");

@@ -65,9 +65,7 @@ public class GameOverScreen extends ScreenAdapter {
     }
 
     @Override
-    public void hide() {
-        gameOverStage.clear();
-    }
+    public void hide() {  gameOverStage.clear(); }
 
     @Override
     public void dispose() {

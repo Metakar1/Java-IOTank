@@ -103,7 +103,9 @@ abstract public class GameObject extends Actor {
                         break;
                     case "NewPlayer":
 //                    System.out.println();
-                        PlayerObject player = new PlayerObject(0, 0, i.getDirection(), i.getValue(), PlayerObject.playerHP, i.getProperty().hashCode(), i.getProperty(), game, stage, group);
+                        PlayerObject player = new PlayerObject(0, 0, i.getDirection(), i.getValue(), 0, i.getProperty().hashCode(), i.getProperty(), game, stage, group,1);
+                        if(game.getUserName().hashCode()==i.getProperty().hashCode())
+                            MainScreen.MainPlayer = player;
                         group[1].addActor(player);
                         break;
                     case "Rotate":
@@ -135,7 +137,8 @@ abstract public class GameObject extends Actor {
     public void draw(Batch batch, float parentAlpha) {
 //        System.out.println(t);
         if (this instanceof PlayerObject) {
-            batch.draw(texture, posX, posY, PlayerObject.cirR + 1, texture.getHeight() - (PlayerObject.cirR + PlayerObject.gunHeight - PlayerObject.boarder * 2) - 1, texture.getWidth(), texture.getHeight(), 1f, 1f, gunDirection, 0, 0, texture.getWidth(), texture.getHeight(), false, false);
+            batch.draw(texture, posX, posY, ((PlayerObject)this).cirR + 1, texture.getHeight() - (((PlayerObject)this).cirR + ((PlayerObject)this).gunHeight - PlayerObject.boarder * 2) - 1, texture.getWidth(), texture.getHeight(), 1f, 1f, gunDirection, 0, 0, texture.getWidth(), texture.getHeight(), false, false);
+            System.out.println(((PlayerObject)this).cirR + 1);
         }
         else {
             batch.draw(texture, posX, posY, texture.getWidth() / 2f, texture.getHeight() / 2f, texture.getWidth(), texture.getHeight(), 1, 1, 180, 0, 0, texture.getWidth(), texture.getHeight(), false, false);

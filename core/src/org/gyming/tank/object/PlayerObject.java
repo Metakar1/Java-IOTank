@@ -11,23 +11,38 @@ import org.gyming.tank.client.TankGame;
 import org.gyming.tank.connection.GameAction;
 
 public class PlayerObject extends GameObject {
-    public static int playerSize = 30;
-    public static int playerSpeed = 25;
-    public static int playerHP = 100;
-    public static int playerFireGap = 60;
-    public static int ratio = 1;
-    public static int gunHeight = playerSize*ratio*2/3+3;
-    public static int gunWidth = gunHeight*5/6;
-    public static int cirR = playerSize*ratio-gunHeight/2;
-    static public int boarder = 3*ratio;
+
+    public  int playerSize;
+    public  int playerSpeed;
+    public  int playerHP;
+    public  int playerFireGap;
+    public  int ratio;
+    public  int gunHeight;
+    public  int gunWidth;
+    public  int cirR;
+    static  int boarder;
     private int playerID;
     private String playerName;
     private Stage stage;
+
 //    public static int playerGunWidth =
 
     public PlayerObject(float speed, float direction, float posX, float posY, int hp, int playerID,
-                        String playerName, TankGame game, Stage stage, Group[] group) {
+                        String playerName, TankGame game, Stage stage, Group[] group, int type) {
         super(speed, direction, posX, posY, hp, game, stage, group);
+        if(type==1) {
+            playerSize = 30;
+            playerSpeed = 25;
+            playerHP = 100;
+            playerFireGap = 60;
+            ratio = 1;
+            gunHeight = playerSize * ratio * 2 / 3 + 3;
+            gunWidth = gunHeight * 5 / 6;
+            cirR = playerSize * ratio - gunHeight / 2;
+            boarder = 3 * ratio;
+        }
+
+        this.setHp(playerHP);
         this.playerID = playerID;
         this.playerName = playerName;
         this.stage = stage;
@@ -83,10 +98,10 @@ public class PlayerObject extends GameObject {
     @Override
     public void fire(GameAction action, float posX, float posY) {
 //        System.out.println(360-gunDirection);
-        float diffX = MathUtils.sin((360-gunDirection)/180)*PlayerObject.gunWidth;
-        float diffY = MathUtils.cos((360-gunDirection)/180)*PlayerObject.gunWidth;
-        float rx = posX + PlayerObject.cirR +1;
-        float ry = posY + texture.getHeight()-(PlayerObject.cirR+PlayerObject.gunHeight-PlayerObject.boarder*2)-1;
+        float diffX = MathUtils.sin((360-gunDirection)/180)*this.gunWidth;
+        float diffY = MathUtils.cos((360-gunDirection)/180)*this.gunWidth;
+        float rx = posX + this.cirR +1;
+        float ry = posY + texture.getHeight()-(this.cirR+this.gunHeight-PlayerObject.boarder*2)-1;
         System.out.println(Float.toString(diffX)+" "+Float.toString(diffY));
         rx += 40*MathUtils.sin((360-gunDirection)/180*(float) Math.PI);
         ry += 40*MathUtils.cos((360-gunDirection)/180*(float) Math.PI);
