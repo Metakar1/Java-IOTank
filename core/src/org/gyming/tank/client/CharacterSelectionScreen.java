@@ -25,8 +25,9 @@ public class CharacterSelectionScreen extends ScreenAdapter {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 game.playerType = selectedType;
-                game.setScreen(game.gameOverScreen);
-//                game.buildConnection();
+//                game.setScreen(game.gameOverScreen);
+                game.buildConnection();
+                game.setScreen(game.mainScreen);
             }
         });
 
