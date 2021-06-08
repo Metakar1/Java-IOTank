@@ -47,7 +47,8 @@ public class PlayerObject extends GameObject {
         }
         this.hpProgress = new ProgressBar(0f, 100f, 1f, false, game.skin, "progressbar-tank");
         this.texture = createTexture();
-        hpProgress.setWidth(this.texture.getWidth());
+        hpProgress.setWidth(this.texture.getWidth()-10);
+        hpProgress.setHeight(20);
         this.setHp(playerHP);
         this.playerID = playerID;
         this.playerName = playerName;
