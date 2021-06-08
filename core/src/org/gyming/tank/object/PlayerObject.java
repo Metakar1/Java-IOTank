@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import org.gyming.tank.client.TankGame;
 import org.gyming.tank.connection.GameAction;
 
@@ -24,6 +25,7 @@ public class PlayerObject extends GameObject {
     private int playerType;
     private String playerName;
     private Stage stage;
+    public ProgressBar hpProgress;
 
 //    public static int playerGunWidth =
 
@@ -43,7 +45,9 @@ public class PlayerObject extends GameObject {
             cirR = playerSize * ratio - gunHeight / 2;
             boarder = 3 * ratio;
         }
+        this.hpProgress = new ProgressBar(0f, 100f, 1f, false, game.skin, "progressbar-tank");
         this.texture = createTexture();
+        hpProgress.setWidth(this.texture.getWidth());
         this.setHp(playerHP);
         this.playerID = playerID;
         this.playerName = playerName;
