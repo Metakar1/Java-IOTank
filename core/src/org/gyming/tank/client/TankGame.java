@@ -142,19 +142,19 @@ public class TankGame extends Game {
         };
 
         characterFlags = new Array<>();
-        Image characterFlag = new Image(new Texture(Gdx.files.internal("0_flag.jpg")));
+        Image characterFlag = new Image(new Texture(Gdx.files.internal("0_flag.png")));
         float scale = Math.max(100f / characterFlag.getWidth(), 100f / characterFlag.getHeight());
 //        System.out.println(scale);
         characterFlag.setScale(scale, scale);
         characterFlag.setPosition(10f, Gdx.graphics.getHeight() - 110f);
         characterFlags.add(characterFlag);
-        characterFlag = new Image(new Texture(Gdx.files.internal("1_flag.jpg")));
+        characterFlag = new Image(new Texture(Gdx.files.internal("1_flag.png")));
         scale = Math.max(100f / characterFlag.getWidth(), 100f / characterFlag.getHeight());
 //        System.out.println(scale);
         characterFlag.setScale(scale, scale);
         characterFlag.setPosition(10f, Gdx.graphics.getHeight() - 110f);
         characterFlags.add(characterFlag);
-        characterFlag = new Image(new Texture(Gdx.files.internal("2_flag.jpg")));
+        characterFlag = new Image(new Texture(Gdx.files.internal("2_flag.png")));
         scale = Math.max(100f / characterFlag.getWidth(), 100f / characterFlag.getHeight());
 //        System.out.println(scale);
         characterFlag.setScale(scale, scale);
