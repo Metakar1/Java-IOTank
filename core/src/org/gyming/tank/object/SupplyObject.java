@@ -57,7 +57,7 @@ public class SupplyObject extends GameObject {
             pixmap.fillRectangle(5, 5, 30, 30);
             texture = new Texture(pixmap);
             dmg -= 2;
-            System.out.println(dmg);
+//            System.out.println(dmg);
             if(dmg==100)
             {
                 texture = createTexture();

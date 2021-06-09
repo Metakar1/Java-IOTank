@@ -17,6 +17,9 @@ public class PlayerObject extends GameObject {
     public  int playerSpeed;
     public  int playerHP;
     public  int playerFireGap;
+    public  int bulletSize;
+    public  int bulletATK;
+    public  int bulletHP;
     public  int ratio;
     public  int gunHeight;
     public  int gunWidth;
@@ -24,6 +27,7 @@ public class PlayerObject extends GameObject {
     static  int boarder;
     private int playerID;
     private int playerType;
+    private int bulletSpeed;
     private String playerName;
     private Stage stage;
     public ProgressBar hpProgress;
@@ -35,7 +39,7 @@ public class PlayerObject extends GameObject {
 
         super(speed, direction, posX, posY, hp, game, stage, group);
         playerType = type;
-        if(type==1) {
+//        if(type==1) {
             playerSize = 30;
             playerSpeed = 25;
             playerHP = 100;
@@ -45,7 +49,12 @@ public class PlayerObject extends GameObject {
             gunWidth = gunHeight * 5 / 6;
             cirR = playerSize * ratio - gunHeight / 2;
             boarder = 3 * ratio;
-        }
+
+            bulletSpeed = 10;
+            bulletHP = 10;
+            bulletATK = 10;
+            bulletSize = 10;
+//        }
 
         this.setHp(playerHP);
         this.playerID = playerID;
@@ -97,7 +106,7 @@ public class PlayerObject extends GameObject {
         Pixmap pixmap1 = new Pixmap(playerSize*2,playerSize*2,Pixmap.Format.RGBA8888);
         pixmap1.drawPixmap(pixmap,0,0,pixmap.getWidth(),pixmap.getHeight(),0,0,pixmap1.getWidth(),pixmap1.getHeight());
         Texture texture = new Texture(pixmap1);
-        texture.setFilter (Texture.TextureFilter.Linear, Texture.TextureFilter.Linear );
+        texture.setFilter (Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 //        System.out.println(colorPool.getUserColor(playerID));
 //        System.out.println("***");
 //        texture
@@ -111,10 +120,11 @@ public class PlayerObject extends GameObject {
         float diffY = MathUtils.cos((360-gunDirection)/180)*this.gunWidth;
         float rx = posX + this.cirR +1;
         float ry = posY + texture.getHeight()-(this.cirR+this.gunHeight-PlayerObject.boarder*2)-1;
-        System.out.println(Float.toString(diffX)+" "+Float.toString(diffY));
+//        System.out.println(Float.toString(diffX)+" "+Float.toString(diffY));
         rx += 40*MathUtils.sin((360-gunDirection)/180*(float) Math.PI);
         ry += 40*MathUtils.cos((360-gunDirection)/180*(float) Math.PI);
-        BulletObject bullet = new BulletObject(BulletObject.bulletSpeed, action.getDirection(), rx, ry, BulletObject.bulletHP, playerID, game, stage, group);
+        BulletObject bullet = new BulletObject(this.bulletSpeed, action.getDirection(), rx, ry, this.bulletHP, playerID, game, stage, group,this.bulletSize,this.bulletATK);
+        System.out.println(this.bulletSize);
         group[0].addActor(bullet);
     }
 
@@ -156,7 +166,7 @@ public class PlayerObject extends GameObject {
 //        texture
             this.texture = texture;
             this.dmg-=2;
-            System.out.println(this.dmg);
+//            System.out.println(this.dmg);
             if(this.dmg==100)
             {
                 this.texture = createTexture();
