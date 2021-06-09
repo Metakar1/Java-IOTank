@@ -166,7 +166,7 @@ public class MainScreen extends ScreenAdapter {
                                 else if (B instanceof PlayerObject || B instanceof SupplyObject) {
                                     B.setDirection((float) (Math.PI * 2 - B.getDirection()));
                                     B.setHp(B.getHp() - 10);
-                                    B.dmg += 10;
+                                    B.dmg = 110;
                                     //                            System.out.println("FUCK");
                                     if (B.getHp() <= 0) {
                                         if (A.getPlayerID() == game.playerID) {
@@ -180,7 +180,7 @@ public class MainScreen extends ScreenAdapter {
                             }
                             else if (A instanceof PlayerObject) {
                                 A.setSpeed(-1 * A.getSpeed());
-                                A.dmg+= 10;
+                                A.dmg= 110;
                                 if (B instanceof BulletObject) {
                                     //                            System.out.println("FUCK");
                                     A.setHp(A.getHp() - 10);
@@ -193,7 +193,7 @@ public class MainScreen extends ScreenAdapter {
 //                                            System.out.println(B.getPlayerID());
                                         }
                                 } else if (B instanceof PlayerObject || B instanceof SupplyObject) {
-                                    B.dmg += 10;
+                                    B.dmg = 110;
                                     A.setHp(A.getHp() - 5);
                                     B.setHp(B.getHp() - 5);
                                     if (A.getHp() <= 0) {
@@ -220,7 +220,6 @@ public class MainScreen extends ScreenAdapter {
                             else if (A instanceof SupplyObject) {
                                 A.setDirection((float) (Math.PI * 2 - A.getDirection()));
                                 //                        System.out.println("FUCK");
-                                A.dmg+=10;
                                 if (B instanceof BulletObject) {
                                     A.setHp(A.getHp() - 10);
                                     B.setHp(0);
@@ -235,7 +234,10 @@ public class MainScreen extends ScreenAdapter {
                                 }
                                 else if (B instanceof PlayerObject || B instanceof SupplyObject) {
                                     //                            System.out.println("FUCK");
-                                    B.dmg+=10;
+                                    if(B instanceof  PlayerObject) {
+                                        B.dmg = 110;
+                                        A.dmg = 110;
+                                    }
                                     if (B instanceof PlayerObject) {
                                         A.setHp(A.getHp() - 5);
                                         B.setHp(B.getHp() - 5);

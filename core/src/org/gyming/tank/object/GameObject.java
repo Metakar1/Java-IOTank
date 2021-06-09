@@ -162,7 +162,7 @@ abstract public class GameObject extends Actor {
             if(this instanceof BulletObject)
                 batch.draw(texture, posX, posY, texture.getWidth() / 2f, texture.getHeight() / 2f, texture.getWidth(), texture.getHeight(), 1, 1, 180, 0, 0, texture.getWidth(), texture.getHeight(), false, false);
             else
-                batch.draw(texture, posX, posY, texture.getWidth() / 2f, texture.getHeight() / 2f, texture.getWidth(), texture.getHeight(), 1, 1, ((SupplyObject)this).selfdirect, 0, 0, texture.getWidth(), texture.getHeight(), false, false);
+                batch.draw(texture, posX, posY, texture.getWidth() / 2f, texture.getHeight() / 2f, texture.getWidth(), texture.getHeight(), this.dmg*1.0f/100f, this.dmg*1.0f/100f, ((SupplyObject)this).selfdirect, 0, 0, texture.getWidth(), texture.getHeight(), false, false);
         }
 
 //        batch.draw(texture, (float) posX, (float) posY);

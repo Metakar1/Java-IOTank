@@ -49,7 +49,20 @@ public class SupplyObject extends GameObject {
 
     @Override
     protected void getDmg(){
-
+        if (dmg>100) {
+            Pixmap pixmap = new Pixmap(40, 40, Pixmap.Format.RGBA8888);
+            pixmap.setColor(Color.RED);
+            pixmap.fillRectangle(0, 0, 40, 40);
+            pixmap.setColor(Color.RED);
+            pixmap.fillRectangle(5, 5, 30, 30);
+            texture = new Texture(pixmap);
+            dmg -= 2;
+            System.out.println(dmg);
+            if(dmg==100)
+            {
+                texture = createTexture();
+            }
+        }
     }
 
 
