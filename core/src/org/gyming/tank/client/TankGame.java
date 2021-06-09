@@ -1,14 +1,13 @@
 package org.gyming.tank.client;
 
+import com.badlogic.gdx.Audio;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
@@ -37,7 +36,7 @@ public class TankGame extends Game {
     MsgIO S2C, C2S;
     LinkedBlockingQueue<GameFrame> download;
     LinkedBlockingQueue<String> queue;
-    Array<Image> characterImage;
+    Array<Image> characterFlags;
     private String userName, roomName;
     private String serverAddress;
     private int port;
@@ -74,7 +73,7 @@ public class TankGame extends Game {
         this.roomName = roomName;
     }
 
-    public void buildConnection() {
+    public boolean buildConnection() {
         nowFrame = 0;
         lastFireFrame = 0;
         try {
@@ -85,9 +84,11 @@ public class TankGame extends Game {
             Gson gson = new Gson();
             C2S.send(gson.toJson(new ConnectMsg("join", userName, roomName)));
             System.out.println("GYMing is so awful!!!!");
+            return true;
         }
         catch (Exception e) {
             e.printStackTrace();
+            return false;
         }
     }
 
@@ -139,24 +140,32 @@ public class TankGame extends Game {
                 return json;
             }
         };
-        characterImage = new Array<>();
-        Image characterImage0 = new Image(new Texture(Gdx.files.internal("0.jpg")));
-        float scale = Math.max(Gdx.graphics.getHeight() / characterImage0.getHeight(), Gdx.graphics.getWidth() / characterImage0.getWidth());
-        characterImage0.setScale(scale, scale);
-        characterImage.add(characterImage0);
-        Image characterImage1 = new Image(new Texture(Gdx.files.internal("1.jpg")));
-        scale = Math.max(Gdx.graphics.getHeight() / characterImage1.getHeight(), Gdx.graphics.getWidth() / characterImage1.getWidth());
-        characterImage1.setScale(scale, scale);
-        characterImage.add(characterImage1);
-        Image characterImage2 = new Image(new Texture(Gdx.files.internal("2.jpg")));
-        scale = Math.max(Gdx.graphics.getHeight() / characterImage2.getHeight(), Gdx.graphics.getWidth() / characterImage2.getWidth());
-        characterImage2.setScale(scale, scale);
-        characterImage.add(characterImage2);
+
+        characterFlags = new Array<>();
+        Image characterFlag = new Image(new Texture(Gdx.files.internal("0_flag.jpg")));
+        float scale = Math.max(100f / characterFlag.getWidth(), 100f / characterFlag.getHeight());
+//        System.out.println(scale);
+        characterFlag.setScale(scale, scale);
+        characterFlag.setPosition(10f, Gdx.graphics.getHeight() - 110f);
+        characterFlags.add(characterFlag);
+        characterFlag = new Image(new Texture(Gdx.files.internal("1_flag.jpg")));
+        scale = Math.max(100f / characterFlag.getWidth(), 100f / characterFlag.getHeight());
+//        System.out.println(scale);
+        characterFlag.setScale(scale, scale);
+        characterFlag.setPosition(10f, Gdx.graphics.getHeight() - 110f);
+        characterFlags.add(characterFlag);
+        characterFlag = new Image(new Texture(Gdx.files.internal("2_flag.jpg")));
+        scale = Math.max(100f / characterFlag.getWidth(), 100f / characterFlag.getHeight());
+//        System.out.println(scale);
+        characterFlag.setScale(scale, scale);
+        characterFlag.setPosition(10f, Gdx.graphics.getHeight() - 110f);
+        characterFlags.add(characterFlag);
+
         actionGroup = new ActionGroup();
         startScreen = new StartScreen(this);
+        characterSelectionScreen = new CharacterSelectionScreen(this);
         mainScreen = new MainScreen(this);
         gameOverScreen = new GameOverScreen(this);
-        characterSelectionScreen = new CharacterSelectionScreen(this);
         download = new LinkedBlockingQueue<>();
         queue = new LinkedBlockingQueue<>();
         toBeDeleted = new LinkedBlockingQueue<GameObject>();

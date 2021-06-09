@@ -3,6 +3,7 @@ package org.gyming.tank.client;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -15,18 +16,29 @@ public class StartScreen extends ScreenAdapter {
     private final TextField serverAddressField, portField, userField, roomField;
     private final Dialog messageDialog;
     private final Stage startStage;
+    private Music bgm;
 
     public StartScreen(final TankGame game) {
         this.game = game;
-        serverAddressField = new TextField("", game.skin, "textfield-tank");
-        portField = new TextField("", game.skin, "textfield-tank");
-        userField = new TextField("", game.skin, "textfield-tank");
-        roomField = new TextField("", game.skin, "textfield-tank");
+        TextButton confirmButton;
+        if (Gdx.app.getType() == Application.ApplicationType.Android) {
+            serverAddressField = new TextField("", game.skin, "textfield-tank-android");
+            portField = new TextField("", game.skin, "textfield-tank-android");
+            userField = new TextField("", game.skin, "textfield-tank-android");
+            roomField = new TextField("", game.skin, "textfield-tank-android");
+            confirmButton = new TextButton("OK", game.skin, "textbutton-tank-red-android");
+        }
+        else {
+            serverAddressField = new TextField("", game.skin, "textfield-tank");
+            portField = new TextField("", game.skin, "textfield-tank");
+            userField = new TextField("", game.skin, "textfield-tank");
+            roomField = new TextField("", game.skin, "textfield-tank");
+            confirmButton = new TextButton("OK", game.skin, "textbutton-tank-red");
+        }
         serverAddressField.setMessageText("Input the server address.");
         portField.setMessageText("Input the server port.");
         userField.setMessageText("Input your username.");
         roomField.setMessageText("Input the room name.");
-        TextButton confirmButton = new TextButton("OK", game.skin, "textbutton-tank-red");
         messageDialog = new Dialog("Error", game.skin, "window-tank");
         messageDialog.text("Username and room name cannot be empty.", game.skin.get("label-tank", Label.LabelStyle.class));
         messageDialog.button("OK", true, game.skin.get("textbutton-tank-gray",
@@ -44,9 +56,9 @@ public class StartScreen extends ScreenAdapter {
                 game.setPort(Integer.parseInt(portField.getText()));
                 game.setUserName(userField.getText());
                 game.setRoomName(roomField.getText());
-//                game.setScreen(game.characterSelectionScreen);
-                game.buildConnection();
-                game.setScreen(game.mainScreen);
+                game.setScreen(game.characterSelectionScreen);
+//                game.buildConnection();
+//                game.setScreen(game.mainScreen);
             }
         });
 
@@ -80,6 +92,9 @@ public class StartScreen extends ScreenAdapter {
         startStage.addActor(userField);
         startStage.addActor(roomField);
         startStage.addActor(confirmButton);
+
+        bgm = Gdx.audio.newMusic(Gdx.files.internal("start_bgm.mp3"));
+        bgm.setLooping(true);
     }
 
     @Override
@@ -89,6 +104,12 @@ public class StartScreen extends ScreenAdapter {
         roomField.setText("");
         serverAddressField.setText("10.44.0.188");
         portField.setText("7650");
+        bgm.play();
+    }
+
+    @Override
+    public void hide() {
+        bgm.stop();
     }
 
     @Override

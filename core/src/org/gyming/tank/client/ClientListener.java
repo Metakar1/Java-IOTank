@@ -26,6 +26,7 @@ public class ClientListener implements Runnable {
                 }
                 catch (IOException e) {
                     e.printStackTrace();
+                    break;
                 }
                 queue.poll();
             }

@@ -4,6 +4,7 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -14,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.google.gson.Gson;
 import org.gyming.tank.connection.GameAction;
@@ -38,6 +40,8 @@ public class MainScreen extends ScreenAdapter {
     ProgressBar mpProgress;
     Touchpad moveTouchpad, fireTouchpad;
     ImageButton fireButton;
+    Thread downloader, listener;
+    private Array<Music> characterBgms;
 
     public MainScreen(TankGame game) {
         this.stage = new Stage();
@@ -67,6 +71,17 @@ public class MainScreen extends ScreenAdapter {
             controllerStage.addActor(fireTouchpad);
             controllerStage.addActor(fireButton);
         }
+
+        characterBgms = new Array<>();
+        Music bgm = Gdx.audio.newMusic(Gdx.files.internal("0_bgm.mp3"));
+        bgm.setLooping(true);
+        characterBgms.add(bgm);
+        bgm = Gdx.audio.newMusic(Gdx.files.internal("1_bgm.mp3"));
+        bgm.setLooping(true);
+        characterBgms.add(bgm);
+        bgm = Gdx.audio.newMusic(Gdx.files.internal("2_bgm.mp3"));
+        bgm.setLooping(true);
+        characterBgms.add(bgm);
     }
 
     public static boolean isInside(GameObject A) {
@@ -282,6 +297,14 @@ public class MainScreen extends ScreenAdapter {
                     }
                 if (game.playerMP == 10 && fireButton.isPressed()) {
                     // Special skill.
+                    switch (game.playerType) {
+                        case 0:
+                            break;
+                        case 1:
+                            break;
+                        case 2:
+                            break;
+                    }
                     game.playerMP = 0;
                 }
             }
@@ -296,6 +319,14 @@ public class MainScreen extends ScreenAdapter {
                     }
                 if (game.playerMP == 10 && Gdx.input.isKeyPressed(Input.Keys.Q)) {
                     // Special skill.
+                    switch (game.playerType) {
+                        case 0:
+                            break;
+                        case 1:
+                            break;
+                        case 2:
+                            break;
+                    }
                     game.playerMP = 0;
                 }
             }
@@ -349,8 +380,8 @@ public class MainScreen extends ScreenAdapter {
         else
             Gdx.input.setInputProcessor(stage);
         try {
-            Thread downloader = new Thread(new ClientDownloader(game, game.S2C));
-            Thread listener = new Thread(new ClientListener(game, game.C2S, game.queue));
+            downloader = new Thread(new ClientDownloader(game, game.S2C));
+            listener = new Thread(new ClientListener(game, game.C2S, game.queue));
             downloader.start();
             listener.start();
             Thread.sleep(1000);
@@ -358,6 +389,8 @@ public class MainScreen extends ScreenAdapter {
         catch (InterruptedException e) {
             e.printStackTrace();
         }
+
+        characterBgms.get(game.playerType).play();
     }
 
     @Override
@@ -377,6 +410,7 @@ public class MainScreen extends ScreenAdapter {
         mpProgress.setValue((float) game.playerMP);
         uiStage.addActor(mpLabel);
         uiStage.addActor(mpProgress);
+        uiStage.addActor(game.characterFlags.get(game.playerType));
         uiStage.act();
         controllerStage.act();
         checkCollision();
@@ -384,6 +418,14 @@ public class MainScreen extends ScreenAdapter {
         stage.draw();
         uiStage.draw();
         controllerStage.draw();
+    }
+
+    @Override
+    public void hide() {
+        characterBgms.get(game.playerType).stop();
+        downloader.interrupt();
+        listener.interrupt();
+        System.out.println("TEST");
     }
 
     @Override

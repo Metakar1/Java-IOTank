@@ -250,6 +250,13 @@ default-window
   orig: 27, 29
   offset: 0, 0
   index: -1
+fire
+  rotate: false
+  xy: 515, 743
+  size: 200, 200
+  orig: 200, 200
+  offset: 0, 0
+  index: -1
 progress-bar
   rotate: false
   xy: 454, 459
@@ -292,6 +299,20 @@ textfield-tank-focused
   orig: 49, 35
   offset: 0, 0
   index: -1
+touchpad-background
+  rotate: false
+  xy: 1, 108
+  size: 400, 400
+  orig: 400, 400
+  offset: 0, 0
+  index: -1
+touchpad-center
+  rotate: false
+  xy: 1, 6
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
 tree-minus
   rotate: false
   xy: 566, 690
@@ -327,26 +348,5 @@ window
   split: 3, 3, 32, 3
   pad: 6, 6, 35, 6
   orig: 20, 47
-  offset: 0, 0
-  index: -1
-fire
-  rotate: false
-  xy: 515, 743
-  size: 200, 200
-  orig: 200, 200
-  offset: 0, 0
-  index: -1
-touchpad-background
-  rotate: false
-  xy: 1, 108
-  size: 400, 400
-  orig: 400, 400
-  offset: 0, 0
-  index: -1
-touchpad-center
-  rotate: false
-  xy: 1, 6
-  size: 100, 100
-  orig: 100, 100
   offset: 0, 0
   index: -1
