@@ -20,7 +20,7 @@ public class SupplyObject extends GameObject {
         super(speed, direction, posX, posY, hp, game, stage, group);
         this.theta = theta;
 //        this.addAction();
-        this.addAction(Actions.alpha(0f,5f));
+//        this.addAction(Actions.alpha(0f,5f))
     }
 
     public final int getPlayerID() {
@@ -47,13 +47,19 @@ public class SupplyObject extends GameObject {
 
     }
 
+    @Override
+    protected void getDmg(){
+
+    }
+
+
     public void die() {
         stage.getRoot().removeActor(this);
         this.setHp(0);
         group[1].removeActor(this);
         group[0].removeActor(this);
         MainScreen.supplies--;
-        System.out.println(MainScreen.supplies);
+//        System.out.println(MainScreen.supplies);
     }
 
 }

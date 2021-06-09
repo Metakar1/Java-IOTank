@@ -35,6 +35,8 @@ public class ColorPool {
             user.put(userID, userCnt);
             userCnt++;
         }
+        System.out.println(userID);
+        System.out.println(user.get(userID));
         return userColorPool.get(user.get(userID));
     }
 
@@ -43,7 +45,7 @@ public class ColorPool {
             user.put(userID, userCnt);
             userCnt++;
         }
-        return userBoarderColorPool.get(userID);
+        return userBoarderColorPool.get(user.get(userID));
     }
 
     public Color getGunBoarderColor() {

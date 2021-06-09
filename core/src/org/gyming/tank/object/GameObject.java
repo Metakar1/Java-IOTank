@@ -29,6 +29,8 @@ abstract public class GameObject extends Actor {
     protected Stage stage;
     protected float gunDirection;
     protected Group[] group;
+    public int dmg;
+
 
     public GameObject(float speed, float direction, float posX, float posY, int hp, TankGame game, Stage stage, Group[] group) {
         this.speed = speed;
@@ -44,6 +46,7 @@ abstract public class GameObject extends Actor {
         setSize(this.texture.getWidth(), this.texture.getHeight());
         this.area = new Rectangle();
         this.gunDirection = 0;
+        this.dmg = 100;
     }
 
     protected abstract Texture createTexture();
@@ -51,6 +54,8 @@ abstract public class GameObject extends Actor {
     protected abstract void fire(GameAction action, float posX, float posY);
 
     protected abstract void recoverSpeed();
+
+    protected abstract void getDmg();
 
     @Override
     public void act(float delta) {
@@ -145,11 +150,13 @@ abstract public class GameObject extends Actor {
     @Override
     public void draw(Batch batch, float parentAlpha) {
 //        System.out.println(t);
+        this.getDmg();
+
         if (this instanceof PlayerObject) {
-            batch.draw(texture, posX, posY, ((PlayerObject)this).cirR + 1, texture.getHeight() - (((PlayerObject)this).cirR + ((PlayerObject)this).gunHeight - PlayerObject.boarder * 2) - 1, texture.getWidth(), texture.getHeight(), 1f, 1f, gunDirection, 0, 0, texture.getWidth(), texture.getHeight(), false, false);
+            batch.draw(texture, posX, posY, ((PlayerObject)this).cirR + 1, texture.getHeight() - (((PlayerObject)this).cirR + ((PlayerObject)this).gunHeight - PlayerObject.boarder * 2) - 1, texture.getWidth(), texture.getHeight(), this.dmg*1.0f/100f, this.dmg*1.0f/100f, gunDirection, 0, 0, texture.getWidth(), texture.getHeight(), false, false);
             ((PlayerObject) this).hpProgress.setPosition(posX-5,posY-((PlayerObject) this).hpProgress.getHeight());
             ((PlayerObject) this).hpProgress.draw(batch,parentAlpha);
-            System.out.println(((PlayerObject)this).cirR + 1);
+//            System.out.println(((PlayerObject)this).cirR + 1);
         }
         else {
             if(this instanceof BulletObject)

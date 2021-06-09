@@ -16,6 +16,7 @@ public class BulletObject extends GameObject {
     public BulletObject(float speed, float direction, float posX, float posY, int hp, int playerID, TankGame game, Stage stage, Group[] group) {
         super(speed, direction, posX, posY, hp, game, stage, group);
         this.playerID = playerID;
+        texture = createTexture();
         this.posX -= texture.getWidth() / 2.0f;
         this.posY -= texture.getHeight() / 2.0f;
     }
@@ -48,6 +49,8 @@ public class BulletObject extends GameObject {
     protected void recoverSpeed() {
 
     }
+    @Override
+    protected void getDmg(){}
 
     public void die() {
         stage.getRoot().removeActor(this);
