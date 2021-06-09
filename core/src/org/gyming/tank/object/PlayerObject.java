@@ -109,7 +109,7 @@ public class PlayerObject extends GameObject {
         float diffY = MathUtils.cos((360-gunDirection)/180)*this.gunWidth;
         float rx = posX + this.cirR +1;
         float ry = posY + texture.getHeight()-(this.cirR+this.gunHeight-PlayerObject.boarder*2)-1;
-        System.out.println(Float.toString(diffX)+" "+Float.toString(diffY));
+//        System.out.println(Float.toString(diffX)+" "+Float.toString(diffY));
         rx += 40*MathUtils.sin((360-gunDirection)/180*(float) Math.PI);
         ry += 40*MathUtils.cos((360-gunDirection)/180*(float) Math.PI);
         BulletObject bullet = new BulletObject(BulletObject.bulletSpeed, action.getDirection(), rx, ry, BulletObject.bulletHP, playerID, game, stage, group);

@@ -1,5 +1,6 @@
 package org.gyming.tank.client;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
@@ -9,9 +10,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.google.gson.Gson;
 import org.gyming.tank.connection.GameAction;
@@ -32,12 +31,15 @@ public class MainScreen extends ScreenAdapter {
     static int fireGap = 0;
     TankGame game;
     Group group[];
-    Stage stage, uiStage;
+    Stage stage, uiStage, controllerStage;
     ProgressBar mpProgress;
+    Touchpad moveTouchpad, fireTouchpad;
+    ImageButton fireButton;
 
     public MainScreen(TankGame game) {
         this.stage = new Stage();
         this.uiStage = new Stage();
+        this.controllerStage = new Stage();
         this.game = game;
         this.group = new Group[2];
         group[0] = new Group();
@@ -49,22 +51,22 @@ public class MainScreen extends ScreenAdapter {
         mpProgress = new ProgressBar(0f, 10f, 1f, false, game.skin, "progressbar-tank");
         mpProgress.setWidth(300);
         mpProgress.setPosition((Gdx.graphics.getWidth() - mpProgress.getWidth()) / 2f, 50f);
+        if (Gdx.app.getType() == Application.ApplicationType.Android) {
+            moveTouchpad = new Touchpad(0, game.skin, "touchpad-tank");
+//            moveTouchpad.setSize(400f, 400f);
+            moveTouchpad.setPosition(100f, 60f);
+            fireTouchpad = new Touchpad(0, game.skin, "touchpad-tank");
+//            fireTouchpad.setSize(400f, 400f);
+            fireTouchpad.setPosition(Gdx.graphics.getWidth() - 500f, 60f);
+            fireButton = new ImageButton(game.skin, "firebutton-tank");
+            fireButton.setPosition(Gdx.graphics.getWidth() - 300f, 500f);
+            controllerStage.addActor(moveTouchpad);
+            controllerStage.addActor(fireTouchpad);
+            controllerStage.addActor(fireButton);
+        }
     }
 
     public static boolean isInside(GameObject A) {
-        if (A.getPlayerID() == 0)
-            return true;
-//        System.out.println(A.getPosX());
-//        System.out.println(A.getPosY());
-        if (A.getPosX() < boarder || A.getPosX() > width + boarder)
-            return false;
-        if (A.getPosY() < boarder || A.getPosY() > height + boarder)
-            return false;
-        return true;
-    }
-
-    public static boolean IsInside(GameObject A) {
-
         if (A.getPlayerID() == 0)
             return true;
 //        System.out.println(A.getPosX());
@@ -157,50 +159,68 @@ public class MainScreen extends ScreenAdapter {
                                     }
                                 }
                             }
-                                else if (A instanceof PlayerObject) {
-                                    A.setSpeed(-1 * A.getSpeed());
-                                    if (B instanceof BulletObject) {
-                                        //                            System.out.println("FUCK");
-                                        A.setHp(A.getHp() - 10);
-                                        B.setHp(0);
-                                        if (A.getHp() <= 0)
+                            else if (A instanceof PlayerObject) {
+                                A.setSpeed(-1 * A.getSpeed());
+                                if (B instanceof BulletObject) {
+                                    //                            System.out.println("FUCK");
+                                    A.setHp(A.getHp() - 10);
+                                    B.setHp(0);
+                                    if (A.getHp() <= 0)
+                                        if (B.getPlayerID() == game.playerID) {
+                                            if (game.playerMP < 10)
+                                                game.playerMP++;
+                                            System.out.println(game.playerID);
+                                            System.out.println(B.getPlayerID());
+                                        }
+                                }
+                                else if (B instanceof PlayerObject || B instanceof SupplyObject) {
+                                    A.setHp(A.getHp() - 5);
+                                    B.setHp(B.getHp() - 5);
+                                    if (A.getHp() <= 0) {
+                                        if (B instanceof PlayerObject) {
                                             if (B.getPlayerID() == game.playerID) {
                                                 if (game.playerMP < 10)
                                                     game.playerMP++;
                                                 System.out.println(game.playerID);
                                                 System.out.println(B.getPlayerID());
                                             }
-                                    } else if (B instanceof PlayerObject || B instanceof SupplyObject) {
+                                        }
+                                    }
+                                    if (B.getHp() <= 0) {
+                                        if (A.getPlayerID() == game.playerID) {
+                                            if (game.playerMP < 10)
+                                                game.playerMP++;
+                                            System.out.println(game.playerID);
+                                            System.out.println(A.getPlayerID());
+                                        }
+                                    }
+                                    B.setDirection((float) (Math.PI * 2 - B.getDirection()));
+                                }
+                            }
+                            else if (A instanceof SupplyObject) {
+                                A.setDirection((float) (Math.PI * 2 - A.getDirection()));
+                                //                        System.out.println("FUCK");
+                                if (B instanceof BulletObject) {
+                                    A.setHp(A.getHp() - 10);
+                                    B.setHp(0);
+                                    if (A.getHp() <= 0) {
+                                        if (B.getPlayerID() == game.playerID) {
+                                            if (game.playerMP < 10)
+                                                game.playerMP++;
+                                            System.out.println(game.playerID);
+                                            System.out.println(B.getPlayerID());
+                                        }
+                                    }
+                                }
+                                else if (B instanceof PlayerObject || B instanceof SupplyObject) {
+                                    //                            System.out.println("FUCK");
+                                    if (B instanceof PlayerObject) {
                                         A.setHp(A.getHp() - 5);
                                         B.setHp(B.getHp() - 5);
-                                        if (A.getHp() <= 0) {
-                                            if (B instanceof PlayerObject) {
-                                                if (B.getPlayerID() == game.playerID) {
-                                                    if (game.playerMP < 10)
-                                                        game.playerMP++;
-                                                    System.out.println(game.playerID);
-                                                    System.out.println(B.getPlayerID());
-                                                }
-                                            }
-                                        }
-                                        if (B.getHp() <= 0) {
-                                            if (A.getPlayerID() == game.playerID) {
-                                                if (game.playerMP < 10)
-                                                    game.playerMP++;
-                                                System.out.println(game.playerID);
-                                                System.out.println(A.getPlayerID());
-                                            }
-                                        }
-                                        B.setDirection((float) (Math.PI * 2 - B.getDirection()));
                                     }
-                                }
-                                else if (A instanceof SupplyObject) {
-                                    A.setDirection((float) (Math.PI * 2 - A.getDirection()));
-                                    //                        System.out.println("FUCK");
-                                    if (B instanceof BulletObject) {
-                                        A.setHp(A.getHp() - 10);
-                                        B.setHp(0);
-                                        if (A.getHp() <= 0) {
+                                    B.setDirection((float) (Math.PI * 2 - B.getDirection()));
+                                    if (A.getHp() <= 0) {
+                                        if (B instanceof PlayerObject) {
                                             if (B.getPlayerID() == game.playerID) {
                                                 if (game.playerMP < 10)
                                                     game.playerMP++;
@@ -209,43 +229,33 @@ public class MainScreen extends ScreenAdapter {
                                             }
                                         }
                                     }
-                                    else if (B instanceof PlayerObject || B instanceof SupplyObject) {
-                                        //                            System.out.println("FUCK");
-                                        if (B instanceof PlayerObject) {
-                                            A.setHp(A.getHp() - 5);
-                                            B.setHp(B.getHp() - 5);
-                                        }
-                                        B.setDirection((float) (Math.PI * 2 - B.getDirection()));
-                                        if (A.getHp() <= 0) {
-                                            if (B instanceof PlayerObject) {
-                                                if (B.getPlayerID() == game.playerID) {
-                                                    if (game.playerMP < 10)
-                                                        game.playerMP++;
-                                                    System.out.println(game.playerID);
-                                                    System.out.println(B.getPlayerID());
-                                                }
-                                            }
-                                        }
-                                    }
                                 }
-                                break;
                             }
+                            break;
                         }
                     }
             }
+    }
 
     private void listenKey() {
         float x = 0, y = 0;
         fireGap += 10;
 
-        if (Gdx.input.isKeyPressed(Input.Keys.W))
-            y += 1;
-        if (Gdx.input.isKeyPressed(Input.Keys.S))
-            y -= 1;
-        if (Gdx.input.isKeyPressed(Input.Keys.D))
-            x += 1;
-        if (Gdx.input.isKeyPressed(Input.Keys.A))
-            x -= 1;
+        if (Gdx.app.getType() == Application.ApplicationType.Android) {
+            x = moveTouchpad.getKnobX() - 200f;
+            y = moveTouchpad.getKnobY() - 200f;
+        }
+        else {
+            if (Gdx.input.isKeyPressed(Input.Keys.W))
+                y += 1;
+            if (Gdx.input.isKeyPressed(Input.Keys.S))
+                y -= 1;
+            if (Gdx.input.isKeyPressed(Input.Keys.D))
+                x += 1;
+            if (Gdx.input.isKeyPressed(Input.Keys.A))
+                x -= 1;
+        }
+//        System.out.println("ASASASAS" + fireTouchpad.getKnobX() + " " + fireTouchpad.getKnobY());
 
         try {
             float direction = MathUtils.atan2(x, y);
@@ -253,18 +263,27 @@ public class MainScreen extends ScreenAdapter {
             if (x != 0 || y != 0) {
                 game.queue.put(gson.toJson(new GameAction("Move", direction, game.playerID, "", 4), GameAction.class));
             }
-            float posX = -(Gdx.graphics.getWidth() / 2f - Gdx.input.getX());
-            float posY = Gdx.graphics.getHeight() / 2f - Gdx.input.getY();
-            float angle = MathUtils.atan2(posX, posY);
-            if (Gdx.input.isTouched())
-                if (fireGap >= MainPlayer.playerFireGap) {
-
-//                    System.out.println(posX);
-//                    System.out.println(posY);
-
-                    game.queue.put(gson.toJson(new GameAction("Fire", angle, game.playerID, "", 0), GameAction.class));
-                    fireGap = 0;
-                }
+            float posX, posY, angle;
+            if (Gdx.app.getType() == Application.ApplicationType.Android) {
+                posX = fireTouchpad.getKnobX() - 200f;
+                posY = fireTouchpad.getKnobY() - 200f;
+                angle = MathUtils.atan2(posX, posY);
+                if (fireTouchpad.isTouched())
+                    if (fireGap >= MainPlayer.playerFireGap) {
+                        game.queue.put(gson.toJson(new GameAction("Fire", angle, game.playerID, "", 0), GameAction.class));
+                        fireGap = 0;
+                    }
+            }
+            else {
+                posX = -(Gdx.graphics.getWidth() / 2f - Gdx.input.getX());
+                posY = Gdx.graphics.getHeight() / 2f - Gdx.input.getY();
+                angle = MathUtils.atan2(posX, posY);
+                if (Gdx.input.isTouched())
+                    if (fireGap >= MainPlayer.playerFireGap) {
+                        game.queue.put(gson.toJson(new GameAction("Fire", angle, game.playerID, "", 0), GameAction.class));
+                        fireGap = 0;
+                    }
+            }
             game.queue.put(gson.toJson(new GameAction("Rotate", angle, game.playerID, "", 0), GameAction.class));
         }
         catch (InterruptedException e) {
@@ -281,7 +300,7 @@ public class MainScreen extends ScreenAdapter {
         while ((size--) != 0) {
             double theta = 2 * MathUtils.PI * dataMaker.nextFloat();
             double delta = (0.5 + dataMaker.nextGaussian() * 0.1) * r;
-            group[0].addActor(new SupplyObject(0f, 0, (float) (X + delta * Math.cos(theta)), (float) (Y + delta * Math.sin(theta)), 50, game, stage, group, (float) dataMaker.nextGaussian()*0.2f));
+            group[0].addActor(new SupplyObject(0f, 0, (float) (X + delta * Math.cos(theta)), (float) (Y + delta * Math.sin(theta)), 50, game, stage, group, (float) dataMaker.nextGaussian() * 0.2f));
         }
     }
 
@@ -310,7 +329,10 @@ public class MainScreen extends ScreenAdapter {
             e.printStackTrace();
         }
 
-        Gdx.input.setInputProcessor(stage);
+        if (Gdx.app.getType() == Application.ApplicationType.Android)
+            Gdx.input.setInputProcessor(controllerStage);
+        else
+            Gdx.input.setInputProcessor(stage);
         try {
             Thread downloader = new Thread(new ClientDownloader(game, game.S2C));
             Thread listener = new Thread(new ClientListener(game, game.C2S, game.queue));
@@ -341,10 +363,12 @@ public class MainScreen extends ScreenAdapter {
         uiStage.addActor(mpLabel);
         uiStage.addActor(mpProgress);
         uiStage.act();
+        controllerStage.act();
         checkCollision();
         keepSup();
         stage.draw();
         uiStage.draw();
+        controllerStage.draw();
     }
 
     @Override

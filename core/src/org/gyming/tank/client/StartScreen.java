@@ -4,11 +4,9 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 
@@ -46,7 +44,9 @@ public class StartScreen extends ScreenAdapter {
                 game.setPort(Integer.parseInt(portField.getText()));
                 game.setUserName(userField.getText());
                 game.setRoomName(roomField.getText());
-                game.setScreen(game.characterSelectionScreen);
+//                game.setScreen(game.characterSelectionScreen);
+                game.buildConnection();
+                game.setScreen(game.mainScreen);
             }
         });
 
