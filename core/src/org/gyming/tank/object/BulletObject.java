@@ -13,8 +13,9 @@ public class BulletObject extends GameObject {
     public int bulletSize;
     public int bulletATK;
     private int playerID;
+    public int bulletTime;
 
-    public BulletObject(float speed, float direction, float posX, float posY, int hp, int playerID, TankGame game, Stage stage, Group[] group,int bulletSize,int bulletATK) {
+    public BulletObject(float speed, float direction, float posX, float posY, int hp, int playerID, TankGame game, Stage stage, Group[] group,int bulletSize,int bulletATK,int bulletTime) {
         super(speed, direction, posX, posY, hp, game, stage, group);
         this.playerID = playerID;
 
@@ -22,6 +23,7 @@ public class BulletObject extends GameObject {
         this.posY -= texture.getHeight() / 2.0f;
         this.bulletATK = bulletATK;
         this.bulletSize = bulletSize;
+        this.bulletTime = bulletTime;
         texture = createTexture();
     }
 
@@ -56,6 +58,9 @@ public class BulletObject extends GameObject {
     }
     @Override
     protected void getDmg(){}
+
+    @Override
+    public void QSkill(GameAction action, float posX, float posY){}
 
     public void die() {
         stage.getRoot().removeActor(this);

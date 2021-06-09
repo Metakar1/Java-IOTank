@@ -64,7 +64,8 @@ public class SupplyObject extends GameObject {
             }
         }
     }
-
+    @Override
+    public void QSkill(GameAction action, float posX, float posY){}
 
     public void die() {
         stage.getRoot().removeActor(this);

@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
+import org.gyming.tank.client.MainScreen;
 import org.gyming.tank.client.TankGame;
 import org.gyming.tank.connection.GameAction;
 
@@ -26,8 +27,10 @@ public class PlayerObject extends GameObject {
     public  int cirR;
     static  int boarder;
     private int playerID;
-    private int playerType;
-    private int bulletSpeed;
+    public  int playerType;
+    public  int bulletSpeed;
+    public  int bulletTime;
+    public  int alpha;
     private String playerName;
     private Stage stage;
     public ProgressBar hpProgress;
@@ -39,11 +42,11 @@ public class PlayerObject extends GameObject {
 
         super(speed, direction, posX, posY, hp, game, stage, group);
         playerType = type;
-//        if(type==1) {
+        alpha = 0;
+        if(type==0) {
             playerSize = 30;
             playerSpeed = 25;
             playerHP = 100;
-            playerFireGap = 60;
             ratio = 1;
             gunHeight = playerSize * ratio * 2 / 3 + 3;
             gunWidth = gunHeight * 5 / 6;
@@ -54,8 +57,43 @@ public class PlayerObject extends GameObject {
             bulletHP = 10;
             bulletATK = 10;
             bulletSize = 10;
-//        }
+            playerFireGap = 250;
+            bulletTime = 100;
+        }
+        else if(type==1) {
+            playerSize = 25;
+            playerSpeed = 15;
+            playerHP = 100;
+            ratio = 1;
+            gunHeight = playerSize * ratio * 2 / 3 + 3;
+            gunWidth = gunHeight * 5 / 6;
+            cirR = playerSize * ratio - gunHeight / 2;
+            boarder = 3 * ratio;
 
+            bulletSpeed = 20;
+            bulletHP = 10;
+            bulletATK = 20;
+            bulletSize = 12;
+            playerFireGap = 400;
+            bulletTime = 300;
+        }
+        else if(type==2) {
+            playerSize = 40;
+            playerSpeed = 20;
+            playerHP = 200;
+            ratio = 1;
+            gunHeight = playerSize * ratio * 2 / 3 + 3;
+            gunWidth = gunHeight * 5 / 6;
+            cirR = playerSize * ratio - gunHeight / 2;
+            boarder = 3 * ratio;
+
+            bulletSpeed = 7;
+            bulletHP = 10;
+            bulletATK = 5;
+            bulletSize = 5;
+            playerFireGap = 30;
+            bulletTime = 100;
+        }
         this.setHp(playerHP);
         this.playerID = playerID;
         this.playerName = playerName;
@@ -115,16 +153,24 @@ public class PlayerObject extends GameObject {
 
     @Override
     public void fire(GameAction action, float posX, float posY) {
-//        System.out.println(360-gunDirection);
+//      System.out.println(360-gunDirection);
+        double delta = 0;
+        if(playerType==0)
+            delta = 0;
+        else if(playerType==1)
+            delta = 5;
+        else if(playerType==2)
+            delta = 15;
+
         float diffX = MathUtils.sin((360-gunDirection)/180)*this.gunWidth;
         float diffY = MathUtils.cos((360-gunDirection)/180)*this.gunWidth;
-        float rx = posX + this.cirR +1;
-        float ry = posY + texture.getHeight()-(this.cirR+this.gunHeight-PlayerObject.boarder*2)-1;
+        float rx = posX + this.cirR;
+        float ry = posY + this.cirR;
 //        System.out.println(Float.toString(diffX)+" "+Float.toString(diffY));
-        rx += 40*MathUtils.sin((360-gunDirection)/180*(float) Math.PI);
-        ry += 40*MathUtils.cos((360-gunDirection)/180*(float) Math.PI);
-        BulletObject bullet = new BulletObject(this.bulletSpeed, action.getDirection(), rx, ry, this.bulletHP, playerID, game, stage, group,this.bulletSize,this.bulletATK);
-        System.out.println(this.bulletSize);
+        rx += 50*MathUtils.sin((360-gunDirection)/180*(float) Math.PI);
+        ry += 50*MathUtils.cos((360-gunDirection)/180*(float) Math.PI);
+        BulletObject bullet = new BulletObject(this.bulletSpeed, action.getDirection()+ (float) MainScreen.dataMaker.nextGaussian()*(float) delta/180f*(float)Math.PI, rx - this.bulletSize, ry - this.bulletSize, this.bulletHP, playerID, game, stage, group,this.bulletSize,this.bulletATK,this.bulletTime);
+//        System.out.println(playerID);
         group[0].addActor(bullet);
     }
 
@@ -173,6 +219,34 @@ public class PlayerObject extends GameObject {
             }
         }
     }
+    @Override
+    public void QSkill(GameAction action, float posX, float posY)
+    {
+        if(playerType==2)
+        {
+            float diffX = MathUtils.sin((360-gunDirection)/180)*this.gunWidth;
+            float diffY = MathUtils.cos((360-gunDirection)/180)*this.gunWidth;
+            float rx = posX + this.cirR;
+            float ry = posY + this.cirR;
+//        System.out.println(Float.toString(diffX)+" "+Float.toString(diffY));
+//            rx += 50*MathUtils.sin((360-gunDirection)/180*(float) Math.PI);
+//            ry += 50*MathUtils.cos((360-gunDirection)/180*(float) Math.PI);
+            BulletObject bullet;
+            for(int i=0;i<8;i++) {
+                bullet = new BulletObject(1,(360f-45*i)/180*(float) Math.PI,rx - this.bulletSize * 6+40*MathUtils.sin((360f-45*i)/180*(float) Math.PI), ry - this.bulletSize * 6+40*MathUtils.cos((360f-45*i)/180*(float) Math.PI), this.bulletHP * 6, playerID, game, stage, group, this.bulletSize * 6, this.bulletATK * 100,1000000000);
+                group[0].addActor(bullet);
+            }
+        }
+        else if(playerType ==1)
+        {
+            this.alpha = 800;
+        }
+        else if(playerType ==0)
+        {
+            this.alpha = 300;
+        }
+    }
+
 
     public void die() {
         stage.getRoot().removeActor(this);

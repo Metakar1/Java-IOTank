@@ -6,9 +6,11 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import org.gyming.tank.client.ColorPool;
 import org.gyming.tank.client.MainScreen;
 import org.gyming.tank.client.TankGame;
@@ -56,9 +58,69 @@ abstract public class GameObject extends Actor {
     protected abstract void recoverSpeed();
 
     protected abstract void getDmg();
+    abstract public void QSkill(GameAction action, float posX, float posY);
 
     @Override
     public void act(float delta) {
+        if(this instanceof BulletObject)
+            ((BulletObject) this).bulletTime--;
+
+        if(this instanceof PlayerObject){
+            if(((PlayerObject)this).alpha!=0&&((PlayerObject)this).playerType==1)
+            {
+                int cutSize =((PlayerObject)this).playerSize*((PlayerObject)this).ratio;
+
+                Pixmap pixmap = new Pixmap(cutSize * 2, cutSize * 2, Pixmap.Format.RGBA8888);
+
+                pixmap.setColor(0,0,0,0);
+                Pixmap pixmap1 = new Pixmap(((PlayerObject)this).playerSize*2,((PlayerObject)this).playerSize*2,Pixmap.Format.RGBA8888);
+                pixmap1.drawPixmap(pixmap,0,0,pixmap.getWidth(),pixmap.getHeight(),0,0,pixmap1.getWidth(),pixmap1.getHeight());
+                Texture texture = new Texture(pixmap1);
+                texture.setFilter (Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+//        System.out.println(colorPool.getUserColor(playerID));
+//        System.out.println("***");
+//        texture
+                this.texture = texture;
+                --((PlayerObject)this).alpha;
+                if(((PlayerObject)this).alpha==0)
+                {
+                    this.texture = createTexture();
+                }
+            }
+            if(((PlayerObject)this).alpha!=0&&((PlayerObject)this).playerType==0)
+            {
+                ((PlayerObject)this).bulletSpeed = 15;
+                ((PlayerObject)this).bulletHP = 20;
+                ((PlayerObject)this).bulletATK = 15;
+                ((PlayerObject)this).bulletSize = 15;
+                ((PlayerObject)this).playerFireGap = 100;
+                ((PlayerObject)this).bulletTime = 200;
+                ((PlayerObject)this).playerSize = 30;
+                ((PlayerObject)this).playerSpeed = 35;
+                ((PlayerObject)this).playerHP = Math.min(200,((PlayerObject)this).playerHP*2);
+
+                if(((PlayerObject)this).alpha==400)
+                {
+                    this.texture = createTexture();
+                }
+                ((PlayerObject)this).alpha--;
+
+                if(((PlayerObject)this).alpha==0)
+                {
+                    ((PlayerObject)this).bulletSpeed = 10;
+                    ((PlayerObject)this).bulletHP = 10;
+                    ((PlayerObject)this).bulletATK = 10;
+                    ((PlayerObject)this).bulletSize = 10;
+                    ((PlayerObject)this).playerFireGap = 250;
+                    ((PlayerObject)this).bulletTime = 100;
+                    ((PlayerObject)this).playerSize = 40;
+                    ((PlayerObject)this).playerSpeed = 25;
+                    ((PlayerObject)this).playerHP = 100;
+                    this.texture = createTexture();
+                }
+            }
+        }
+
         if (this instanceof SupplyObject) {
             ((SupplyObject)this).selfdirect += ((SupplyObject)this).theta;
             if (MainScreen.dataMaker.nextFloat() < 0.01) {
@@ -116,7 +178,7 @@ abstract public class GameObject extends Actor {
                         break;
                     case "NewPlayer":
 //                    System.out.println();
-                        PlayerObject player = new PlayerObject(0, 0, i.getDirection(), i.getValue(), 0, i.getProperty().hashCode(), i.getProperty(), game, stage, group,1);
+                        PlayerObject player = new PlayerObject(0, 0, i.getDirection(), i.getValue(), 0, i.getProperty().hashCode(), i.getProperty(), game, stage, group,0);
                         if(game.getUserName().hashCode()==i.getProperty().hashCode())
                             MainScreen.MainPlayer = player;
                         group[1].addActor(player);
@@ -125,6 +187,9 @@ abstract public class GameObject extends Actor {
                         gunDirection = ((i.getDirection() + MathUtils.PI) / MathUtils.PI2) * 360;
                         gunDirection = (360 - (gunDirection + 180.f) % 360.f) % 360.f;
 //                        System.out.println(gunDirection);
+                        break;
+                    case "QSkill":
+                        QSkill(i, posX, posY);
                         break;
                 }
             }
@@ -139,7 +204,7 @@ abstract public class GameObject extends Actor {
             }
         }
         try {
-            if (getHp() <= 0 || (!MainScreen.isInside(this) && (this instanceof BulletObject)))
+            if (getHp() <= 0 || (!MainScreen.isInside(this) && (this instanceof BulletObject))||((this instanceof BulletObject) && ((BulletObject) this).bulletTime<=0))
                 game.toBeDeleted.put(this);
         }
         catch (Exception e) {
@@ -155,7 +220,8 @@ abstract public class GameObject extends Actor {
         if (this instanceof PlayerObject) {
             batch.draw(texture, posX, posY, ((PlayerObject)this).cirR + 1, texture.getHeight() - (((PlayerObject)this).cirR + ((PlayerObject)this).gunHeight - PlayerObject.boarder * 2) - 1, texture.getWidth(), texture.getHeight(), this.dmg*1.0f/100f, this.dmg*1.0f/100f, gunDirection, 0, 0, texture.getWidth(), texture.getHeight(), false, false);
             ((PlayerObject) this).hpProgress.setPosition(posX-5,posY-((PlayerObject) this).hpProgress.getHeight());
-            ((PlayerObject) this).hpProgress.draw(batch,parentAlpha);
+            if(((PlayerObject) this).alpha==0)
+                ((PlayerObject) this).hpProgress.draw(batch,parentAlpha);
 //            System.out.println(((PlayerObject)this).cirR + 1);
         }
         else {
@@ -171,6 +237,8 @@ abstract public class GameObject extends Actor {
 //    abstract public Texture createTexture();
 
 //    abstract public TextureRegion createRegion();
+
+
 
     public final float getPosX() {
         return posX;

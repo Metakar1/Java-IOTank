@@ -160,12 +160,15 @@ public class MainScreen extends ScreenAdapter {
                         if (A.area.overlaps(B.area)) {
                             //                    System.out.println("FUCK");
                             if (A instanceof BulletObject) {
-                                A.setHp(0);
-                                if (B instanceof BulletObject)
-                                    B.setHp(0);
+
+                                if (B instanceof BulletObject) {
+                                    B.setHp(B.getHp()-((BulletObject) A).bulletATK);
+                                    A.setHp(A.getHp()-((BulletObject) B).bulletATK);
+                                }
                                 else if (B instanceof PlayerObject || B instanceof SupplyObject) {
+                                    A.setHp(A.getHp()-10);
                                     B.setDirection((float) (Math.PI * 2 - B.getDirection()));
-                                    B.setHp(B.getHp() - 10);
+                                    B.setHp(B.getHp() - ((BulletObject) A).bulletATK);
                                     B.dmg = 110;
                                     //                            System.out.println("FUCK");
                                     if (B.getHp() <= 0) {
@@ -183,8 +186,8 @@ public class MainScreen extends ScreenAdapter {
                                 A.dmg= 110;
                                 if (B instanceof BulletObject) {
                                     //                            System.out.println("FUCK");
-                                    A.setHp(A.getHp() - 10);
-                                    B.setHp(0);
+                                    A.setHp(A.getHp() - ((BulletObject) B).bulletATK);
+                                    B.setHp(B.getHp()-10);
                                     if (A.getHp() <= 0)
                                         if (B.getPlayerID() == game.playerID) {
                                             if (game.playerMP < 10)
@@ -220,8 +223,9 @@ public class MainScreen extends ScreenAdapter {
                             else if (A instanceof SupplyObject) {
                                 A.setDirection((float) (Math.PI * 2 - A.getDirection()));
                                 //                        System.out.println("FUCK");
+
                                 if (B instanceof BulletObject) {
-                                    A.setHp(A.getHp() - 10);
+                                    A.setHp(A.getHp() - ((BulletObject) B).bulletATK);
                                     B.setHp(0);
                                     if (A.getHp() <= 0) {
                                         if (B.getPlayerID() == game.playerID) {
@@ -299,15 +303,9 @@ public class MainScreen extends ScreenAdapter {
                     }
                 if (game.playerMP == 10 && fireButton.isPressed()) {
                     // Special skill.
-                    switch (game.playerType) {
-                        case 0:
-                            break;
-                        case 1:
-                            break;
-                        case 2:
-                            break;
-                    }
+
                     game.playerMP = 0;
+                    game.queue.put(gson.toJson(new GameAction("QSkill", angle, game.playerID, "", 0), GameAction.class));
                 }
             }
             else {
@@ -321,14 +319,7 @@ public class MainScreen extends ScreenAdapter {
                     }
                 if (game.playerMP == 10 && Gdx.input.isKeyPressed(Input.Keys.Q)) {
                     // Special skill.
-                    switch (game.playerType) {
-                        case 0:
-                            break;
-                        case 1:
-                            break;
-                        case 2:
-                            break;
-                    }
+                    game.queue.put(gson.toJson(new GameAction("QSkill", angle, game.playerID, "", 0), GameAction.class));
                     game.playerMP = 0;
                 }
             }
