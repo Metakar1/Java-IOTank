@@ -9,8 +9,8 @@ public class DesktopLauncher {
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
         config.resizable = false;
         config.title = "Tank Game";
-        config.width = 1200;
-        config.height = 800;
+        config.width = 1300;
+        config.height = 700;
         config.foregroundFPS = 0;
         config.vSyncEnabled = false;
         new LwjglApplication(new TankGame(), config);
