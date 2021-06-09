@@ -273,6 +273,10 @@ public class MainScreen extends ScreenAdapter {
                         game.queue.put(gson.toJson(new GameAction("Fire", angle, game.playerID, "", 0), GameAction.class));
                         fireGap = 0;
                     }
+                if (game.playerMP == 10 && fireButton.isPressed()) {
+                    // Special skill.
+                    game.playerMP = 0;
+                }
             }
             else {
                 posX = -(Gdx.graphics.getWidth() / 2f - Gdx.input.getX());
@@ -283,6 +287,10 @@ public class MainScreen extends ScreenAdapter {
                         game.queue.put(gson.toJson(new GameAction("Fire", angle, game.playerID, "", 0), GameAction.class));
                         fireGap = 0;
                     }
+                if (game.playerMP == 10 && Gdx.input.isKeyPressed(Input.Keys.Q)) {
+                    // Special skill.
+                    game.playerMP = 0;
+                }
             }
             game.queue.put(gson.toJson(new GameAction("Rotate", angle, game.playerID, "", 0), GameAction.class));
         }
