@@ -427,7 +427,7 @@ public class MainScreen extends ScreenAdapter {
         characterBgms.get(game.playerType).stop();
         downloader.interrupt();
         listener.interrupt();
-        System.out.println("TEST");
+//        System.out.println("TEST");
     }
 
     @Override

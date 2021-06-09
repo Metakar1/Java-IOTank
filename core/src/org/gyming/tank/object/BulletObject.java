@@ -8,17 +8,21 @@ import org.gyming.tank.client.TankGame;
 import org.gyming.tank.connection.GameAction;
 
 public class BulletObject extends GameObject {
-    public static int bulletSpeed = 10;
-    public static int bulletHP = 10;
-    static int bulletSize = 10;
+    public  int bulletSpeed = 10;
+    public  int bulletHP = 10;
+    public int bulletSize;
+    public int bulletATK;
     private int playerID;
 
-    public BulletObject(float speed, float direction, float posX, float posY, int hp, int playerID, TankGame game, Stage stage, Group[] group) {
+    public BulletObject(float speed, float direction, float posX, float posY, int hp, int playerID, TankGame game, Stage stage, Group[] group,int bulletSize,int bulletATK) {
         super(speed, direction, posX, posY, hp, game, stage, group);
         this.playerID = playerID;
-        texture = createTexture();
+
         this.posX -= texture.getWidth() / 2.0f;
         this.posY -= texture.getHeight() / 2.0f;
+        this.bulletATK = bulletATK;
+        this.bulletSize = bulletSize;
+        texture = createTexture();
     }
 
     public final int getPlayerID() {
@@ -37,6 +41,7 @@ public class BulletObject extends GameObject {
         pixmap.setColor(colorPool.getUserColor(playerID));
         pixmap.fillCircle(bulletSize, bulletSize, bulletSize - 3);
         Texture texture = new Texture(pixmap);
+        System.out.println(this.bulletSize);
         return texture;
     }
 
