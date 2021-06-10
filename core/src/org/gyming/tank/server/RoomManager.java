@@ -20,12 +20,12 @@ public class RoomManager implements Runnable {
     }
 
     public void add(ConnectMsg connectMsg, User user) {
-        if (roomHashMap.get(connectMsg.room) == null) {
-            Room room = new Room(connectMsg.room);
+        Room room = roomHashMap.get(connectMsg.room);
+        if (room == null || room.endState) {
+            room = new Room(connectMsg.room);
             roomHashMap.put(connectMsg.room, room);
             threadPool.submit(room);
         }
-        Room room = roomHashMap.get(connectMsg.room);
         Client client = new Client(connectMsg, user);
         threadPool.submit(client.receive);
         threadPool.submit(client.send);

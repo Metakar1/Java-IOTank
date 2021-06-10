@@ -23,10 +23,10 @@ public class Room implements Runnable {
         public void run() {
             boolean hasClient = false;
             for (Client client : clients) {
-                startState = true;
                 if (client.endState) {
                     continue;
                 }
+                startState = true;
                 hasClient = true;
                 while (!client.upload.isEmpty()) {
                     curFrame.add(client.upload.peek());
@@ -43,7 +43,11 @@ public class Room implements Runnable {
             }
             frameID++;
             totFrame.add(sumFrame);
-            if (!hasClient) endState = true;
+            if (startState&&(!hasClient))  {
+                System.out.println("Room Stop");
+                endState = true;
+                timerTask.cancel();
+            }
         }
     };
 
@@ -58,8 +62,5 @@ public class Room implements Runnable {
     public void run() {
         Timer timer = new Timer(true);
         timer.schedule(timerTask, 1, 20);
-        while (!(startState && endState)) ;
-        timerTask.cancel();
-        System.out.println("Room Stop");
     }
 }
