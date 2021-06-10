@@ -322,6 +322,7 @@ public class MainScreen extends ScreenAdapter {
                 angle = MathUtils.atan2(posX, posY);
                 if (Gdx.input.isTouched())
                     if (fireGap >= MainPlayer.playerFireGap) {
+                        System.out.println(MainPlayer.playerFireGap);
                         game.queue.put(gson.toJson(new GameAction("Fire", angle, game.playerID, "", 0), GameAction.class));
                         fireGap = 0;
                     }

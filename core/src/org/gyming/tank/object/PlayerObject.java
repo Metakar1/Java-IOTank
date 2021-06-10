@@ -40,9 +40,9 @@ public class PlayerObject extends GameObject {
     public PlayerObject(float speed, float direction, float posX, float posY, int hp, int playerID,
                         String playerName, TankGame game, Stage stage, Group[] group, int type) {
         super(speed, direction, posX, posY, hp, game, stage, group);
-        playerType = type;
+        this.playerType = playerID;
         alpha = 0;
-        if(type==0) {
+        if(this.playerType==0) {
             playerSize = 30;
             playerSpeed = 25;
             playerHP = 100;
@@ -59,7 +59,7 @@ public class PlayerObject extends GameObject {
             playerFireGap = 250;
             bulletTime = 100;
         }
-        else if(type==1) {
+        else if(this.playerType==1) {
             playerSize = 25;
             playerSpeed = 15;
             playerHP = 100;
@@ -76,7 +76,7 @@ public class PlayerObject extends GameObject {
             playerFireGap = 400;
             bulletTime = 300;
         }
-        else if(type==2) {
+        else if(this.playerType==2) {
             playerSize = 40;
             playerSpeed = 20;
             playerHP = 200;
