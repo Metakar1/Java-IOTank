@@ -41,11 +41,11 @@ abstract public class GameObject extends Actor {
         this.posY = posY;
         this.hp = hp;
         this.game = game;
-        this.texture = createTexture();
+        if(!(this instanceof PlayerObject)) this.texture = createTexture();
         this.stage = stage;
         this.group = group;
 //        region = createRegion();
-        setSize(this.texture.getWidth(), this.texture.getHeight());
+        if(!(this instanceof PlayerObject)) setSize(this.texture.getWidth(), this.texture.getHeight());
         this.area = new Rectangle();
         this.gunDirection = 0;
         this.dmg = 100;
@@ -113,7 +113,7 @@ abstract public class GameObject extends Actor {
                     ((PlayerObject)this).bulletSize = 10;
                     ((PlayerObject)this).playerFireGap = 250;
                     ((PlayerObject)this).bulletTime = 100;
-                    ((PlayerObject)this).playerSize = 40;
+                    ((PlayerObject)this).playerSize = 30;
                     ((PlayerObject)this).playerSpeed = 25;
                     ((PlayerObject)this).playerHP = 100;
                     this.texture = createTexture();
@@ -178,7 +178,9 @@ abstract public class GameObject extends Actor {
                         break;
                     case "NewPlayer":
 //                    System.out.println();
-                        PlayerObject player = new PlayerObject(0, 0, i.getDirection(), i.getValue(), 0, i.getProperty().hashCode(), i.getProperty(), game, stage, group,0);
+                        PlayerObject player = new PlayerObject(0, 0, i.getDirection(), i.getValue(), 0, i.getObjectID(), i.getProperty(), game, stage, group,0);
+                        System.out.println(game.getUserName());
+                        System.out.println(i.getProperty());
                         if(game.getUserName().hashCode()==i.getProperty().hashCode())
                             MainScreen.MainPlayer = player;
                         group[1].addActor(player);

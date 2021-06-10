@@ -39,7 +39,6 @@ public class PlayerObject extends GameObject {
 
     public PlayerObject(float speed, float direction, float posX, float posY, int hp, int playerID,
                         String playerName, TankGame game, Stage stage, Group[] group, int type) {
-
         super(speed, direction, posX, posY, hp, game, stage, group);
         playerType = type;
         alpha = 0;
@@ -95,10 +94,13 @@ public class PlayerObject extends GameObject {
             bulletTime = 100;
         }
         this.setHp(playerHP);
-        this.playerID = playerID;
+        if(playerName.equals("f")) this.playerID = 0;
+        else this.playerID = playerName.hashCode();
         this.playerName = playerName;
         this.stage = stage;
-        this.identifier = playerID;
+        this.playerType = playerID;
+        System.out.println(this.playerType);
+        this.identifier = this.playerID;
         this.hpProgress = new ProgressBar(0f, playerHP, 1f, false, game.skin, "progressbar-tank");
         this.texture = createTexture();
         hpProgress.setWidth(this.texture.getWidth()-10);
@@ -123,7 +125,7 @@ public class PlayerObject extends GameObject {
 
     @Override
     protected Texture createTexture() {
-
+//        System.out.println("3:"+playerID);
         int cutSize =playerSize*ratio;
 
 

@@ -125,6 +125,14 @@ public class MainScreen extends ScreenAdapter {
 
     public void updateFrame(GameFrame gameFrame) {
         for (GameAction i : gameFrame.frameList) {
+            if(i.getType().equals("NewPlayer")) {
+                if (game.actionGroup.modify.get(0) == null)
+                    game.actionGroup.modify.put(0, new GameFrame(0));
+                GameFrame cur = game.actionGroup.modify.get(0);
+                cur.add(i);
+                game.actionGroup.modify.put(0, cur);
+                return;
+            }
             if (game.actionGroup.modify.get(i.getObjectID()) == null)
                 game.actionGroup.modify.put(i.getObjectID(), new GameFrame(0));
             GameFrame cur = game.actionGroup.modify.get(i.getObjectID());
@@ -362,7 +370,7 @@ public class MainScreen extends ScreenAdapter {
         mpProgress.setValue(0f);
         Gson gson = new Gson();
         try {
-            game.queue.put(gson.toJson(new GameAction("NewPlayer", boarder + 100, 0, game.getUserName(), boarder + 100)));
+            game.queue.put(gson.toJson(new GameAction("NewPlayer", boarder + 100, game.playerType, game.getUserName(), boarder + 100)));
         }
         catch (Exception e) {
             e.printStackTrace();

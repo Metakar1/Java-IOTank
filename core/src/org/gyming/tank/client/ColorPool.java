@@ -31,8 +31,10 @@ public class ColorPool {
     }
 
     public Color getUserColor(Integer userID) {
+        if(userID == 0) return userColorPool.get(0);
         if (user.get(userID) == null) {
             user.put(userID, userCnt);
+//            System.out.println("1:"+Integer.toString(userID));
             userCnt++;
         }
 //        System.out.println(userID);
@@ -41,8 +43,11 @@ public class ColorPool {
     }
 
     public Color getUserBoarderColor(Integer userID) {
+        if(userID == 0) return userBoarderColorPool.get(0);
         if (user.get(userID) == null) {
             user.put(userID, userCnt);
+//            System.out.println("2:"+Integer.toString(userID));
+//            System.out.println(userID);
             userCnt++;
         }
         return userBoarderColorPool.get(user.get(userID));
@@ -54,5 +59,10 @@ public class ColorPool {
 
     public Color getGunColor() {
         return revert(183, 183, 183);
+    }
+
+    public void init() {
+        userCnt = 0;
+        user.clear();
     }
 }
