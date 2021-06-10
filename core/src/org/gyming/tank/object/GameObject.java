@@ -198,9 +198,12 @@ abstract public class GameObject extends Actor {
             if (flag == 1) recoverSpeed();
             actions.frameList.clear();
         }
+        if(this instanceof PlayerObject) {
+            ((PlayerObject) this).hpProgress.setValue(this.hp);
+        }
         if ((this instanceof PlayerObject) && (this.identifier == game.playerID)) {
             stage.getCamera().position.set(posX + texture.getWidth() / 2f, posY + texture.getHeight() / 2f, 0);
-            ((PlayerObject) this).hpProgress.setValue(this.hp);
+
             if (getHp() <= 0) {
                 game.setScreen(game.gameOverScreen);
             }

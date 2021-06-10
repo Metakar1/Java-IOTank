@@ -98,8 +98,7 @@ public class PlayerObject extends GameObject {
         else this.playerID = playerName.hashCode();
         this.playerName = playerName;
         this.stage = stage;
-        this.playerType = playerID;
-        System.out.println(this.playerType);
+//        System.out.println(this.playerType);
         this.identifier = this.playerID;
         this.hpProgress = new ProgressBar(0f, playerHP, 1f, false, game.skin, "progressbar-tank");
         this.texture = createTexture();
