@@ -28,6 +28,7 @@ public class UserManager implements Runnable {
         MsgIO cur = socketHashMap.get(name);
         if (cur != null) {
             threadPool.submit(new ParseConnectAction(new User(cur, msgIO), roomManager, threadPool));
+            socketHashMap.put(name,null);
         }
         else {
             socketHashMap.put(name, msgIO);
