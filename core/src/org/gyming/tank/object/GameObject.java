@@ -18,7 +18,6 @@ import org.gyming.tank.connection.GameAction;
 import org.gyming.tank.connection.GameFrame;
 
 abstract public class GameObject extends Actor {
-    protected static ColorPool colorPool = new ColorPool();
     protected static float acceleration = 5.0f / 30;
     public Rectangle area;
     protected int identifier;
@@ -31,6 +30,7 @@ abstract public class GameObject extends Actor {
     protected Stage stage;
     protected float gunDirection;
     protected Group[] group;
+    public static ColorPool colorPool = new ColorPool();
     public int dmg;
 
 

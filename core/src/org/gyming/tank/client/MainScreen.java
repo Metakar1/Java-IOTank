@@ -48,13 +48,6 @@ public class MainScreen extends ScreenAdapter {
         this.uiStage = new Stage();
         this.controllerStage = new Stage();
         this.game = game;
-        this.group = new Group[2];
-        group[0] = new Group();
-        group[1] = new Group();
-        group[0].addActor(new PlayerObject(0, 0, 50, 50, 0, 0, "f", game, stage, group, 1));
-        stage.addActor(makeBackground(3840, 2160, boarder, 30));
-        this.stage.addActor(group[0]);
-        this.stage.addActor(group[1]);
         mpProgress = new ProgressBar(0f, 10f, 1f, false, game.skin, "progressbar-tank");
         mpProgress.setWidth(300);
         mpProgress.setPosition((Gdx.graphics.getWidth() - mpProgress.getWidth()) / 2f, 50f);
@@ -369,6 +362,16 @@ public class MainScreen extends ScreenAdapter {
         game.playerID = game.getUserName().hashCode();
         game.playerMP = 0;
         mpProgress.setValue(0f);
+        game.queue.clear();
+        stage.clear();
+        this.group = new Group[2];
+        group[0] = new Group();
+        group[1] = new Group();
+        group[0].addActor(new PlayerObject(0, 0, 50, 50, 0, 0, "f", game, stage, group, 1));
+        stage.addActor(makeBackground(3840, 2160, boarder, 30));
+        this.stage.addActor(group[0]);
+        this.stage.addActor(group[1]);
+        GameObject.colorPool.init();
         Gson gson = new Gson();
         try {
             game.queue.put(gson.toJson(new GameAction("NewPlayer", boarder + 100, game.playerType, game.getUserName(), boarder + 100)));
