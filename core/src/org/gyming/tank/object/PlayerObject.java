@@ -78,7 +78,7 @@ public class PlayerObject extends GameObject {
         }
         else if(this.playerType==2) {
             playerSize = 40;
-            playerSpeed = 20;
+            playerSpeed = 15;
             playerHP = 200;
             ratio = 1;
             gunHeight = playerSize * ratio * 2 / 3 + 3;
@@ -88,7 +88,7 @@ public class PlayerObject extends GameObject {
 
             bulletSpeed = 7;
             bulletHP = 10;
-            bulletATK = 5;
+            bulletATK = 3;
             bulletSize = 5;
             playerFireGap = 30;
             bulletTime = 100;
