@@ -125,6 +125,7 @@ public class PlayerObject extends GameObject {
     @Override
     protected Texture createTexture() {
 //        System.out.println("3:"+playerID);
+
         int cutSize =playerSize*ratio;
 
 

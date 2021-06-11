@@ -367,14 +367,19 @@ public class MainScreen extends ScreenAdapter {
         this.group = new Group[2];
         group[0] = new Group();
         group[1] = new Group();
-        group[0].addActor(new PlayerObject(0, 0, 50, 50, 0, 0, "f", game, stage, group, 1));
+        group[0].addActor(new PlayerObject(0, 0, 0, 0, 0, 0, "f", game, stage, group, 1));
         stage.addActor(makeBackground(3840, 2160, boarder, 30));
         this.stage.addActor(group[0]);
         this.stage.addActor(group[1]);
         GameObject.colorPool.init();
         Gson gson = new Gson();
         try {
-            game.queue.put(gson.toJson(new GameAction("NewPlayer", boarder + 100, game.playerType, game.getUserName(), boarder + 100)));
+            if(game.playerType==0)
+                game.queue.put(gson.toJson(new GameAction("NewPlayer", boarder + 100, game.playerType, game.getUserName(), boarder + 100)));
+            if(game.playerType==1)
+                game.queue.put(gson.toJson(new GameAction("NewPlayer", 3840 - 100 -boarder, game.playerType, game.getUserName(), 2160 - 100 -boarder)));
+            if(game.playerType==2)
+                game.queue.put(gson.toJson(new GameAction("NewPlayer", boarder + 100, game.playerType, game.getUserName(), 2160 - 100 -boarder)));
         }
         catch (Exception e) {
             e.printStackTrace();

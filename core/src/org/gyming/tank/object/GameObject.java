@@ -220,6 +220,9 @@ abstract public class GameObject extends Actor {
     @Override
     public void draw(Batch batch, float parentAlpha) {
 //        System.out.println(t);
+        if(this.getPlayerID()==0&&this instanceof PlayerObject)
+            return;
+
         this.getDmg();
 
         if (this instanceof PlayerObject) {
