@@ -377,9 +377,9 @@ public class MainScreen extends ScreenAdapter {
             if(game.playerType==0)
                 game.queue.put(gson.toJson(new GameAction("NewPlayer", boarder + 100, game.playerType, game.getUserName(), boarder + 100)));
             if(game.playerType==1)
-                game.queue.put(gson.toJson(new GameAction("NewPlayer", 3840 - 100 -boarder, game.playerType, game.getUserName(), 2160 - 100 -boarder)));
+                game.queue.put(gson.toJson(new GameAction("NewPlayer", 3840+boarder-100, game.playerType, game.getUserName(), 2160+boarder-100)));
             if(game.playerType==2)
-                game.queue.put(gson.toJson(new GameAction("NewPlayer", boarder + 100, game.playerType, game.getUserName(), 2160 - 100 -boarder)));
+                game.queue.put(gson.toJson(new GameAction("NewPlayer", boarder + 100, game.playerType, game.getUserName(), 2160+boarder-100)));
         }
         catch (Exception e) {
             e.printStackTrace();
