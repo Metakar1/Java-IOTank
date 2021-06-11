@@ -54,9 +54,7 @@ public class GameOverScreen extends ScreenAdapter {
 
     @Override
     public void render(float delta) {
-        if (Gdx.app.getType() == Application.ApplicationType.Android) {
-            ScreenUtils.clear(1, 1, 1, 1);
-        }
+        ScreenUtils.clear(1, 1, 1, 1);
         gameOverStage.act();
         gameOverStage.draw();
         if (Gdx.input.isTouched()) {
