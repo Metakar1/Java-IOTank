@@ -111,15 +111,15 @@ public class CharacterSelectionScreen extends ScreenAdapter {
         else
             skillLabelStyle = "label-chara-skill-tank";
         characterSkills = new Array<>();
-        Label characterSkill = new Label("Special skill: skill1.", game.skin, skillLabelStyle);
+        Label characterSkill = new Label("Ultimate Burst: Bigger and faster bullet up to 6s.", game.skin, skillLabelStyle);
         characterSkill.setPosition((Gdx.graphics.getWidth() - characterSkill.getWidth()) / 2f, 100f);
         characterSkill.getColor().a = 0.8f;
         characterSkills.add(characterSkill);
-        characterSkill = new Label("Special skill: skill2.", game.skin, skillLabelStyle);
+        characterSkill = new Label("Invisible Akari: Hide self from others up to 16s.", game.skin, skillLabelStyle);
         characterSkill.setPosition((Gdx.graphics.getWidth() - characterSkill.getWidth()) / 2f, 100f);
         characterSkill.getColor().a = 0.8f;
         characterSkills.add(characterSkill);
-        characterSkill = new Label("Special skill: skill3.", game.skin, skillLabelStyle);
+        characterSkill = new Label("Absolute Defender: Build a shelter with big bullets.", game.skin, skillLabelStyle);
         characterSkill.setPosition((Gdx.graphics.getWidth() - characterSkill.getWidth()) / 2f, 100f);
         characterSkill.getColor().a = 0.8f;
         characterSkills.add(characterSkill);
