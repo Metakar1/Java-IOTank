@@ -134,7 +134,7 @@ public class MainScreen extends ScreenAdapter {
         }
     }
 
-    public void checkCollision() {
+    public void CheckCollision() {
         while (!game.toBeDeleted.isEmpty()) {
             game.toBeDeleted.peek().die();
             game.toBeDeleted.poll();
@@ -145,122 +145,14 @@ public class MainScreen extends ScreenAdapter {
             for (int i = 0; i < group[i2].getChildren().size; i++) {
                 Object[] array = group[i2].getChildren().begin();
                 GameObject A = (GameObject) array[i];
-                if (A.getHp() <= 0)
-                    continue;
+
                 for (int j2 = 0; j2 < 2; j2++)
                     for (int j = 0; j < group[j2].getChildren().size; j++) {
                         Object[] array2 = group[j2].getChildren().begin();
                         GameObject B = (GameObject) array2[j];
-                        if (B.getHp() <= 0)
-                            continue;
-
-                        if (!(A instanceof SupplyObject) && !(B instanceof SupplyObject))
-                            if (A.getPlayerID() == B.getPlayerID())
-                                continue;
 
                         if (A.area.overlaps(B.area)) {
-                            //                    System.out.println("FUCK");
-                            if (A instanceof BulletObject) {
-
-                                if (B instanceof BulletObject) {
-                                    B.setHp(B.getHp()-((BulletObject) A).bulletATK);
-                                    A.setHp(A.getHp()-((BulletObject) B).bulletATK);
-                                }
-                                else if (B instanceof PlayerObject || B instanceof SupplyObject) {
-                                    A.setHp(A.getHp()-10);
-                                    B.setDirection((float) (Math.PI * 2 - B.getDirection()));
-                                    B.setHp(B.getHp() - ((BulletObject) A).bulletATK);
-                                    B.dmg = 110;
-                                    //                            System.out.println("FUCK");
-                                    if (B.getHp() <= 0) {
-                                        if (A.getPlayerID() == game.playerID) {
-                                            if (game.playerMP < 10)
-                                                game.playerMP++;
-//                                            System.out.println(game.playerID);
-//                                            System.out.println(A.getPlayerID());
-                                        }
-                                    }
-                                }
-                            }
-                            else if (A instanceof PlayerObject) {
-                                A.setSpeed(-1 * A.getSpeed());
-                                A.dmg= 110;
-                                if (B instanceof BulletObject) {
-                                    //                            System.out.println("FUCK");
-                                    A.setHp(A.getHp() - ((BulletObject) B).bulletATK);
-                                    B.setHp(B.getHp()-10);
-                                    if (A.getHp() <= 0)
-                                        if (B.getPlayerID() == game.playerID) {
-                                            if (game.playerMP < 10)
-                                                game.playerMP++;
-//                                            System.out.println(game.playerID);
-//                                            System.out.println(B.getPlayerID());
-                                        }
-                                } else if (B instanceof PlayerObject || B instanceof SupplyObject) {
-                                    B.dmg = 110;
-                                    A.setHp(A.getHp() - 5);
-                                    B.setHp(B.getHp() - 5);
-                                    if (A.getHp() <= 0) {
-                                        if (B instanceof PlayerObject) {
-                                            if (B.getPlayerID() == game.playerID) {
-                                                if (game.playerMP < 10)
-                                                    game.playerMP++;
-//                                                System.out.println(game.playerID);
-//                                                System.out.println(B.getPlayerID());
-                                            }
-                                        }
-                                    }
-                                    if (B.getHp() <= 0) {
-                                        if (A.getPlayerID() == game.playerID) {
-                                            if (game.playerMP < 10)
-                                                game.playerMP++;
-//                                            System.out.println(game.playerID);
-//                                            System.out.println(A.getPlayerID());
-                                        }
-                                    }
-                                    B.setDirection((float) (Math.PI * 2 - B.getDirection()));
-                                }
-                            }
-                            else if (A instanceof SupplyObject) {
-                                A.setDirection((float) (Math.PI * 2 - A.getDirection()));
-                                //                        System.out.println("FUCK");
-
-                                if (B instanceof BulletObject) {
-                                    A.setHp(A.getHp() - ((BulletObject) B).bulletATK);
-                                    B.setHp(0);
-                                    if (A.getHp() <= 0) {
-                                        if (B.getPlayerID() == game.playerID) {
-                                            if (game.playerMP < 10)
-                                                game.playerMP++;
-//                                            System.out.println(game.playerID);
-//                                            System.out.println(B.getPlayerID());
-                                        }
-                                    }
-                                }
-                                else if (B instanceof PlayerObject || B instanceof SupplyObject) {
-                                    //                            System.out.println("FUCK");
-                                    if(B instanceof  PlayerObject) {
-                                        B.dmg = 110;
-                                        A.dmg = 110;
-                                    }
-                                    if (B instanceof PlayerObject) {
-                                        A.setHp(A.getHp() - 5);
-                                        B.setHp(B.getHp() - 5);
-                                    }
-                                    B.setDirection((float) (Math.PI * 2 - B.getDirection()));
-                                    if (A.getHp() <= 0) {
-                                        if (B instanceof PlayerObject) {
-                                            if (B.getPlayerID() == game.playerID) {
-                                                if (game.playerMP < 10)
-                                                    game.playerMP++;
-//                                                System.out.println(game.playerID);
-//                                                System.out.println(B.getPlayerID());
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                            break;
+                            A.CheckCollision(B);
                         }
                     }
             }
@@ -423,7 +315,7 @@ public class MainScreen extends ScreenAdapter {
         uiStage.addActor(game.characterFlags.get(game.playerType));
         uiStage.act();
         controllerStage.act();
-        checkCollision();
+        CheckCollision();
         keepSup();
         stage.draw();
         uiStage.draw();

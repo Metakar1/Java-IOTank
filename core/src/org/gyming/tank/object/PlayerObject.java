@@ -3,6 +3,7 @@ package org.gyming.tank.object;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -239,5 +240,52 @@ public class PlayerObject extends GameObject {
         group[1].removeActor(this);
         group[0].removeActor(this);
         this.setHp(0);
+    }
+
+    public void CheckCollision(GameObject B)
+    {
+        if(this.getHp()==0||B.getHp()==0)
+            return;
+        if (this.getPlayerID() == B.getPlayerID())
+            return;
+        this.setSpeed(-1 * this.getSpeed());
+        this.dmg= 110;
+        if (B instanceof BulletObject) {
+            this.setHp(this.getHp() - ((BulletObject) B).bulletATK);
+            B.setHp(B.getHp()-10);
+            if (this.getHp() <= 0)
+                if (B.getPlayerID() == game.playerID) {
+                    if (game.playerMP < 10)
+                        game.playerMP++;
+                }
+        } else if (B instanceof PlayerObject || B instanceof SupplyObject) {
+            B.dmg = 110;
+            this.setHp(this.getHp() - 5);
+            B.setHp(B.getHp() - 5);
+            if (this.getHp() <= 0) {
+                if (B instanceof PlayerObject) {
+                    if (B.getPlayerID() == game.playerID) {
+                        if (game.playerMP < 10)
+                            game.playerMP++;
+                    }
+                }
+            }
+            if (B.getHp() <= 0) {
+                if (this.getPlayerID() == game.playerID) {
+                    if (game.playerMP < 10)
+                        game.playerMP++;
+                }
+            }
+            B.setDirection((float) (Math.PI * 2 - B.getDirection()));
+        }
+    }
+    public void paint(Batch batch, float parentAlpha) {
+        batch.draw(texture, posX, posY, ((PlayerObject) this).cirR + 1,
+                texture.getHeight() - (((PlayerObject) this).cirR + ((PlayerObject) this).gunHeight - PlayerObject.boarder * 2) - 1,
+                texture.getWidth(), texture.getHeight(), this.dmg * 1.0f / 100f, this.dmg * 1.0f / 100f, gunDirection,
+                0, 0, texture.getWidth(), texture.getHeight(), false, false);
+        ((PlayerObject) this).hpProgress.setPosition(posX - 5, posY - ((PlayerObject) this).hpProgress.getHeight());
+        if (((PlayerObject) this).alpha == 0)
+            ((PlayerObject) this).hpProgress.draw(batch, parentAlpha);
     }
 }

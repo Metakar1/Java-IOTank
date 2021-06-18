@@ -3,6 +3,7 @@ package org.gyming.tank.object;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import org.gyming.tank.client.MainScreen;
@@ -67,5 +68,51 @@ public class SupplyObject extends GameObject {
         group[1].removeActor(this);
         group[0].removeActor(this);
         MainScreen.supplies--;
+    }
+    public void CheckCollision(GameObject B){
+        if(this.getHp()<=0||B.getHp()<=0)
+            return;
+        if (this.getPlayerID() == B.getPlayerID())
+            return;
+
+        this.setDirection((float) (Math.PI * 2 - this.getDirection()));
+
+        if (B instanceof BulletObject) {
+            this.dmg = 110;
+            this.setHp(this.getHp() - ((BulletObject) B).bulletATK);
+            B.setHp(0);
+            if (this.getHp() <= 0) {
+                if (B.getPlayerID() == game.playerID) {
+                    if (game.playerMP < 10)
+                        game.playerMP++;
+
+                }
+            }
+        }
+        else if (B instanceof PlayerObject || B instanceof SupplyObject) {
+
+            if(B instanceof  PlayerObject) {
+                B.dmg = 110;
+                this.dmg = 110;
+            }
+            if (B instanceof PlayerObject) {
+                this.setHp(this.getHp() - 5);
+                B.setHp(B.getHp() - 5);
+            }
+            B.setDirection((float) (Math.PI * 2 - B.getDirection()));
+            if (this.getHp() <= 0) {
+                if (B instanceof PlayerObject) {
+                    if (B.getPlayerID() == game.playerID) {
+                        if (game.playerMP < 10)
+                            game.playerMP++;
+                    }
+                }
+            }
+        }
+    }
+    public void paint(Batch batch, float parentAlpha) {
+        batch.draw(texture, posX, posY, texture.getWidth() / 2f, texture.getHeight() / 2f,
+                texture.getWidth(), texture.getHeight(), this.dmg * 1.0f / 100f, this.dmg * 1.0f / 100f,
+                this.selfdirect, 0, 0, texture.getWidth(), texture.getHeight(), false, false);
     }
 }

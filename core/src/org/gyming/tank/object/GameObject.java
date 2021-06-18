@@ -1,13 +1,16 @@
 package org.gyming.tank.object;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import org.gyming.tank.client.ColorPool;
 import org.gyming.tank.client.MainScreen;
 import org.gyming.tank.client.TankGame;
@@ -15,10 +18,8 @@ import org.gyming.tank.connection.GameAction;
 import org.gyming.tank.connection.GameFrame;
 
 abstract public class GameObject extends Actor {
-    public static ColorPool colorPool = new ColorPool();
     protected static float acceleration = 5.0f / 30;
     public Rectangle area;
-    public int dmg;
     protected int identifier;
     protected float speed;
     protected float direction;
@@ -29,6 +30,9 @@ abstract public class GameObject extends Actor {
     protected Stage stage;
     protected float gunDirection;
     protected Group[] group;
+    public static ColorPool colorPool = new ColorPool();
+    public int dmg;
+
 
     public GameObject(float speed, float direction, float posX, float posY, int hp, TankGame game, Stage stage, Group[] group) {
         this.speed = speed;
@@ -37,10 +41,11 @@ abstract public class GameObject extends Actor {
         this.posY = posY;
         this.hp = hp;
         this.game = game;
-        if (!(this instanceof PlayerObject)) this.texture = createTexture();
+        if(!(this instanceof PlayerObject)) this.texture = createTexture();
         this.stage = stage;
         this.group = group;
-        if (!(this instanceof PlayerObject)) setSize(this.texture.getWidth(), this.texture.getHeight());
+//        region = createRegion();
+        if(!(this instanceof PlayerObject)) setSize(this.texture.getWidth(), this.texture.getHeight());
         this.area = new Rectangle();
         this.gunDirection = 0;
         this.dmg = 100;
@@ -58,67 +63,75 @@ abstract public class GameObject extends Actor {
 
     @Override
     public void act(float delta) {
-        if (this instanceof BulletObject)
+        if(this instanceof BulletObject)
             ((BulletObject) this).bulletTime--;
 
-        if (this instanceof PlayerObject) {
-            if (((PlayerObject) this).alpha != 0 && ((PlayerObject) this).playerType == 1) {
-                int cutSize = ((PlayerObject) this).playerSize * ((PlayerObject) this).ratio;
+        if(this instanceof PlayerObject){
+            if(((PlayerObject)this).alpha!=0&&((PlayerObject)this).playerType==1)
+            {
+                int cutSize =((PlayerObject)this).playerSize*((PlayerObject)this).ratio;
 
                 Pixmap pixmap = new Pixmap(cutSize * 2, cutSize * 2, Pixmap.Format.RGBA8888);
 
-                pixmap.setColor(0, 0, 0, 0);
-                Pixmap pixmap1 = new Pixmap(((PlayerObject) this).playerSize * 2, ((PlayerObject) this).playerSize * 2, Pixmap.Format.RGBA8888);
-                pixmap1.drawPixmap(pixmap, 0, 0, pixmap.getWidth(), pixmap.getHeight(), 0, 0, pixmap1.getWidth(), pixmap1.getHeight());
+                pixmap.setColor(0,0,0,0);
+                Pixmap pixmap1 = new Pixmap(((PlayerObject)this).playerSize*2,((PlayerObject)this).playerSize*2,Pixmap.Format.RGBA8888);
+                pixmap1.drawPixmap(pixmap,0,0,pixmap.getWidth(),pixmap.getHeight(),0,0,pixmap1.getWidth(),pixmap1.getHeight());
                 Texture texture = new Texture(pixmap1);
-                texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-
+                texture.setFilter (Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+//        System.out.println(colorPool.getUserColor(playerID));
+//        System.out.println("***");
+//        texture
                 this.texture = texture;
-                --((PlayerObject) this).alpha;
-                if (((PlayerObject) this).alpha == 0) {
+                --((PlayerObject)this).alpha;
+                if(((PlayerObject)this).alpha==0)
+                {
                     this.texture = createTexture();
                 }
             }
-            if (((PlayerObject) this).alpha != 0 && ((PlayerObject) this).playerType == 0) {
-                ((PlayerObject) this).bulletSpeed = 15;
-                ((PlayerObject) this).bulletHP = 20;
-                ((PlayerObject) this).bulletATK = 15;
-                ((PlayerObject) this).bulletSize = 15;
-                ((PlayerObject) this).playerFireGap = 100;
-                ((PlayerObject) this).bulletTime = 200;
-                ((PlayerObject) this).playerSize = 30;
-                ((PlayerObject) this).playerSpeed = 35;
-                ((PlayerObject) this).playerHP = Math.min(200, ((PlayerObject) this).playerHP * 2);
+            if(((PlayerObject)this).alpha!=0&&((PlayerObject)this).playerType==0)
+            {
+                ((PlayerObject)this).bulletSpeed = 15;
+                ((PlayerObject)this).bulletHP = 20;
+                ((PlayerObject)this).bulletATK = 15;
+                ((PlayerObject)this).bulletSize = 15;
+                ((PlayerObject)this).playerFireGap = 100;
+                ((PlayerObject)this).bulletTime = 200;
+                ((PlayerObject)this).playerSize = 30;
+                ((PlayerObject)this).playerSpeed = 35;
+                ((PlayerObject)this).playerHP = Math.min(200,((PlayerObject)this).playerHP*2);
 
-                if (((PlayerObject) this).alpha == 400) {
+                if(((PlayerObject)this).alpha==400)
+                {
                     this.texture = createTexture();
                 }
-                ((PlayerObject) this).alpha--;
+                ((PlayerObject)this).alpha--;
 
-                if (((PlayerObject) this).alpha == 0) {
-                    ((PlayerObject) this).bulletSpeed = 10;
-                    ((PlayerObject) this).bulletHP = 10;
-                    ((PlayerObject) this).bulletATK = 10;
-                    ((PlayerObject) this).bulletSize = 10;
-                    ((PlayerObject) this).playerFireGap = 250;
-                    ((PlayerObject) this).bulletTime = 100;
-                    ((PlayerObject) this).playerSize = 30;
-                    ((PlayerObject) this).playerSpeed = 25;
-                    ((PlayerObject) this).playerHP = 100;
+                if(((PlayerObject)this).alpha==0)
+                {
+                    ((PlayerObject)this).bulletSpeed = 10;
+                    ((PlayerObject)this).bulletHP = 10;
+                    ((PlayerObject)this).bulletATK = 10;
+                    ((PlayerObject)this).bulletSize = 10;
+                    ((PlayerObject)this).playerFireGap = 250;
+                    ((PlayerObject)this).bulletTime = 100;
+                    ((PlayerObject)this).playerSize = 30;
+                    ((PlayerObject)this).playerSpeed = 25;
+                    ((PlayerObject)this).playerHP = 100;
                     this.texture = createTexture();
                 }
             }
         }
 
         if (this instanceof SupplyObject) {
-            ((SupplyObject) this).selfdirect += ((SupplyObject) this).theta;
+            ((SupplyObject)this).selfdirect += ((SupplyObject)this).theta;
             if (MainScreen.dataMaker.nextFloat() < 0.01) {
                 direction = MainScreen.dataMaker.nextFloat() * 2 * MathUtils.PI;
                 speed = 0.1f;
             }
-            if (((SupplyObject) this).alpha < 120) {
-                float alpha = ((SupplyObject) this).alpha * 1f / 120f;
-                ((SupplyObject) this).alpha++;
+            if(((SupplyObject)this).alpha<120)
+            {
+                float alpha = ((SupplyObject)this).alpha*1f/120f;
+                ((SupplyObject)this).alpha++;
                 Pixmap pixmap = new Pixmap(40, 40, Pixmap.Format.RGBA8888);
                 pixmap.setColor(191f / 255f, 174f / 255f, 78f / 255f, alpha);
                 pixmap.fillRectangle(0, 0, 40, 40);
@@ -141,8 +154,11 @@ abstract public class GameObject extends Actor {
 
         int flag = 1;
         GameFrame actions = game.actionGroup.modify.get(identifier);
+//        game.actionGroup.modify.put(identifier,null);
         if (actions != null) {
             for (GameAction i : actions.frameList) {
+//                System.out.println(i.getType());
+//                System.out.println(identifier);
                 switch (i.getType()) {
                     case "Move":
                         flag = 0;
@@ -196,32 +212,16 @@ abstract public class GameObject extends Actor {
         }
     }
 
+
+
     @Override
     public void draw(Batch batch, float parentAlpha) {
         if (this.getPlayerID() == 0 && this instanceof PlayerObject)
             return;
 
         this.getDmg();
+        this.paint(batch,parentAlpha);
 
-        if (this instanceof PlayerObject) {
-            batch.draw(texture, posX, posY, ((PlayerObject) this).cirR + 1,
-                    texture.getHeight() - (((PlayerObject) this).cirR + ((PlayerObject) this).gunHeight - PlayerObject.boarder * 2) - 1,
-                    texture.getWidth(), texture.getHeight(), this.dmg * 1.0f / 100f, this.dmg * 1.0f / 100f, gunDirection,
-                    0, 0, texture.getWidth(), texture.getHeight(), false, false);
-            ((PlayerObject) this).hpProgress.setPosition(posX - 5, posY - ((PlayerObject) this).hpProgress.getHeight());
-            if (((PlayerObject) this).alpha == 0)
-                ((PlayerObject) this).hpProgress.draw(batch, parentAlpha);
-        }
-        else {
-            if (this instanceof BulletObject)
-                batch.draw(texture, posX, posY, texture.getWidth() / 2f, texture.getHeight() / 2f,
-                        texture.getWidth(), texture.getHeight(), 1, 1, 180, 0, 0,
-                        texture.getWidth(), texture.getHeight(), false, false);
-            else
-                batch.draw(texture, posX, posY, texture.getWidth() / 2f, texture.getHeight() / 2f,
-                        texture.getWidth(), texture.getHeight(), this.dmg * 1.0f / 100f, this.dmg * 1.0f / 100f,
-                        ((SupplyObject) this).selfdirect, 0, 0, texture.getWidth(), texture.getHeight(), false, false);
-        }
     }
 
     public final float getPosX() {
@@ -275,4 +275,8 @@ abstract public class GameObject extends Actor {
     public abstract void die();
 
     public abstract int getPlayerID();
+
+    public abstract void CheckCollision(GameObject B);
+
+    public abstract void paint(Batch batch, float parentAlpha);
 }
