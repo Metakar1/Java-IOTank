@@ -1,5 +1,7 @@
 package org.gyming.tank.connection;
 
+
+//表示一个玩家的一次操作
 public class GameAction {
     String type;
     float direction;

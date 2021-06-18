@@ -39,6 +39,8 @@ public class PlayerObject extends GameObject {
         super(speed, direction, posX, posY, hp, game, stage, group);
         this.playerType = playerID;
         alpha = 0;
+
+        //每一种的角色，其属性值有差异
         switch (this.playerType) {
             case 0:
                 playerSize = 30;

@@ -44,29 +44,39 @@ abstract public class GameObject extends Actor {
         if(!(this instanceof PlayerObject)) this.texture = createTexture();
         this.stage = stage;
         this.group = group;
-//        region = createRegion();
         if(!(this instanceof PlayerObject)) setSize(this.texture.getWidth(), this.texture.getHeight());
         this.area = new Rectangle();
         this.gunDirection = 0;
         this.dmg = 100;
     }
 
+
+    //创建一个纹理，即GameObject的图像
     protected abstract Texture createTexture();
 
+    //发射子弹
     protected abstract void fire(GameAction action, float posX, float posY);
 
+    //实现加速度的函数，让玩家移动更加平滑
     protected abstract void recoverSpeed();
 
+    //受到伤害时重绘为红色
     protected abstract void getDmg();
 
+    //特殊技能
     abstract public void qSkill(GameAction action, float posX, float posY);
 
+    //负责每个对象属性的修改，render进行一次渲染就执行一次
     @Override
     public void act(float delta) {
+
+        //每一帧减少子弹的剩余存在时间，以此控制射程
         if(this instanceof BulletObject)
             ((BulletObject) this).bulletTime--;
 
+
         if(this instanceof PlayerObject){
+            //接下来判定属性，alpha!=0表示该角色正在持续某种状态
             if(((PlayerObject)this).alpha!=0&&((PlayerObject)this).playerType==1)
             {
                 int cutSize =((PlayerObject)this).playerSize*((PlayerObject)this).ratio;
@@ -78,9 +88,6 @@ abstract public class GameObject extends Actor {
                 pixmap1.drawPixmap(pixmap,0,0,pixmap.getWidth(),pixmap.getHeight(),0,0,pixmap1.getWidth(),pixmap1.getHeight());
                 Texture texture = new Texture(pixmap1);
                 texture.setFilter (Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-//        System.out.println(colorPool.getUserColor(playerID));
-//        System.out.println("***");
-//        texture
                 this.texture = texture;
                 --((PlayerObject)this).alpha;
                 if(((PlayerObject)this).alpha==0)
@@ -141,9 +148,11 @@ abstract public class GameObject extends Actor {
             }
         }
 
+        //子弹沿其运动方向运动一帧
         posX += speed * MathUtils.sin(direction);
         posY += speed * MathUtils.cos(direction);
 
+        //边界判定
         if (this instanceof PlayerObject || this instanceof SupplyObject) {
             posX = Math.max(posX, MainScreen.boarder);
             posX = Math.min(posX, MainScreen.boarder + MainScreen.width);
@@ -154,11 +163,9 @@ abstract public class GameObject extends Actor {
 
         int flag = 1;
         GameFrame actions = game.actionGroup.modify.get(identifier);
-//        game.actionGroup.modify.put(identifier,null);
         if (actions != null) {
+            //这里是处理由服务器发来的，所有玩家的操作
             for (GameAction i : actions.frameList) {
-//                System.out.println(i.getType());
-//                System.out.println(identifier);
                 switch (i.getType()) {
                     case "Move":
                         flag = 0;
@@ -216,6 +223,9 @@ abstract public class GameObject extends Actor {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
+
+        //在屏幕上画出该GameObject
+
         if (this.getPlayerID() == 0 && this instanceof PlayerObject)
             return;
 
@@ -272,11 +282,16 @@ abstract public class GameObject extends Actor {
         this.identifier = identifier;
     }
 
+
+    //处理物体死亡
     public abstract void die();
 
+    //获取玩家ID
     public abstract int getPlayerID();
 
+    //判断与B的碰撞情况
     public abstract void CheckCollision(GameObject B);
 
+    //判断与B的碰撞情况
     public abstract void paint(Batch batch, float parentAlpha);
 }

@@ -53,10 +53,8 @@ public class MainScreen extends ScreenAdapter {
         mpProgress.setPosition((Gdx.graphics.getWidth() - mpProgress.getWidth()) / 2f, 50f);
         if (Gdx.app.getType() == Application.ApplicationType.Android) {
             moveTouchpad = new Touchpad(0, game.skin, "touchpad-tank");
-//            moveTouchpad.setSize(400f, 400f);
             moveTouchpad.setPosition(100f, 60f);
             fireTouchpad = new Touchpad(0, game.skin, "touchpad-tank");
-//            fireTouchpad.setSize(400f, 400f);
             fireTouchpad.setPosition(Gdx.graphics.getWidth() - 500f, 60f);
             fireButton = new ImageButton(game.skin, "firebutton-tank");
             fireButton.setPosition(Gdx.graphics.getWidth() - 300f, 500f);
@@ -80,8 +78,6 @@ public class MainScreen extends ScreenAdapter {
     public static boolean isInside(GameObject A) {
         if (A.getPlayerID() == 0)
             return true;
-//        System.out.println(A.getPosX());
-//        System.out.println(A.getPosY());
         if (A.getPosX() < boarder || A.getPosX() > width + boarder)
             return false;
         if (A.getPosY() < boarder || A.getPosY() > height + boarder)
@@ -176,7 +172,6 @@ public class MainScreen extends ScreenAdapter {
             if (Gdx.input.isKeyPressed(Input.Keys.A))
                 x -= 1;
         }
-//        System.out.println("ASASASAS" + fireTouchpad.getKnobX() + " " + fireTouchpad.getKnobY());
 
         try {
             float direction = MathUtils.atan2(x, y);
@@ -327,7 +322,6 @@ public class MainScreen extends ScreenAdapter {
         characterBgms.get(game.playerType).stop();
         downloader.interrupt();
         listener.interrupt();
-//        System.out.println("TEST");
     }
 
     @Override
