@@ -5,7 +5,8 @@ public class ServerLauncher {
         try {
             Server server = new Server(7650);
             server.startListen();
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             e.printStackTrace();
         }
     }

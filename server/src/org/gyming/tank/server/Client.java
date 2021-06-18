@@ -39,7 +39,6 @@ public class Client {
                 }
             }
             catch (Exception e) {
-//                e.printStackTrace();
                 endState = true;
             }
         }
@@ -59,7 +58,6 @@ public class Client {
                 }
             }
             catch (Exception e) {
-//                e.printStackTrace();
                 endState = true;
             }
         }

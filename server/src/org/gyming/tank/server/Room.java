@@ -36,14 +36,13 @@ public class Room implements Runnable {
             }
             GameFrame sumFrame = new GameFrame(frameID);
             for (GameAction action : curFrame) sumFrame.add(action);
-//            System.out.println(nums);
             curFrame.clear();
             for (Client client : clients) {
                 client.download.offer(sumFrame);
             }
             frameID++;
             totFrame.add(sumFrame);
-            if (startState&&(!hasClient))  {
+            if (startState && (!hasClient)) {
                 System.out.println("Room Stop");
                 endState = true;
                 timerTask.cancel();
