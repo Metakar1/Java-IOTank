@@ -40,7 +40,7 @@ public class PlayerObject extends GameObject {
         this.playerType = playerID;
         alpha = 0;
 
-        //每一种的角色，其属性值有差异
+        // 每一种的角色，其属性值有差异
         switch (this.playerType) {
             case 0:
                 playerSize = 30;
@@ -244,23 +244,23 @@ public class PlayerObject extends GameObject {
         this.setHp(0);
     }
 
-    public void CheckCollision(GameObject B)
-    {
-        if(this.getHp()==0||B.getHp()==0)
+    public void checkCollision(GameObject B) {
+        if (this.getHp() == 0 || B.getHp() == 0)
             return;
         if (this.getPlayerID() == B.getPlayerID())
             return;
         this.setSpeed(-1 * this.getSpeed());
-        this.dmg= 110;
+        this.dmg = 110;
         if (B instanceof BulletObject) {
             this.setHp(this.getHp() - ((BulletObject) B).bulletATK);
-            B.setHp(B.getHp()-10);
+            B.setHp(B.getHp() - 10);
             if (this.getHp() <= 0)
                 if (B.getPlayerID() == game.playerID) {
                     if (game.playerMP < 10)
                         game.playerMP++;
                 }
-        } else if (B instanceof PlayerObject || B instanceof SupplyObject) {
+        }
+        else if (B instanceof PlayerObject || B instanceof SupplyObject) {
             B.dmg = 110;
             this.setHp(this.getHp() - 5);
             B.setHp(B.getHp() - 5);
@@ -281,6 +281,7 @@ public class PlayerObject extends GameObject {
             B.setDirection((float) (Math.PI * 2 - B.getDirection()));
         }
     }
+
     public void paint(Batch batch, float parentAlpha) {
         batch.draw(texture, posX, posY, ((PlayerObject) this).cirR + 1,
                 texture.getHeight() - (((PlayerObject) this).cirR + ((PlayerObject) this).gunHeight - PlayerObject.boarder * 2) - 1,

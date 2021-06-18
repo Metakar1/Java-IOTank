@@ -11,16 +11,12 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.google.gson.Gson;
 import org.gyming.tank.connection.GameAction;
 import org.gyming.tank.connection.GameFrame;
-import org.gyming.tank.object.BulletObject;
 import org.gyming.tank.object.GameObject;
 import org.gyming.tank.object.PlayerObject;
 import org.gyming.tank.object.SupplyObject;
@@ -48,9 +44,13 @@ public class MainScreen extends ScreenAdapter {
         this.uiStage = new Stage();
         this.controllerStage = new Stage();
         this.game = game;
+
+        // 初始化技能条
         mpProgress = new ProgressBar(0f, 10f, 1f, false, game.skin, "progressbar-tank");
         mpProgress.setWidth(300);
         mpProgress.setPosition((Gdx.graphics.getWidth() - mpProgress.getWidth()) / 2f, 50f);
+
+        // 为 Android 设备添加虚拟摇杆，放入特殊的 controllerStage 里
         if (Gdx.app.getType() == Application.ApplicationType.Android) {
             moveTouchpad = new Touchpad(0, game.skin, "touchpad-tank");
             moveTouchpad.setPosition(100f, 60f);
@@ -63,6 +63,7 @@ public class MainScreen extends ScreenAdapter {
             controllerStage.addActor(fireButton);
         }
 
+        // 添加角色音乐
         characterBgms = new Array<>();
         Music bgm = Gdx.audio.newMusic(Gdx.files.internal("0_bgm.mp3"));
         bgm.setLooping(true);
@@ -85,6 +86,7 @@ public class MainScreen extends ScreenAdapter {
         return true;
     }
 
+    // 创建游戏背景
     public Image makeBackground(int width, int height, int delta, int lineDelta) {
         this.width = width;
         this.height = height;
@@ -114,7 +116,7 @@ public class MainScreen extends ScreenAdapter {
 
     public void updateFrame(GameFrame gameFrame) {
         for (GameAction i : gameFrame.frameList) {
-            if(i.getType().equals("NewPlayer")) {
+            if (i.getType().equals("NewPlayer")) {
                 if (game.actionGroup.modify.get(0) == null)
                     game.actionGroup.modify.put(0, new GameFrame(0));
                 GameFrame cur = game.actionGroup.modify.get(0);
@@ -130,7 +132,8 @@ public class MainScreen extends ScreenAdapter {
         }
     }
 
-    public void CheckCollision() {
+    // 碰撞检测
+    public void checkCollision() {
         while (!game.toBeDeleted.isEmpty()) {
             game.toBeDeleted.peek().die();
             game.toBeDeleted.poll();
@@ -148,16 +151,18 @@ public class MainScreen extends ScreenAdapter {
                         GameObject B = (GameObject) array2[j];
 
                         if (A.area.overlaps(B.area)) {
-                            A.CheckCollision(B);
+                            A.checkCollision(B);
                         }
                     }
             }
     }
 
+    // 监听玩家输入
     private void listenKey() {
         float x = 0, y = 0;
         fireGap += 10;
 
+        // 处理移动
         if (Gdx.app.getType() == Application.ApplicationType.Android) {
             x = moveTouchpad.getKnobX() - 200f;
             y = moveTouchpad.getKnobY() - 200f;
@@ -179,6 +184,8 @@ public class MainScreen extends ScreenAdapter {
             if (x != 0 || y != 0) {
                 game.queue.put(gson.toJson(new GameAction("Move", direction, game.playerID, "", 4), GameAction.class));
             }
+
+            // 处理发射子弹和技能
             float posX, posY, angle;
             if (Gdx.app.getType() == Application.ApplicationType.Android) {
                 posX = fireTouchpad.getKnobX() - 200f;
@@ -190,8 +197,6 @@ public class MainScreen extends ScreenAdapter {
                         fireGap = 0;
                     }
                 if (game.playerMP == 10 && fireButton.isPressed()) {
-                    // Special skill.
-
                     game.playerMP = 0;
                     game.queue.put(gson.toJson(new GameAction("QSkill", angle, game.playerID, "", 0), GameAction.class));
                 }
@@ -207,7 +212,6 @@ public class MainScreen extends ScreenAdapter {
                         fireGap = 0;
                     }
                 if (game.playerMP == 10 && Gdx.input.isKeyPressed(Input.Keys.Q)) {
-                    // Special skill.
                     game.queue.put(gson.toJson(new GameAction("QSkill", angle, game.playerID, "", 0), GameAction.class));
                     game.playerMP = 0;
                 }
@@ -219,6 +223,7 @@ public class MainScreen extends ScreenAdapter {
         }
     }
 
+    // 生成中立物
     private void generateSup(double X, double Y) {
         double r = dataMaker.nextGaussian() * 40 + 200;
         int size = (int) (dataMaker.nextGaussian() * 1 + 2);
@@ -232,6 +237,7 @@ public class MainScreen extends ScreenAdapter {
         }
     }
 
+    // 保持中立物的个数不会太少
     private void keepSup() {
         if (supplies < 30) {
             while (supplies < 30) {
@@ -260,18 +266,21 @@ public class MainScreen extends ScreenAdapter {
         this.stage.addActor(group[1]);
         GameObject.colorPool.init();
         Gson gson = new Gson();
+
+        // 创建玩家
         try {
-            if(game.playerType==0)
+            if (game.playerType == 0)
                 game.queue.put(gson.toJson(new GameAction("NewPlayer", boarder + 100, game.playerType, game.getUserName(), boarder + 100)));
-            if(game.playerType==1)
-                game.queue.put(gson.toJson(new GameAction("NewPlayer", 3840+boarder-100, game.playerType, game.getUserName(), 2160+boarder-100)));
-            if(game.playerType==2)
-                game.queue.put(gson.toJson(new GameAction("NewPlayer", boarder + 100, game.playerType, game.getUserName(), 2160+boarder-100)));
+            if (game.playerType == 1)
+                game.queue.put(gson.toJson(new GameAction("NewPlayer", 3840 + boarder - 100, game.playerType, game.getUserName(), 2160 + boarder - 100)));
+            if (game.playerType == 2)
+                game.queue.put(gson.toJson(new GameAction("NewPlayer", boarder + 100, game.playerType, game.getUserName(), 2160 + boarder - 100)));
         }
         catch (Exception e) {
             e.printStackTrace();
         }
 
+        // Android 设备从虚拟摇杆接受输入，将输入处理调整到 controllerStage
         if (Gdx.app.getType() == Application.ApplicationType.Android)
             Gdx.input.setInputProcessor(controllerStage);
         else
@@ -290,6 +299,7 @@ public class MainScreen extends ScreenAdapter {
         characterBgms.get(game.playerType).play();
     }
 
+    // 游戏帧渲染
     @Override
     public void render(float delta) {
         ScreenUtils.clear(0, 0, 0, 0);
@@ -310,7 +320,7 @@ public class MainScreen extends ScreenAdapter {
         uiStage.addActor(game.characterFlags.get(game.playerType));
         uiStage.act();
         controllerStage.act();
-        CheckCollision();
+        checkCollision();
         keepSup();
         stage.draw();
         uiStage.draw();
@@ -326,6 +336,8 @@ public class MainScreen extends ScreenAdapter {
 
     @Override
     public void dispose() {
-
+        stage.dispose();
+        uiStage.dispose();
+        controllerStage.dispose();
     }
 }

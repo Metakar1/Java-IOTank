@@ -69,8 +69,9 @@ public class SupplyObject extends GameObject {
         group[0].removeActor(this);
         MainScreen.supplies--;
     }
-    public void CheckCollision(GameObject B){
-        if(this.getHp()<=0||B.getHp()<=0)
+
+    public void checkCollision(GameObject B) {
+        if (this.getHp() <= 0 || B.getHp() <= 0)
             return;
         if (this.getPlayerID() == B.getPlayerID())
             return;
@@ -85,13 +86,12 @@ public class SupplyObject extends GameObject {
                 if (B.getPlayerID() == game.playerID) {
                     if (game.playerMP < 10)
                         game.playerMP++;
-
                 }
             }
         }
         else if (B instanceof PlayerObject || B instanceof SupplyObject) {
 
-            if(B instanceof  PlayerObject) {
+            if (B instanceof PlayerObject) {
                 B.dmg = 110;
                 this.dmg = 110;
             }
@@ -110,6 +110,7 @@ public class SupplyObject extends GameObject {
             }
         }
     }
+
     public void paint(Batch batch, float parentAlpha) {
         batch.draw(texture, posX, posY, texture.getWidth() / 2f, texture.getHeight() / 2f,
                 texture.getWidth(), texture.getHeight(), this.dmg * 1.0f / 100f, this.dmg * 1.0f / 100f,
