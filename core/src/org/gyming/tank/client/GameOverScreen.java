@@ -23,6 +23,7 @@ public class GameOverScreen extends ScreenAdapter {
 
     @Override
     public void show() {
+        // 先与服务器断开连接
         try {
             game.C2S.closeConnection();
             game.S2C.closeConnection();
@@ -30,6 +31,8 @@ public class GameOverScreen extends ScreenAdapter {
         catch (IOException e) {
             e.printStackTrace();
         }
+
+        // 添加结束界面元素，设置淡入淡出动画
         Label gameOverLabel = new Label("Game Over", game.skin, "label-title-tank");
         Label continueLabel = new Label("Click to continue...", game.skin, "label-info-tank");
         gameOverLabel.setPosition((Gdx.graphics.getWidth() - gameOverLabel.getWidth()) / 2f, Gdx.graphics.getHeight() / 2f + 100f);
@@ -43,8 +46,8 @@ public class GameOverScreen extends ScreenAdapter {
             continueLabel.addAction(Actions.alpha(1f, 5f));
         }
         else {
-            gameOverLabel.addAction(Actions.alpha(1f, 15f));
-            continueLabel.addAction(Actions.alpha(1f, 15f));
+            gameOverLabel.addAction(Actions.alpha(1f, 5f));
+            continueLabel.addAction(Actions.alpha(1f, 5f));
             Image gameOverImage = new Image(new Texture(Gdx.files.internal("gameover.png")));
             gameOverImage.setZIndex(0);
             gameOverStage.addActor(gameOverImage);
@@ -63,7 +66,9 @@ public class GameOverScreen extends ScreenAdapter {
     }
 
     @Override
-    public void hide() {  gameOverStage.clear(); }
+    public void hide() {
+        gameOverStage.clear();
+    }
 
     @Override
     public void dispose() {

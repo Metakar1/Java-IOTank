@@ -15,7 +15,6 @@ public class ColorPool {
         user = new HashMap<>();
         userColorPool = new ArrayList<>();
         userBoarderColorPool = new ArrayList<>();
-//        userColorPool.add(new Color(191f / 255f, 127f / 255f, 145f / 255f, 1f));
         userColorPool.add(new Color(0f / 255f, 178f / 255f, 225f / 255f, 1f));
         userColorPool.add(revert(241, 78, 84));
         userColorPool.add(new Color(0, 225f / 255f, 110f / 255f, 1f));
@@ -23,7 +22,7 @@ public class ColorPool {
 
         userBoarderColorPool.add(revert(0, 133, 169));
         userBoarderColorPool.add(revert(180, 58, 63));
-        userBoarderColorPool.add(revert(0,168,82));
+        userBoarderColorPool.add(revert(0, 168, 82));
         userCnt = 0;
     }
 
@@ -32,23 +31,18 @@ public class ColorPool {
     }
 
     public Color getUserColor(Integer userID) {
-        if(userID == 0) return userColorPool.get(0);
+        if (userID == 0) return userColorPool.get(0);
         if (user.get(userID) == null) {
             user.put(userID, userCnt);
-//            System.out.println("1:"+Integer.toString(userID));
             userCnt++;
         }
-//        System.out.println(userID);
-//        System.out.println(user.get(userID));
         return userColorPool.get(user.get(userID));
     }
 
     public Color getUserBoarderColor(Integer userID) {
-        if(userID == 0) return userBoarderColorPool.get(0);
+        if (userID == 0) return userBoarderColorPool.get(0);
         if (user.get(userID) == null) {
             user.put(userID, userCnt);
-//            System.out.println("2:"+Integer.toString(userID));
-//            System.out.println(userID);
             userCnt++;
         }
         return userBoarderColorPool.get(user.get(userID));
