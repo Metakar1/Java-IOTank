@@ -1,8 +1,6 @@
-package org.gyming.tank.test;
+package org.gyming.tank.server;
 
-import org.gyming.tank.server.Server;
-
-public class RunServer {
+public class ServerLauncher {
     public static void main(String[] args) {
         try {
             Server server = new Server(7650);

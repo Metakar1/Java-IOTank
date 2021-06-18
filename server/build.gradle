@@ -1,0 +1,35 @@
+sourceCompatibility = 1.7
+sourceSets.main.java.srcDirs = [ "src/" ]
+dependencies { compile fileTree(dir:'../libs',include:['*.jar'])}
+
+project.ext.mainClassName = "org.gyming.tank.server.ServerLauncher"
+
+task run(dependsOn: classes, type: JavaExec) {
+    main = project.mainClassName
+    classpath = sourceSets.main.runtimeClasspath
+    standardInput = System.in
+    ignoreExitValue = true
+}
+
+task debug(dependsOn: classes, type: JavaExec) {
+    main = project.mainClassName
+    classpath = sourceSets.main.runtimeClasspath
+    standardInput = System.in
+    ignoreExitValue = true
+    debug = true
+}
+
+task dist(type: Jar) {
+    manifest {
+        attributes 'Main-Class': project.mainClassName
+    }
+    dependsOn configurations.runtimeClasspath
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    with jar
+}
+
+dist.dependsOn classes
+
+eclipse.project.name = appName + "-server"
