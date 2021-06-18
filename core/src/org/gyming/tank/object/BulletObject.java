@@ -60,7 +60,7 @@ public class BulletObject extends GameObject {
     protected void getDmg(){}
 
     @Override
-    public void QSkill(GameAction action, float posX, float posY){}
+    public void qSkill(GameAction action, float posX, float posY){}
 
     public void die() {
         stage.getRoot().removeActor(this);

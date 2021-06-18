@@ -222,7 +222,7 @@ public class PlayerObject extends GameObject {
         }
     }
     @Override
-    public void QSkill(GameAction action, float posX, float posY)
+    public void qSkill(GameAction action, float posX, float posY)
     {
         if(playerType==2)
         {
