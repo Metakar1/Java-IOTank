@@ -2,8 +2,7 @@ sourceCompatibility = 1.7
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 sourceSets.main.java.srcDirs = [ "src/" ]
 dependencies {
-    compile fileTree(dir:'../libs',include:['*.jar'])
-    
+    implementation fileTree(dir:'../libs',include:['*.jar'])
 }
 sourceSets.main.resources.srcDirs = ["../assets"]
 

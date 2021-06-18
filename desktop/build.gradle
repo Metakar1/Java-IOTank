@@ -1,7 +1,7 @@
 sourceCompatibility = 1.7
 sourceSets.main.java.srcDirs = [ "src/" ]
 sourceSets.main.resources.srcDirs = ["../core/assets"]
-dependencies { compile fileTree(dir:'../libs',include:['*.jar'])}
+dependencies { implementation fileTree(dir:'../libs',include:['*.jar'])}
 
 project.ext.mainClassName = "org.gyming.tank.desktop.DesktopLauncher"
 project.ext.assetsDir = new File("../core/assets")

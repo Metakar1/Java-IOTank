@@ -1,6 +1,6 @@
 sourceCompatibility = 1.7
 sourceSets.main.java.srcDirs = [ "src/" ]
-dependencies { compile fileTree(dir:'../libs',include:['*.jar'])}
+dependencies { implementation fileTree(dir:'../libs',include:['*.jar'])}
 
 project.ext.mainClassName = "org.gyming.tank.server.ServerLauncher"
 
