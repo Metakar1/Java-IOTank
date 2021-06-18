@@ -8,14 +8,14 @@ import org.gyming.tank.client.TankGame;
 import org.gyming.tank.connection.GameAction;
 
 public class BulletObject extends GameObject {
-    public  int bulletSpeed = 10;
-    public  int bulletHP = 10;
+    public int bulletSpeed = 10;
+    public int bulletHP = 10;
     public int bulletSize;
     public int bulletATK;
-    private int playerID;
     public int bulletTime;
+    private int playerID;
 
-    public BulletObject(float speed, float direction, float posX, float posY, int hp, int playerID, TankGame game, Stage stage, Group[] group,int bulletSize,int bulletATK,int bulletTime) {
+    public BulletObject(float speed, float direction, float posX, float posY, int hp, int playerID, TankGame game, Stage stage, Group[] group, int bulletSize, int bulletATK, int bulletTime) {
         super(speed, direction, posX, posY, hp, game, stage, group);
         this.playerID = playerID;
 
@@ -56,11 +56,14 @@ public class BulletObject extends GameObject {
     protected void recoverSpeed() {
 
     }
-    @Override
-    protected void getDmg(){}
 
     @Override
-    public void qSkill(GameAction action, float posX, float posY){}
+    protected void getDmg() {
+    }
+
+    @Override
+    public void qSkill(GameAction action, float posX, float posY) {
+    }
 
     public void die() {
         stage.getRoot().removeActor(this);

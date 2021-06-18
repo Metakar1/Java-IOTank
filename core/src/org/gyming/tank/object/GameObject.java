@@ -40,7 +40,6 @@ abstract public class GameObject extends Actor {
         if (!(this instanceof PlayerObject)) this.texture = createTexture();
         this.stage = stage;
         this.group = group;
-//        region = createRegion();
         if (!(this instanceof PlayerObject)) setSize(this.texture.getWidth(), this.texture.getHeight());
         this.area = new Rectangle();
         this.gunDirection = 0;
@@ -127,9 +126,6 @@ abstract public class GameObject extends Actor {
                 pixmap.fillRectangle(5, 5, 30, 30);
                 this.texture = new Texture(pixmap);
             }
-            else {
-
-            }
         }
 
         posX += speed * MathUtils.sin(direction);
@@ -208,16 +204,23 @@ abstract public class GameObject extends Actor {
         this.getDmg();
 
         if (this instanceof PlayerObject) {
-            batch.draw(texture, posX, posY, ((PlayerObject) this).cirR + 1, texture.getHeight() - (((PlayerObject) this).cirR + ((PlayerObject) this).gunHeight - PlayerObject.boarder * 2) - 1, texture.getWidth(), texture.getHeight(), this.dmg * 1.0f / 100f, this.dmg * 1.0f / 100f, gunDirection, 0, 0, texture.getWidth(), texture.getHeight(), false, false);
+            batch.draw(texture, posX, posY, ((PlayerObject) this).cirR + 1,
+                    texture.getHeight() - (((PlayerObject) this).cirR + ((PlayerObject) this).gunHeight - PlayerObject.boarder * 2) - 1,
+                    texture.getWidth(), texture.getHeight(), this.dmg * 1.0f / 100f, this.dmg * 1.0f / 100f, gunDirection,
+                    0, 0, texture.getWidth(), texture.getHeight(), false, false);
             ((PlayerObject) this).hpProgress.setPosition(posX - 5, posY - ((PlayerObject) this).hpProgress.getHeight());
             if (((PlayerObject) this).alpha == 0)
                 ((PlayerObject) this).hpProgress.draw(batch, parentAlpha);
         }
         else {
             if (this instanceof BulletObject)
-                batch.draw(texture, posX, posY, texture.getWidth() / 2f, texture.getHeight() / 2f, texture.getWidth(), texture.getHeight(), 1, 1, 180, 0, 0, texture.getWidth(), texture.getHeight(), false, false);
+                batch.draw(texture, posX, posY, texture.getWidth() / 2f, texture.getHeight() / 2f,
+                        texture.getWidth(), texture.getHeight(), 1, 1, 180, 0, 0,
+                        texture.getWidth(), texture.getHeight(), false, false);
             else
-                batch.draw(texture, posX, posY, texture.getWidth() / 2f, texture.getHeight() / 2f, texture.getWidth(), texture.getHeight(), this.dmg * 1.0f / 100f, this.dmg * 1.0f / 100f, ((SupplyObject) this).selfdirect, 0, 0, texture.getWidth(), texture.getHeight(), false, false);
+                batch.draw(texture, posX, posY, texture.getWidth() / 2f, texture.getHeight() / 2f,
+                        texture.getWidth(), texture.getHeight(), this.dmg * 1.0f / 100f, this.dmg * 1.0f / 100f,
+                        ((SupplyObject) this).selfdirect, 0, 0, texture.getWidth(), texture.getHeight(), false, false);
         }
     }
 
