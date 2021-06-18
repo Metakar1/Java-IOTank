@@ -24,12 +24,14 @@ public class CharacterSelectionScreen extends ScreenAdapter {
     private final Array<Label> characterSkills;
     private final Sound applySound;
     private final Dialog messageDialog;
-    private Sound lastCharacterSound;
     public int selectedType;
+    private Sound lastCharacterSound;
 
     CharacterSelectionScreen(final TankGame game) {
         this.game = game;
         this.stage = new Stage();
+
+        // 初始化网络错误时显示的对话框
         messageDialog = new Dialog("Oooooooops", game.skin, "window-tank");
         messageDialog.text("It seems that we cannot find your server.", game.skin.get("label-tank", Label.LabelStyle.class));
         messageDialog.button("OK", true, game.skin.get("textbutton-tank-gray",
@@ -39,6 +41,8 @@ public class CharacterSelectionScreen extends ScreenAdapter {
                 game.setScreen(game.startScreen);
             }
         });
+
+        // 开始按钮，点击后建立连接并播放语音
         startLabel = new Label("Start!", game.skin, "label-chara-tank");
         startLabel.setPosition(Gdx.graphics.getWidth() - startLabel.getWidth() - 10f, 20f);
         startLabel.getColor().a = 0.8f;
@@ -48,7 +52,6 @@ public class CharacterSelectionScreen extends ScreenAdapter {
                 game.playerType = selectedType;
                 if (lastCharacterSound != null)
                     lastCharacterSound.stop();
-//                game.setScreen(game.gameOverScreen);
                 if (game.buildConnection()) {
                     applySound.play();
                     game.setScreen(game.mainScreen);
@@ -56,11 +59,11 @@ public class CharacterSelectionScreen extends ScreenAdapter {
                 else {
                     messageDialog.show(stage);
                     System.out.println("CONNECTION ERROR.");
-//                    game.setScreen(game.startScreen);
                 }
             }
         });
 
+        // 角色左右选择
         nextLabel = new Label(">", game.skin, "label-chara-tank");
         nextLabel.setPosition(Gdx.graphics.getWidth() - 20f - nextLabel.getWidth(), Gdx.graphics.getHeight() / 2f);
         nextLabel.getColor().a = 0.3f;
@@ -85,6 +88,7 @@ public class CharacterSelectionScreen extends ScreenAdapter {
             }
         });
 
+        // 添加角色背景图片，缩放到窗口大小
         characterImages = new Array<>();
         Image characterImage = new Image(new Texture(Gdx.files.internal("0.jpg")));
         float scale = Math.max(Gdx.graphics.getHeight() / characterImage.getHeight(), Gdx.graphics.getWidth() / characterImage.getWidth());
@@ -99,12 +103,14 @@ public class CharacterSelectionScreen extends ScreenAdapter {
         characterImage.setScale(scale, scale);
         characterImages.add(characterImage);
 
+        // 添加角色语音，用于浏览到对应角色时播放
         characterSounds = new Array<>();
         characterSounds.add(Gdx.audio.newSound(Gdx.files.internal("0_select.mp3")));
         characterSounds.add(Gdx.audio.newSound(Gdx.files.internal("1_select.mp3")));
         characterSounds.add(Gdx.audio.newSound(Gdx.files.internal("2_select.mp3")));
         applySound = Gdx.audio.newSound(Gdx.files.internal("game_begin.mp3"));
 
+        // 添加技能文字说明
         String skillLabelStyle;
         if (Gdx.app.getType() == Application.ApplicationType.Android)
             skillLabelStyle = "label-chara-skill-tank-android";
@@ -126,6 +132,7 @@ public class CharacterSelectionScreen extends ScreenAdapter {
     }
 
     private void uiUpdate() {
+        // 刷新舞台元素
         stage.clear();
         stage.addActor(characterImages.get(selectedType));
         stage.addActor(game.characterFlags.get(selectedType));
@@ -156,6 +163,8 @@ public class CharacterSelectionScreen extends ScreenAdapter {
 
     @Override
     public void dispose() {
-
+        stage.dispose();
+        applySound.dispose();
+        lastCharacterSound.dispose();
     }
 }

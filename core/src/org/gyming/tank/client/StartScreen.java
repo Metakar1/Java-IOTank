@@ -5,9 +5,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 
@@ -21,6 +23,8 @@ public class StartScreen extends ScreenAdapter {
     public StartScreen(final TankGame game) {
         this.game = game;
         TextButton confirmButton;
+
+        // 移动端适配
         if (Gdx.app.getType() == Application.ApplicationType.Android) {
             serverAddressField = new TextField("", game.skin, "textfield-tank-android");
             portField = new TextField("", game.skin, "textfield-tank-android");
@@ -35,10 +39,14 @@ public class StartScreen extends ScreenAdapter {
             roomField = new TextField("", game.skin, "textfield-tank");
             confirmButton = new TextButton("OK", game.skin, "textbutton-tank-red");
         }
+
+        // 设置提示语
         serverAddressField.setMessageText("Input the server address.");
         portField.setMessageText("Input the server port.");
         userField.setMessageText("Input your username.");
         roomField.setMessageText("Input the room name.");
+
+        // 有空未填写时弹出提示框
         messageDialog = new Dialog("Error", game.skin, "window-tank");
         messageDialog.text("Username and room name cannot be empty.", game.skin.get("label-tank", Label.LabelStyle.class));
         messageDialog.button("OK", true, game.skin.get("textbutton-tank-gray",
@@ -57,8 +65,6 @@ public class StartScreen extends ScreenAdapter {
                 game.setUserName(userField.getText());
                 game.setRoomName(roomField.getText());
                 game.setScreen(game.characterSelectionScreen);
-//                game.buildConnection();
-//                game.setScreen(game.mainScreen);
             }
         });
 
@@ -93,6 +99,7 @@ public class StartScreen extends ScreenAdapter {
         startStage.addActor(roomField);
         startStage.addActor(confirmButton);
 
+        // 添加背景音乐
         bgm = Gdx.audio.newMusic(Gdx.files.internal("start_bgm.mp3"));
         bgm.setLooping(true);
     }
@@ -102,7 +109,7 @@ public class StartScreen extends ScreenAdapter {
         Gdx.input.setInputProcessor(startStage);
         userField.setText("");
         roomField.setText("");
-        serverAddressField.setText("10.44.0.188");
+        serverAddressField.setText("127.0.0.1");
         portField.setText("7650");
         bgm.play();
     }
@@ -122,5 +129,6 @@ public class StartScreen extends ScreenAdapter {
     @Override
     public void dispose() {
         startStage.dispose();
+        bgm.dispose();
     }
 }

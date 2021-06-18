@@ -22,17 +22,7 @@ public class ClientDownloader implements Runnable {
                 Gson gson = new Gson();
                 g = gson.fromJson(S2C.receive(), GameFrame.class);
                 game.download.offer(g);
-//                GameFrame gg = game.download.peek();
-//                while(g==null) {
-//                    g = game.download.peek();
-//                }
-//                game.download.poll();
                 Gdx.graphics.requestRendering();
-//                if (g.frameList.size() != 0) {
-//                    System.out.print(TankGame.test1);
-//                    System.out.print("        ");
-//                    System.out.println(TankGame.test2);
-//                }
             }
             catch (Exception e) {
                 e.printStackTrace();

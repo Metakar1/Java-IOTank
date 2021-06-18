@@ -1,9 +1,7 @@
 package org.gyming.tank.client;
 
-import com.badlogic.gdx.Audio;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -23,7 +21,6 @@ import java.net.Socket;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class TankGame extends Game {
-    public static int test1 = 0, test2 = 0;
     public int playerID, playerMP, playerType;
     public int nowFrame, lastFireFrame;
     public ActionGroup actionGroup;
@@ -83,7 +80,6 @@ public class TankGame extends Game {
             C2S.send(userName);
             Gson gson = new Gson();
             C2S.send(gson.toJson(new ConnectMsg("join", userName, roomName)));
-            System.out.println("GYMing is so awful!!!!");
             return true;
         }
         catch (Exception e) {
@@ -95,7 +91,7 @@ public class TankGame extends Game {
     @Override
     public void create() {
         skin = new Skin(Gdx.files.internal("skin.json")) {
-            //Override json loader to process FreeType fonts from skin JSON
+            // 重写 json loader 以在 skin JSON 中支持 FreeType 字体
             @Override
             protected Json getJsonLoader(final FileHandle skinFile) {
                 Json json = super.getJsonLoader(skinFile);
@@ -141,26 +137,25 @@ public class TankGame extends Game {
             }
         };
 
+        // 添加角色阵营旗帜
         characterFlags = new Array<>();
         Image characterFlag = new Image(new Texture(Gdx.files.internal("0_flag.png")));
         float scale = Math.max(100f / characterFlag.getWidth(), 100f / characterFlag.getHeight());
-//        System.out.println(scale);
         characterFlag.setScale(scale, scale);
         characterFlag.setPosition(10f, Gdx.graphics.getHeight() - 110f);
         characterFlags.add(characterFlag);
         characterFlag = new Image(new Texture(Gdx.files.internal("1_flag.png")));
         scale = Math.max(100f / characterFlag.getWidth(), 100f / characterFlag.getHeight());
-//        System.out.println(scale);
         characterFlag.setScale(scale, scale);
         characterFlag.setPosition(10f, Gdx.graphics.getHeight() - 110f);
         characterFlags.add(characterFlag);
         characterFlag = new Image(new Texture(Gdx.files.internal("2_flag.png")));
         scale = Math.max(100f / characterFlag.getWidth(), 100f / characterFlag.getHeight());
-//        System.out.println(scale);
         characterFlag.setScale(scale, scale);
         characterFlag.setPosition(10f, Gdx.graphics.getHeight() - 110f);
         characterFlags.add(characterFlag);
 
+        // 初始化数据结构和不同页面
         actionGroup = new ActionGroup();
         startScreen = new StartScreen(this);
         characterSelectionScreen = new CharacterSelectionScreen(this);
@@ -168,7 +163,7 @@ public class TankGame extends Game {
         gameOverScreen = new GameOverScreen(this);
         download = new LinkedBlockingQueue<>();
         queue = new LinkedBlockingQueue<>();
-        toBeDeleted = new LinkedBlockingQueue<GameObject>();
+        toBeDeleted = new LinkedBlockingQueue<>();
         setScreen(startScreen);
     }
 
@@ -179,5 +174,10 @@ public class TankGame extends Game {
 
     @Override
     public void dispose() {
+        startScreen.dispose();
+        mainScreen.dispose();
+        gameOverScreen.dispose();
+        characterSelectionScreen.dispose();
+        skin.dispose();
     }
 }

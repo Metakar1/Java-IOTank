@@ -22,7 +22,6 @@ public class ClientListener implements Runnable {
             if (!queue.isEmpty()) {
                 try {
                     C2S.send(queue.peek());
-                    TankGame.test1++;
                 }
                 catch (IOException e) {
                     e.printStackTrace();
